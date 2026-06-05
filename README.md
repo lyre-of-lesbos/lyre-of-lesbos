@@ -32,5 +32,8 @@ Here are some ideas to get you started:
    3. Εκπαιδευτικά παιχνίδια STEAM.
 
 
+![Mathematical Lyre of Lesbos](lyre_map.svg)
+
+
 
 
