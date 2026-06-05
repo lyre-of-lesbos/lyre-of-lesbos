@@ -42,6 +42,11 @@ Here are some ideas to get you started:
 
 
 
+<img width="1008" height="731" alt="image" src="https://github.com/user-attachments/assets/b60cf968-f645-489a-bbfe-5132f42a3b4a" />
+
+
+
+
 
 
 
