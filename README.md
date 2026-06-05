@@ -35,5 +35,9 @@ Here are some ideas to get you started:
 ![Mathematical Lyre of Lesbos](Lyre-map.svg)
 
 
+<img width="983" height="695" alt="image" src="https://github.com/user-attachments/assets/792a74b0-40c0-46d3-b85c-14a63968d2c3" />
+
+
+
 
 
