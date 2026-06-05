@@ -1,34 +1,24 @@
 <svg xmlns="http://w3.org" viewBox="0 0 1000 1100" width="100%" height="100%" style="background-color: #ffffff;">
   <defs>
-    <!-- Στυλ για τη γραμματοσειρά και τα στοιχεία -->
     <style>
       .title { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 28px; font-weight: bold; fill: #333333; text-anchor: middle; }
       .axis-label { font-family: Arial, sans-serif; font-size: 16px; fill: #666666; }
       .grid-line { stroke: #e0e0e0; stroke-width: 1; stroke-dasharray: 4,4; }
       .axis { stroke: #888888; stroke-width: 2; }
-      
-      /* Δομικά στοιχεία λύρας */
       .zygos { stroke: #8B4513; stroke-width: 14; stroke-linecap: round; }
       .brachionas { stroke: #228B22; stroke-width: 8; stroke-linecap: round; fill: none; }
       .hcheio { stroke: #0000CD; stroke-width: 6; stroke-linecap: round; fill: #F4F4F9; }
       .internal-net { stroke: #8B008B; stroke-width: 3; stroke-dasharray: 5,5; fill: none; }
-      
-      /* Χορδές */
       .string-normal { stroke: #A9A9A9; stroke-width: 3; stroke-dasharray: 6,4; }
       .string-mese { stroke: #FF8C00; stroke-width: 8; stroke-linecap: round; }
-      
-      /* Κείμενα Κόμβων */
       .label-city { font-family: Arial, sans-serif; font-size: 16px; font-weight: bold; fill: #000080; }
       .label-mytilene { font-family: Arial, sans-serif; font-size: 18px; font-weight: bold; fill: #FF0000; }
       .label-special { font-family: Arial, sans-serif; font-size: 16px; font-weight: bold; fill: #FF00FF; }
     </style>
   </defs>
 
-  <!-- Τίτλος Γραφήματος -->
   <text x="500" y="60" class="title">Mathematical Lyre of Lesbos - Precise Coordinates</text>
 
-  <!-- Πλέγμα (Grid) και Άξονες (Μετατροπή μαθηματικών συντεταγμένων 0-100 σε pixels 100-900) -->
-  <!-- X-Axis Grid -->
   <g>
     <line x1="100" y1="150" x2="100" y2="950" class="grid-line" />
     <line x1="200" y1="150" x2="200" y2="950" class="grid-line" />
@@ -39,8 +29,6 @@
     <line x1="700" y1="150" x2="700" y2="950" class="grid-line" />
     <line x1="800" y1="150" x2="800" y2="950" class="grid-line" />
     <line x1="900" y1="150" x2="900" y2="950" class="grid-line" />
-    
-    <!-- Y-Axis Grid -->
     <line x1="100" y1="150" x2="900" y2="150" class="grid-line" />
     <line x1="100" y1="250" x2="900" y2="250" class="grid-line" />
     <line x1="100" y1="350" x2="900" y2="350" class="grid-line" />
@@ -52,86 +40,62 @@
     <line x1="100" y1="950" x2="900" y2="950" class="grid-line" />
   </g>
 
-  <!-- Βασικοί Άξονες -->
   <line x1="100" y1="950" x2="920" y2="950" class="axis" />
   <line x1="100" y1="950" x2="100" y2="130" class="axis" />
   <text x="500" y="1000" class="axis-label" text-anchor="middle">X Coordinate (West-East Axis)</text>
   <text x="40" y="550" class="axis-label" transform="rotate(-90 40 550)" text-anchor="middle">Y Coordinate (South-North Axis)</text>
 
-  <!-- 1. Υπόβαθρο Ηχείου (Γέμισμα Βάσης) -->
   <polygon points="260,750 500,750 660,750 596,886 356,886" class="hcheio" />
 
-  <!-- 2. Εσωτερικό Δίκτυο Συνδέσεων (Μοβ Διακεκομμένες) -->
-  <!-- Φίλια -> Μήθυμνα -->
   <line x1="436" y1="646" x2="380" y2="350" class="internal-net" />
-  <!-- Φίλια -> Μέσσα -->
   <line x1="436" y1="646" x2="500" y2="750" class="internal-net" />
-  <!-- Ανεμώτια -> Φίλια -->
   <line x1="324" y1="574" x2="436" y2="646" class="internal-net" />
-  <!-- Μέσσα -> Πύρρα -->
   <line x1="500" y1="750" x2="500" y2="806" class="internal-net" stroke="#0000CD" />
 
-  <!-- 3. Οι 7 Χορδές της Λύρας (Y=75 έως Y=25 -> Pixels 350 έως 750) -->
-  <!-- Χορδές 1, 2, 3 -->
   <line x1="404" y1="350" x2="404" y2="750" class="string-normal" />
   <line x1="436" y1="350" x2="436" y2="750" class="string-normal" />
   <line x1="468" y1="350" x2="468" y2="750" class="string-normal" />
-  <!-- Χορδή 4: Η ΜΕΣΗ (Πορτοκαλί Σταθερή) -->
   <line x1="500" y1="350" x2="500" y2="750" class="string-mese" />
-  <!-- Χορδές 5, 6, 7 -->
   <line x1="532" y1="350" x2="532" y2="750" class="string-normal" />
   <line x1="564" y1="350" x2="564" y2="750" class="string-normal" />
   <line x1="596" y1="350" x2="596" y2="750" class="string-normal" />
 
-  <!-- 4. Σκελετός Λύρας (Βραχίονες και Ζυγός) -->
-  <!-- Αριστερός Βραχίονας: Μήθυμνα -> Άντισσα -> Ανεμώτια -> Ερεσός -->
   <path d="M 380,350 L 220,510 L 324,574 L 260,750" class="brachionas" />
-  <!-- Δεξιός Βραχίονας: Μυτιλήνη -> Βάση Δεξιά -->
   <line x1="780" y1="350" x2="660" y2="750" class="brachionas" />
-  <!-- Ο Ζυγός (Πάνω Μπάρα): Μήθυμνα έως Μυτιλήνη -->
   <line x1="380" y1="350" x2="780" y2="350" class="zygos" />
 
-  <!-- 5. Οι Κόμβοι (Vertices / Πόλεις) -->
-  <!-- Μυτιλήνη (Κόκκινος Κύκλος) -->
   <circle cx="780" cy="350" r="10" fill="#FF0000" stroke="#FFFFFF" stroke-width="2" />
   <text x="795" y="355" class="label-mytilene">MYTILENE (85, 75)</text>
 
-  <!-- Μήθυμνα -->
   <circle cx="380" cy="350" r="8" fill="#000080" stroke="#FFFFFF" stroke-width="2" />
   <text x="180" y="345" class="label-city">METHYMNA (35, 75)</text>
 
-  <!-- Άντισσα -->
   <circle cx="220" cy="510" r="8" fill="#000080" stroke="#FFFFFF" stroke-width="2" />
   <text x="70" y="515" class="label-city">ANTISSA (15, 55)</text>
 
-  <!-- Ανεμώτια (X Σήμανση) -->
   <g transform="translate(324,574)">
     <line x1="-8" y1="-8" x2="8" y2="8" stroke="#FF00FF" stroke-width="4" />
     <line x1="8" y1="-8" x2="-8" y2="8" stroke="#FF00FF" stroke-width="4" />
   </g>
   <text x="110" y="585" class="label-special">ANTEMONIA (28, 47)</text>
 
-  <!-- Φίλια (X Σήμανση) -->
   <g transform="translate(436,646)">
     <line x1="-8" y1="-8" x2="8" y2="8" stroke="#FF00FF" stroke-width="4" />
     <line x1="8" y1="-8" x2="-8" y2="8" stroke="#FF00FF" stroke-width="4" />
   </g>
   <text x="450" y="640" class="label-special">FILIA (42, 38)</text>
 
-  <!-- Μέσσα (X Σήμανση - Χορδοτόνος) -->
   <g transform="translate(500,750)">
     <line x1="-8" y1="-8" x2="8" y2="8" stroke="#FF00FF" stroke-width="4" />
     <line x1="8" y1="-8" x2="-8" y2="8" stroke="#FF00FF" stroke-width="4" />
   </g>
   <text x="490" y="730" class="label-special">MESSA (50, 25)</text>
 
-  <!-- Πύρρα -->
   <circle cx="500" cy="806" r="8" fill="#000080" stroke="#FFFFFF" stroke-width="2" />
   <text x="515" y="810" class="label-city">PYRRHA (50, 18)</text>
 
-  <!-- Ερεσός -->
   <circle cx="260" cy="750" r="8" fill="#000080" stroke="#FFFFFF" stroke-width="2" />
   <text x="170" y="755" class="label-city">ERESOS (20, 25)</text>
-
 </svg>
+
 
