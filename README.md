@@ -342,6 +342,12 @@ _
  
  Φυσικά: Λειτουργεί ως ένα «γεωμετρικό λύγισμα» (\(149^{\circ }\)) που επέτρεπε στις νοητές γραμμές να παρακάμπτουν τα ψηλά βουνά και να ακολουθούν τα φυσικά περάσματα του εδάφους.
 
+ <img width="572" height="527" alt="image" src="https://github.com/user-attachments/assets/d2ce53fc-164d-401b-84a6-6a3bf0a3f8d4" />
+
+
+ <img width="672" height="713" alt="image" src="https://github.com/user-attachments/assets/9e17a379-6c13-4a62-ad48-9b7d4d587dbb" />
+
+
 ## Το τρίγωνο 14-14-22.65
 
 <img width="1266" height="743" alt="image" src="https://github.com/user-attachments/assets/6fdb9379-89d9-4fc1-b3c3-7dbbe91735d9" />
