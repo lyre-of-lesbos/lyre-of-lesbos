@@ -172,7 +172,9 @@
 * **Κόμβος E (Αρχαία Μήθυμνα):** 39.368500° N, 26.174800° E Συντεταγμένες: 39.368500, 26.174800
 * **Κόμβος F (Ακρόπολη Μυτιλήνης):** 39.111200° N, 26.562300° E Συντεταγμένες: 39.111200, 26.562300
 
-  <img width="928" height="737" alt="image" src="https://github.com/user-attachments/assets/028a6278-240c-474b-937b-8d6b3b16ef2c" />
+
+
+<img width="932" height="761" alt="image" src="https://github.com/user-attachments/assets/36404024-ac7d-4672-9c6c-715f04eeaa51" />
 
   Τοπολογική Δομή και Σύνδεση Λύρας 177,5
   
