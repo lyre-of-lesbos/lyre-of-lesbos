@@ -228,6 +228,8 @@ _
    3. Το Ιερό των Μέσσων ισορροπεί ακριβώς στο σημείο που πάλλεται η μουσική. [1, 2, 8]
 
 
+## Το τρίγωνο 14-14-36
+
       <img width="1113" height="763" alt="image" src="https://github.com/user-attachments/assets/12f30e82-7ec9-474f-a3c3-77801a0c7fc4" />
 
 
