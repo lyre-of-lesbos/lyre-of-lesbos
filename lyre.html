@@ -28,15 +28,36 @@
 
         p {
             margin-top: 0;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
             color: #a89782;
+        }
+
+        /* Κουμπί ενεργοποίησης ήχου */
+        #start-btn {
+            background-color: #bfa063;
+            color: #110b0a;
+            border: none;
+            padding: 12px 28px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 25px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(191, 160, 99, 0.4);
+            transition: all 0.2s ease;
+            margin-bottom: 25px;
+            z-index: 10;
+        }
+
+        #start-btn:hover {
+            background-color: #fff7d6;
+            transform: scale(1.05);
         }
 
         /* Ο σκελετός της Λύρας */
         .lyre-container {
             position: relative;
             width: 360px;
-            height: 480px;
+            height: 440px;
             border: 24px solid #5c3a21;
             border-bottom: 40px solid #4a2e1b;
             border-top: 18px solid #4a2e1b;
@@ -47,6 +68,14 @@
             justify-content: space-around;
             padding: 0 20px;
             box-sizing: border-box;
+            opacity: 0.5; /* Ημιδιαφανές μέχρι να ενεργοποιηθεί */
+            pointer-events: none; /* Κλειδωμένο στην αρχή */
+            transition: opacity 0.5s ease;
+        }
+
+        .lyre-container.ready {
+            opacity: 1;
+            pointer-events: auto; /* Ξεκλειδώνει μετά το Start */
         }
 
         /* Η γέφυρα στο κάτω μέρος */
@@ -65,7 +94,7 @@
         /* Οι Χορδές */
         .string {
             position: relative;
-            width: 30px;
+            width: 35px;
             height: 100%;
             cursor: pointer;
             display: flex;
@@ -85,28 +114,28 @@
             width: 2px;
             background: linear-gradient(to right, #e6c687, #fff7d6, #bfa063);
             box-shadow: 0 0 4px rgba(230, 198, 135, 0.5);
-            transition: transform 0.1s ease, width 0.1s;
+            transition: transform 0.1s ease;
         }
 
-        /* Παχύτερες χορδές για τις μπάσες νότες */
+        /* Πάχη χορδών */
         .string[data-note="C4"]::before { width: 3.5px; }
-        .string[data-note="D4"]::before { width: 3.2px; }
-        .string[data-note="E4"]::before { width: 2.9px; }
-        .string[data-note="F4"]::before { width: 2.6px; }
-        .string[data-note="G4"]::before { width: 2.3px; }
-        .string[data-note="A4"]::before { width: 2.0px; }
-        .string[data-note="B4"]::before { width: 1.7px; }
+        .string[data-note="D4"]::before { width: 3.0px; }
+        .string[data-note="E4"]::before { width: 2.6px; }
+        .string[data-note="F4"]::before { width: 2.2px; }
+        .string[data-note="G4"]::before { width: 1.8px; }
+        .string[data-note="A4"]::before { width: 1.4px; }
+        .string[data-note="B4"]::before { width: 1.0px; }
 
-        /* Εφέ όταν η χορδή δονείται (γίνεται κλικ ή πατιέται πλήκτρο) */
+        /* Animation δόνησης */
         .string.active::before {
-            animation: vibrate 0.15s linear infinite;
+            animation: vibrate 0.1s linear infinite;
             background: #ffffff;
             box-shadow: 0 0 12px #fff7d6;
         }
 
-        /* Ετικέτες με τις νότες και τα πλήκτρα */
+        /* Ετικέτες */
         .note-label {
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             font-weight: bold;
             color: #cfbc9c;
             background: #2b1a0e;
@@ -116,107 +145,105 @@
             user-select: none;
             pointer-events: none;
             text-align: center;
-            line-height: 1.2;
             box-shadow: 0 2px 4px rgba(0,0,0,0.4);
         }
 
-        .key-hint {
-            display: block;
-            font-size: 0.7rem;
-            color: #8a765d;
-            margin-top: 2px;
-        }
-
-        /* Animation δόνησης χορδής */
         @keyframes vibrate {
             0% { transform: translateX(0); }
-            25% { transform: translateX(-2px); }
-            75% { transform: translateX(2px); }
-            100% { transform: translateX(0); }
+            50% { transform: translateX(-2px); }
+            100% { transform: translateX(2px); }
         }
     </style>
 </head>
 <body>
 
     <h1>ΕΛΛΗΝΙΚΗ ΛΥΡΑ</h1>
-    <p>Αγγίξτε τις χορδές με το ποντίκι ή πατήστε τα πλήκτρα [1 - 7]</p>
+    <p>Ενεργοποιήστε τον ήχο και παίξτε με το ποντίκι ή τα πλήκτρα [1 - 7]</p>
 
-    <!-- Το σώμα της λύρας με τις 7 χορδές (επτάχορδος) -->
-    <div class="lyre-container">
-        <div class="string" data-note="C4" data-key="1"><div class="note-label">Ντο<span class="key-hint">[1]</span></div></div>
-        <div class="string" data-note="D4" data-key="2"><div class="note-label">Ρε<span class="key-hint">[2]</span></div></div>
-        <div class="string" data-note="E4" data-key="3"><div class="note-label">Μι<span class="key-hint">[3]</span></div></div>
-        <div class="string" data-note="F4" data-key="4"><div class="note-label">Φα<span class="key-hint">[4]</span></div></div>
-        <div class="string" data-note="G4" data-key="5"><div class="note-label">Σολ<span class="key-hint">[5]</span></div></div>
-        <div class="string" data-note="A4" data-key="6"><div class="note-label">Λα<span class="key-hint">[6]</span></div></div>
-        <div class="string" data-note="B4" data-key="7"><div class="note-label">Σι<span class="key-hint">[7]</span></div></div>
+    <!-- Κουμπί για ξεκλείδωμα του Web Audio API -->
+    <button id="start-btn" onclick="initAudio()">🎵 Ενεργοποίηση Ήχου</button>
+
+    <!-- Το σώμα της λύρας -->
+    <div class="lyre-container" id="lyre">
+        <div class="string" data-note="C4" data-key="1"><div class="note-label">Ντο (1)</div></div>
+        <div class="string" data-note="D4" data-key="2"><div class="note-label">Ρε (2)</div></div>
+        <div class="string" data-note="E4" data-key="3"><div class="note-label">Μι (3)</div></div>
+        <div class="string" data-note="F4" data-key="4"><div class="note-label">Φα (4)</div></div>
+        <div class="string" data-note="G4" data-key="5"><div class="note-label">Σολ (5)</div></div>
+        <div class="string" data-note="A4" data-key="6"><div class="note-label">Λα (6)</div></div>
+        <div class="string" data-note="B4" data-key="7"><div class="note-label">Σι (7)</div></div>
     </div>
 
     <script>
-        // Αντιστοίχιση μουσικών νοτών με τις συχνότητές τους (Hz)
         const frequencies = {
-            "C4": 261.63,
-            "D4": 293.66,
-            "E4": 329.63,
-            "F4": 349.23,
-            "G4": 392.00,
-            "A4": 440.00,
-            "B4": 493.88
+            "C4": 261.63, "D4": 293.66, "E4": 329.63, "F4": 349.23,
+            "G4": 392.00, "A4": 440.00, "B4": 493.88
         };
 
         let audioCtx = null;
 
-        // Συναρτήση δημιουργίας και αναπαραγωγής του ήχου (Σύνθεση Πλάσματος - Synth)
-        function playTone(frequency) {
-            // Αρχιικοποίηση του AudioContext μετά την πρώτη αλληλεπίδραση του χρήστη (απαίτηση των browsers)
+        // Η συνάρτηση που «ξυπνάει» τον ήχο στον browser
+        function initAudio() {
             if (!audioCtx) {
                 audioCtx = new (window.AudioContext || window.webkitAudioContext)();
             }
+            
+            // Αν ο browser την είχε βάλει σε αναμονή (suspended), την ενεργοποιούμε
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
 
-            // Δημιουργία Ταλαντωτή (Oscillator) και Μονάδας Έντασης (Gain Node)
+            // Εμφάνιση της λύρας και εξαφάνιση του κουμπιού
+            document.getElementById('lyre').classList.add('ready');
+            document.getElementById('start-btn').style.display = 'none';
+        }
+
+        function playTone(frequency) {
+            if (!audioCtx) return;
+
             const oscillator = audioCtx.createOscillator();
             const gainNode = audioCtx.createGain();
 
-            oscillator.type = 'triangle'; // Ο τύπος 'triangle' δίνει έναν απαλό, ξύλινο ήχο που ταιριάζει σε λύρα
+            // 'triangle' για γλυκό, ακουστικό ήχο παραδοσιακού οργάνου
+            oscillator.type = 'triangle'; 
             oscillator.frequency.value = frequency;
 
-            // Προσομοίωση φυσικού σβησίματος της χορδής (Pluck Decay Effect)
             const now = audioCtx.currentTime;
-            gainNode.gain.setValueAtTime(0.6, now); // Αρχική ένταση
-            gainNode.gain.exponentialRampToValueAtTime(0.001, now + 1.5); // Σβήσιμο σε 1.5 δευτερόλεπτο
+            gainNode.gain.setValueAtTime(0.5, now);
+            // Σβήσιμο του ήχου προοδευτικά για 1.2 δευτερόλεπτα (φυσικό άγγιγμα χορδής)
+            gainNode.gain.exponentialRampToValueAtTime(0.001, now + 1.2); 
 
-            // Σύνδεση των κόμβων με τα ηχεία
             oscillator.connect(gainNode);
             gainNode.connect(audioCtx.destination);
 
-            // Εκκίνηση και τερματισμός του ήχου
             oscillator.start(now);
-            oscillator.stop(now + 1.5);
+            oscillator.stop(now + 1.2);
         }
 
-        // Λειτουργία ενεργοποίησης χορδής (Ήχος + Οπτικό Εφέ)
         function triggerString(stringEl) {
             const note = stringEl.getAttribute('data-note');
             if (frequencies[note]) {
                 playTone(frequencies[note]);
                 
-                // Ενεργοποίηση του animation δόνησης
                 stringEl.classList.add('active');
                 setTimeout(() => {
                     stringEl.classList.remove('active');
-                }, 300); // Η δόνηση σταματά οπτικά μετά από 300ms
+                }, 150);
             }
         }
 
-        // Event Listeners για Κλικ με το Ποντίκι (Hover ή Click)
+        // Event Listeners για το Ποντίκι
         document.querySelectorAll('.string').forEach(string => {
-            string.addEventListener('mouseenter', (e) => {
-                // Αν το ποντίκι είναι πατημένο καθώς περνάει πάνω από τις χορδές (Glissando / Strumming)
-                if (e.buttons === 1) triggerString(string);
-            });
-            
+            // Παίζει αν κάνεις απλό κλικ
             string.addEventListener('mousedown', () => {
                 triggerString(string);
+            });
+            
+            // Παίζει αν περάσεις από πάνω έχοντας πατημένο το αριστερό κλικ (strumming)
+            string.addEventListener('mouseenter', (e) => {
+                if (e.buttons === 1) {
+                    triggerString(string);
+                }
             });
         });
 
@@ -230,5 +257,3 @@
     </script>
 </body>
 </html>
-
-
