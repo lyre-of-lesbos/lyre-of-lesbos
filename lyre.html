@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Αρχαία Ελληνική Λύρα σε JavaScript</title>
+    <title>Μουσική Αρχαία Ελληνική Λύρα</title>
     <style>
         body {
             margin: 0;
@@ -53,7 +53,7 @@
             transform: scale(1.05);
         }
 
-        /* Ο σκελετός της Λύρας */
+        /* Ο ξύλινος σκελετός της Λύρας */
         .lyre-container {
             position: relative;
             width: 360px;
@@ -68,7 +68,7 @@
             justify-content: space-around;
             padding: 0 20px;
             box-sizing: border-box;
-            opacity: 0.5; /* Ημιδιαφανές μέχρι να ενεργοποιηθεί */
+            opacity: 0.4; /* Ημιδιαφανές μέχρι να πατηθεί το Start */
             pointer-events: none; /* Κλειδωμένο στην αρχή */
             transition: opacity 0.5s ease;
         }
@@ -78,7 +78,7 @@
             pointer-events: auto; /* Ξεκλειδώνει μετά το Start */
         }
 
-        /* Η γέφυρα στο κάτω μέρος */
+        /* Η κάτω γέφυρα του οργάνου */
         .lyre-container::after {
             content: '';
             position: absolute;
@@ -105,7 +105,7 @@
             z-index: 2;
         }
 
-        /* Το ορατό σύρμα της χορδής */
+        /* Το ορατό σύρμα της κάθε χορδής */
         .string::before {
             content: '';
             position: absolute;
@@ -117,7 +117,7 @@
             transition: transform 0.1s ease;
         }
 
-        /* Πάχη χορδών */
+        /* Διαφορετικά πάχη για μπάσες και πρίμες νότες */
         .string[data-note="C4"]::before { width: 3.5px; }
         .string[data-note="D4"]::before { width: 3.0px; }
         .string[data-note="E4"]::before { width: 2.6px; }
@@ -126,14 +126,14 @@
         .string[data-note="A4"]::before { width: 1.4px; }
         .string[data-note="B4"]::before { width: 1.0px; }
 
-        /* Animation δόνησης */
+        /* Εφέ δόνησης όταν παίζεται η νότα */
         .string.active::before {
             animation: vibrate 0.1s linear infinite;
             background: #ffffff;
             box-shadow: 0 0 12px #fff7d6;
         }
 
-        /* Ετικέτες */
+        /* Τα ταμπελάκια με τα ονόματα των νοτών */
         .note-label {
             font-size: 0.8rem;
             font-weight: bold;
@@ -158,12 +158,12 @@
 <body>
 
     <h1>ΕΛΛΗΝΙΚΗ ΛΥΡΑ</h1>
-    <p>Ενεργοποιήστε τον ήχο και παίξτε με το ποντίκι ή τα πλήκτρα [1 - 7]</p>
+    <p>Πατήστε το κουμπί και παίξτε με το ποντίκι ή τα πλήκτρα [1 - 7]</p>
 
-    <!-- Κουμπί για ξεκλείδωμα του Web Audio API -->
+    <!-- Κουμπί για να επιτρέψει ο browser την αναπαραγωγή ήχου -->
     <button id="start-btn" onclick="initAudio()">🎵 Ενεργοποίηση Ήχου</button>
 
-    <!-- Το σώμα της λύρας -->
+    <!-- Το σώμα της λύρας με τις 7 χορδές -->
     <div class="lyre-container" id="lyre">
         <div class="string" data-note="C4" data-key="1"><div class="note-label">Ντο (1)</div></div>
         <div class="string" data-note="D4" data-key="2"><div class="note-label">Ρε (2)</div></div>
@@ -175,6 +175,7 @@
     </div>
 
     <script>
+        // Συχνότητες για τις νότες (Hz)
         const frequencies = {
             "C4": 261.63, "D4": 293.66, "E4": 329.63, "F4": 349.23,
             "G4": 392.00, "A4": 440.00, "B4": 493.88
@@ -182,35 +183,32 @@
 
         let audioCtx = null;
 
-        // Η συνάρτηση που «ξυπνάει» τον ήχο στον browser
+        // Ενεργοποίηση του ήχου μετά από κλικ του χρήστη
         function initAudio() {
             if (!audioCtx) {
                 audioCtx = new (window.AudioContext || window.webkitAudioContext)();
             }
-            
-            // Αν ο browser την είχε βάλει σε αναμονή (suspended), την ενεργοποιούμε
             if (audioCtx.state === 'suspended') {
                 audioCtx.resume();
             }
 
-            // Εμφάνιση της λύρας και εξαφάνιση του κουμπιού
+            // Εμφάνιση οργάνου και απόκρυψη του αρχικού κουμπιού
             document.getElementById('lyre').classList.add('ready');
             document.getElementById('start-btn').style.display = 'none';
         }
 
+        // Παραγωγή του ακουστικού ήχου της χορδής
         function playTone(frequency) {
             if (!audioCtx) return;
 
             const oscillator = audioCtx.createOscillator();
             const gainNode = audioCtx.createGain();
 
-            // 'triangle' για γλυκό, ακουστικό ήχο παραδοσιακού οργάνου
             oscillator.type = 'triangle'; 
             oscillator.frequency.value = frequency;
 
             const now = audioCtx.currentTime;
             gainNode.gain.setValueAtTime(0.5, now);
-            // Σβήσιμο του ήχου προοδευτικά για 1.2 δευτερόλεπτα (φυσικό άγγιγμα χορδής)
             gainNode.gain.exponentialRampToValueAtTime(0.001, now + 1.2); 
 
             oscillator.connect(gainNode);
@@ -232,14 +230,13 @@
             }
         }
 
-        // Event Listeners για το Ποντίκι
+        // Έλεγχος με το Ποντίκι
         document.querySelectorAll('.string').forEach(string => {
-            // Παίζει αν κάνεις απλό κλικ
             string.addEventListener('mousedown', () => {
                 triggerString(string);
             });
             
-            // Παίζει αν περάσεις από πάνω έχοντας πατημένο το αριστερό κλικ (strumming)
+            // Παίζει σέρνοντας το ποντίκι πατημένο (Strumming)
             string.addEventListener('mouseenter', (e) => {
                 if (e.buttons === 1) {
                     triggerString(string);
@@ -247,7 +244,7 @@
             });
         });
 
-        // Event Listener για το Πληκτρολόγιο (Πλήκτρα 1-7)
+        // Έλεγχος με το Πληκτρολόγιο (1-7)
         window.addEventListener('keydown', (e) => {
             const stringEl = document.querySelector(`.string[data-key="${e.key}"]`);
             if (stringEl) {
@@ -257,3 +254,4 @@
     </script>
 </body>
 </html>
+
