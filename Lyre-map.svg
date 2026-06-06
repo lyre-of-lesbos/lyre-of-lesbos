@@ -1,99 +1,85 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1100" width="100%" height="100%" style="background-color: #ffffff;">
+<svg xmlns="http://w3.org" viewBox="0 0 800 600" width="100%" height="100%" style="background-color: #fcfaf2;">
+  <!-- Ορισμός Στυλ & Εφέ Σκίασης -->
   <defs>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="2" dy="3" stdDeviation="3" flood-opacity="0.3"/>
+    </filter>
     <style>
-      .title { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 28px; font-weight: bold; fill: #333333; text-anchor: middle; }
-      .axis-label { font-family: Arial, sans-serif; font-size: 16px; fill: #666666; }
-      .grid-line { stroke: #e0e0e0; stroke-width: 1; stroke-dasharray: 4,4; }
-      .axis { stroke: #888888; stroke-width: 2; }
-      .zygos { stroke: #8B4513; stroke-width: 14; stroke-linecap: round; }
-      .brachionas { stroke: #228B22; stroke-width: 8; stroke-linecap: round; fill: none; }
-      .hcheio { stroke: #0000CD; stroke-width: 6; stroke-linecap: round; fill: #F4F4F9; }
-      .internal-net { stroke: #8B008B; stroke-width: 3; stroke-dasharray: 5,5; fill: none; }
-      .string-normal { stroke: #A9A9A9; stroke-width: 3; stroke-dasharray: 6,4; }
-      .string-mese { stroke: #FF8C00; stroke-width: 8; stroke-linecap: round; }
-      .label-city { font-family: Arial, sans-serif; font-size: 16px; font-weight: bold; fill: #000080; }
-      .label-mytilene { font-family: Arial, sans-serif; font-size: 18px; font-weight: bold; fill: #FF0000; }
-      .label-special { font-family: Arial, sans-serif; font-size: 16px; font-weight: bold; fill: #FF00FF; }
+      .title { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 22px; font-weight: bold; fill: #2c3e50; }
+      .subtitle { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 13px; fill: #7f8c8d; font-style: italic; }
+      .axis-line { stroke: #d35400; stroke-width: 3; stroke-linecap: round; stroke-dasharray: 4,4; }
+      .frame-line { stroke: #2c3e50; stroke-width: 4; stroke-linecap: round; }
+      .string-line { stroke: #7f8c8d; stroke-width: 1.5; opacity: 0.6; }
+      .node-fixed { fill: #c0392b; stroke: #fff; stroke-width: 2.5; cursor: pointer; }
+      .node-opt { fill: #27ae60; stroke: #fff; stroke-width: 2.5; cursor: pointer; }
+      .label-text { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 12px; font-weight: bold; fill: #2c3e50; }
+      .dist-text { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 11px; fill: #e67e22; font-weight: 500; }
     </style>
   </defs>
 
-  <text x="500" y="60" class="title">Mathematical Lyre of Lesbos - Precise Coordinates</text>
+  <!-- Τίτλος και Υπόμνημα Χάρτη -->
+  <text x="40" y="50" class="title">Η ΛΥΡΑ ΤΗΣ ΛΕΣΒΟΥ (The Lyre of Lesbos)</text>
+  <text x="40" y="72" class="subtitle">Γεωμετρική και Τοπολογική Χαρτογράφηση Αρχαίων Θέσεων (WGS84)</text>
 
-  <g>
-    <line x1="100" y1="150" x2="100" y2="950" class="grid-line" />
-    <line x1="200" y1="150" x2="200" y2="950" class="grid-line" />
-    <line x1="300" y1="150" x2="300" y2="950" class="grid-line" />
-    <line x1="400" y1="150" x2="400" y2="950" class="grid-line" />
-    <line x1="500" y1="150" x2="500" y2="950" class="grid-line" />
-    <line x1="600" y1="150" x2="600" y2="950" class="grid-line" />
-    <line x1="700" y1="150" x2="700" y2="950" class="grid-line" />
-    <line x1="800" y1="150" x2="800" y2="950" class="grid-line" />
-    <line x1="900" y1="150" x2="900" y2="950" class="grid-line" />
-    <line x1="100" y1="150" x2="900" y2="150" class="grid-line" />
-    <line x1="100" y1="250" x2="900" y2="250" class="grid-line" />
-    <line x1="100" y1="350" x2="900" y2="350" class="grid-line" />
-    <line x1="100" y1="450" x2="900" y2="450" class="grid-line" />
-    <line x1="100" y1="550" x2="900" y2="550" class="grid-line" />
-    <line x1="100" y1="650" x2="900" y2="650" class="grid-line" />
-    <line x1="100" y1="750" x2="900" y2="750" class="grid-line" />
-    <line x1="100" y1="850" x2="900" y2="850" class="grid-line" />
-    <line x1="100" y1="950" x2="900" y2="950" class="grid-line" />
+  <!-- 1. Υποθετικές Χορδές / Εσωτερικές Συνδέσεις Δικτύου -->
+  <g class="string-line">
+    <line x1="165" y1="184" x2="333" y2="218" /> <!-- A -> C -->
+    <line x1="122" y1="363" x2="333" y2="218" /> <!-- B -> C -->
+    <line x1="333" y1="218" x2="770" y2="390" /> <!-- C -> F -->
+    <line x1="525" y1="250" x2="165" y2="184" /> <!-- D -> A -->
   </g>
 
-  <line x1="100" y1="950" x2="920" y2="950" class="axis" />
-  <line x1="100" y1="950" x2="100" y2="130" class="axis" />
-  <text x="500" y="1000" class="axis-label" text-anchor="middle">X Coordinate (West-East Axis)</text>
-  <text x="40" y="550" class="axis-label" transform="rotate(-90 40 550)" text-anchor="middle">Y Coordinate (South-North Axis)</text>
-
-  <polygon points="260,750 500,750 660,750 596,886 356,886" class="hcheio" />
-
-  <line x1="436" y1="646" x2="380" y2="350" class="internal-net" />
-  <line x1="436" y1="646" x2="500" y2="750" class="internal-net" />
-  <line x1="324" y1="574" x2="436" y2="646" class="internal-net" />
-  <line x1="500" y1="750" x2="500" y2="806" class="internal-net" stroke="#0000CD" />
-
-  <line x1="404" y1="350" x2="404" y2="750" class="string-normal" />
-  <line x1="436" y1="350" x2="436" y2="750" class="string-normal" />
-  <line x1="468" y1="350" x2="468" y2="750" class="string-normal" />
-  <line x1="500" y1="350" x2="500" y2="750" class="string-mese" />
-  <line x1="532" y1="350" x2="532" y2="750" class="string-normal" />
-  <line x1="564" y1="350" x2="564" y2="750" class="string-normal" />
-  <line x1="596" y1="350" x2="596" y2="750" class="string-normal" />
-
-  <path d="M 380,350 L 220,510 L 324,574 L 260,750" class="brachionas" />
-  <line x1="780" y1="350" x2="660" y2="750" class="brachionas" />
-  <line x1="380" y1="350" x2="780" y2="350" class="zygos" />
-
-  <circle cx="780" cy="350" r="10" fill="#FF0000" stroke="#FFFFFF" stroke-width="2" />
-  <text x="795" y="355" class="label-mytilene">MYTILENE (85, 75)</text>
-
-  <circle cx="380" cy="350" r="8" fill="#000080" stroke="#FFFFFF" stroke-width="2" />
-  <text x="180" y="345" class="label-city">METHYMNA (35, 75)</text>
-
-  <circle cx="220" cy="510" r="8" fill="#000080" stroke="#FFFFFF" stroke-width="2" />
-  <text x="70" y="515" class="label-city">ANTISSA (15, 55)</text>
-
-  <g transform="translate(324,574)">
-    <line x1="-8" y1="-8" x2="8" y2="8" stroke="#FF00FF" stroke-width="4" />
-    <line x1="8" y1="-8" x2="-8" y2="8" stroke="#FF00FF" stroke-width="4" />
+  <!-- 2. Κύριοι Γεωδαιτικοί Άξονες (Μουσικοί Λόγοι) -->
+  <g filter="url(#shadow)">
+    <!-- Άνω Ζυγός: Μήθυμνα (Ε) έως Μυτιλήνη (F) -->
+    <line x1="407" y1="20" x2="770" y2="390" class="frame-line" />
+    
+    <!-- Δυτικός Βραχίονας / Ηχείο: Μαντείο (A) -> Κόμβος B -> Μέσσα (D) -->
+    <line x1="165" y1="184" x2="122" y2="363" class="frame-line" style="stroke: #2980b9;" />
+    <line x1="122" y1="363" x2="525" y2="250" class="frame-line" style="stroke: #2980b9;" />
+    
+    <!-- Κεντρικός Άξονας / Καβαλάρης: Μέσσα (D) έως Μήθυμνα (E) -->
+    <line x1="525" y1="250" x2="407" y2="20" class="axis-line" />
   </g>
-  <text x="110" y="585" class="label-special">ANTEMONIA (28, 47)</text>
 
-  <g transform="translate(436,646)">
-    <line x1="-8" y1="-8" x2="8" y2="8" stroke="#FF00FF" stroke-width="4" />
-    <line x1="8" y1="-8" x2="-8" y2="8" stroke="#FF00FF" stroke-width="4" />
+  <!-- 3. Ενδείξεις Αποστάσεων σε Στάδια (Labels) -->
+  <g class="dist-text">
+    <text x="110" y="275" transform="rotate(-76, 110, 275)">76 St. (0.14%)</text>
+    <text x="235" y="185" transform="rotate(11, 235, 185)">68 St. (0.00%)</text>
+    <text x="210" y="305" transform="rotate(-34, 210, 305)">97 St. (0.02%)</text>
+    <text x="475" y="130" transform="rotate(-62, 475, 130)">120 St. (0.05%)</text>
+    <text x="330" y="240" transform="rotate(-10, 330, 240)">160 St. (0.11%)</text>
+    <text x="540" y="315" transform="rotate(21, 540, 315)">223 St. (0.79%)</text>
   </g>
-  <text x="450" y="640" class="label-special">FILIA (42, 38)</text>
 
-  <g transform="translate(500,750)">
-    <line x1="-8" y1="-8" x2="8" y2="8" stroke="#FF00FF" stroke-width="4" />
-    <line x1="8" y1="-8" x2="-8" y2="8" stroke="#FF00FF" stroke-width="4" />
+  <!-- 4. Κόμβοι / Αρχαιολογικές Θέσεις (Σημεία) -->
+  <!-- Σταθεροί Κόμβοι (Κόκκινο) -->
+  <circle cx="165" cy="184" r="7" class="node-fixed" id="nodeA" />
+  <circle cx="122" cy="363" r="7" class="node-fixed" id="nodeB" />
+  <circle cx="525" cy="250" r="7" class="node-fixed" id="nodeD" />
+  <circle cx="407" cy="20" r="7" class="node-fixed" id="nodeE" />
+  <circle cx="770" cy="390" r="7" class="node-fixed" id="nodeF" />
+  
+  <!-- Βελτιστοποιημένος Κόμβος C Φίλιας (Πράσινο) -->
+  <circle cx="333" cy="218" r="7" class="node-opt" id="nodeC" />
+
+  <!-- 5. Κείμενα / Ονόματα Τοποθεσιών -->
+  <g class="label-text">
+    <text x="165" y="170" text-anchor="middle">Μαντείο (A)</text>
+    <text x="110" y="385" text-anchor="end">Κόμβος Β</text>
+    <text x="333" y="205" text-anchor="middle" style="fill: #27ae60;">Φίλια (C)</text>
+    <text x="535" y="270" text-anchor="start">Μέσσα (D) [Καβαλάρης]</text>
+    <text x="420" y="25" text-anchor="start">Μήθυμνα (E)</text>
+    <text x="770" y="410" text-anchor="middle">Μυτιλήνη (F)</text>
   </g>
-  <text x="490" y="730" class="label-special">MESSA (50, 25)</text>
 
-  <circle cx="500" cy="806" r="8" fill="#000080" stroke="#FFFFFF" stroke-width="2" />
-  <text x="515" y="810" class="label-city">PYRRHA (50, 18)</text>
-
-  <circle cx="260" cy="750" r="8" fill="#000080" stroke="#FFFFFF" stroke-width="2" />
-  <text x="170" y="755" class="label-city">ERESOS (20, 25)</text>
+  <!-- Επεξηγηματικό Υπόμνημα Χρωμάτων -->
+  <g transform="translate(40, 520)">
+    <circle cx="0" cy="0" r="6" class="node-fixed" />
+    <text x="15" y="4" font-family="Arial" font-size="12" fill="#2c3e50">Σταθεροί Γεωγραφικοί Κόμβοι</text>
+    
+    <circle cx="220" cy="0" r="6" class="node-opt" />
+    <text x="235" y="4" font-family="Arial" font-size="12" fill="#2c3e50">Μαθηματικά Βελτιστοποιημένος Κόμβος</text>
+  </g>
 </svg>
+
