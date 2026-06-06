@@ -1,8 +1,10 @@
 ## Τίτλος Έργου: Η «Λύρα της Λέσβου» (The Lyre of Lesbos) — Μια Διεπιστημονική Γεωδαιτική Μελέτη, Στατιστική Ανάλυση και Μοντελοποίηση Αρμονικών Αναλογιών βάσει του Αιολικού Σταδίου 🎼🗺
 
 
-<img width="902" height="913" alt="image" src="https://github.com/user-attachments/assets/551fc745-bc96-4df5-a941-ed1fa41c06a5" />
+<img width="600" height="600" alt="image" src="https://github.com/user-attachments/assets/551fc745-bc96-4df5-a941-ed1fa41c06a5" />
 
+
+[Παίξτε με τη Λύρα online εδώ](https://github.io)
 
 [Ανοίξτε τη Μουσική Λύρα](lyre.html)
 
