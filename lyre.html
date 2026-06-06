@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Η Λύρα της Λέσβου - Γεωμετρικό Μοντέλο</title>
+    <style>
+        body {
+            background-color: #0f172a;
+            color: #f8fafc;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            color: #f59e0b;
+            margin-bottom: 5px;
+        }
+        p {
+            color: #94a3b8;
+            margin-bottom: 25px;
+            max-width: 600px;
+            text-align: center;
+        }
+        .container {
+            background-color: #1e293b;
+            padding: 20px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+        }
+        svg {
+            border: 1px solid #334155;
+            background-color: #111827;
+            border-radius: 8px;
+        }
+        /* Εφέ κίνησης (hover) στις χορδές */
+        .string {
+            transition: stroke-width 0.2s, stroke 0.2s;
+            cursor: pointer;
+        }
+        .string:hover {
+            stroke: #f59e0b;
+            stroke-width: 4px;
+        }
+        .node {
+            transition: r 0.2s, fill 0.2s;
+        }
+        .node:hover {
+            fill: #ef4444;
+            r: 8px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Η «Λύρα της Λέσβου»</h1>
+    <p>Γεωμετρική και χαρτογραφική αναπαράσταση των 7 αρχαίων μνημείων. Περάστε το ποντίκι πάνω από τις χορδές και τα σημεία για να αλληλεπιδράσετε.</p>
+
+    <div class="container">
+        <!-- Το SVG Σχήμα βασισμένο στο project -->
+        <svg width="600" height="550" viewBox="0 0 600 550" xmlns="http://w3.org">
+            
+            <!-- 1. Το σώμα / αντηχείο της λύρας (Καβούκι) -->
+            <path d="M 120 80 Q 80 250 140 400 Q 300 520 460 400 Q 520 220 480 80 Q 300 130 120 80 Z" 
+                  fill="none" stroke="#334155" stroke-width="2" stroke-dasharray="5,5" />
+
+            <!-- 2. Ο Άνω Ζυγός (Η ευθεία που ενώνει Μήθυμνα και Μυτιλήνη) -->
+            <line x1="120" y1="80" x2="480" y2="80" stroke="#f59e0b" stroke-width="4" stroke-linecap="round" />
+            
+            <!-- 3. Οι 7 Χορδές που συγκλίνουν στον Χορδοτόνο (Ιερό των Μέσσων: 300, 450) -->
+            <!-- Κάθε χορδή ξεκινά από τον ζυγό και περνά/καταλήγει στα μνημεία -->
+            <line class="string" id="string-mytilene" x1="480" y1="80" x2="300" y2="450" stroke="#38bdf8" stroke-width="2" />
+            <line class="string" id="string-klopedi" x1="410" y1="80" x2="300" y2="450" stroke="#38bdf8" stroke-width="1.8" />
+            <line class="string" id="string-filia" x1="345" y1="80" x2="300" y2="450" stroke="#38bdf8" stroke-width="1.6" />
+            <line class="string" id="string-messa" x1="300" y1="80" x2="300" y2="450" stroke="#65a30d" stroke-width="2.5" /> <!-- Κεντρικός Άξονας -->
+            <line class="string" id="string-orfeas" x1="250" y1="80" x2="300" y2="450" stroke="#38bdf8" stroke-width="1.6" />
+            <line class="string" id="string-eresos" x1="190" y1="80" x2="300" y2="450" stroke="#38bdf8" stroke-width="1.8" />
+            <line class="string" id="string-methymna" x1="120" y1="80" x2="300" y2="450" stroke="#38bdf8" stroke-width="2" />
+
+            <!-- 4. Οι 7 Κόμβοι / Αρχαιολογικά Μνημεία (Nodes) -->
+            <!-- 1. Μυτιλήνη (Υπάτη) -->
+            <circle class="node" cx="480" cy="80" r="6" fill="#fb7185" />
+            <text x="495" y="85" fill="#e2e8f0" font-size="12" font-weight="bold">Μυτιλήνη (Υπάτη)</text>
+
+            <!-- 2. Κλοπεδή (Παρυπάτη) -->
+            <circle class="node" cx="370" cy="205" r="6" fill="#fb7185" />
+            <text x="382" y="210" fill="#e2e8f0" font-size="12">Κλοπεδή (Παρυπάτη)</text>
+
+            <!-- 3. Φίλια (Λιχανός) -->
+            <circle class="node" cx="325" cy="275" r="6" fill="#fb7185" />
+            <text x="337" y="275" fill="#e2e8f0" font-size="12">Φίλια (Λιχανός)</text>
+
+            <!-- 4. Ιερό των Μέσσων (Μέση - Χορδοτόνος) -->
+            <circle class="node" cx="300" cy="450" r="7" fill="#f59e0b" />
+            <text x="300" y="480" fill="#f59e0b" font-size="13" font-weight="bold" text-anchor="middle">Ιερό Μέσσων (Μέση)</text>
+
+            <!-- 5. Μαντείο Ορφέα / Άντισσα (Παραμέση) -->
+            <circle class="node" cx="215" cy="225" r="6" fill="#fb7185" />
+            <text x="75" y="225" fill="#e2e8f0" font-size="12">Μαντείο Ορφέα (Παραμέση)</text>
+
+            <!-- 6. Ερεσός (Τρίτη) -->
+            <circle class="node" cx="160" cy="355" r="6" fill="#fb7185" />
+            <text x="95" y="360" fill="#e2e8f0" font-size="12">Ερεσός (Τρίτη)</text>
+
+            <!-- 7. Μήθυμνα / Μόλυβος (Νήτη) -->
+            <circle class="node" cx="120" cy="80" r="6" fill="#fb7185" />
+            <text x="35" y="85" fill="#e2e8f0" font-size="12" font-weight="bold">Μήθυμνα (Νήτη)</text>
+
+        </svg>
+    </div>
+
+</body>
+</html>
