@@ -4,8 +4,6 @@
 <img width="600" height="600" alt="image" src="https://github.com/user-attachments/assets/551fc745-bc96-4df5-a941-ed1fa41c06a5" />
 
 
-[Παίξτε με τη Λύρα online εδώ](https://github.io/lyre-of-lesbos/lyre-of-lesbos/blob/main/lyre.html)
-
 [Ανοίξτε τη Μουσική Λύρα](lyre.html)
 
 
