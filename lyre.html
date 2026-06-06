@@ -3,92 +3,232 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Πλήρης Κώδικας HTML, CSS & JavaScript</title>
-    
+    <title>Αρχαία Ελληνική Λύρα σε JavaScript</title>
     <style>
-        /* Στυλ για ολόκληρη τη σελίδα */
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f0f2f5;
-            color: #333;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
             margin: 0;
-            transition: background-color 0.4s ease;
-        }
-
-        /* Το κεντρικό πλαίσιο περιεχομένου */
-        .card {
-            background-color: #ffffff;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            max-width: 400px;
-            width: 100%;
+            padding: 0;
+            background: radial-gradient(circle, #2c1f1d, #110b0a);
+            font-family: 'Segoe UI', sans-serif;
+            color: #f4ecd8;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            overflow: hidden;
         }
 
         h1 {
-            color: #1a1a1a;
-            font-size: 24px;
-            margin-bottom: 10px;
-            transition: color 0.3s ease;
+            margin-bottom: 5px;
+            font-size: 2.5rem;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(244, 236, 216, 0.3);
         }
 
         p {
-            color: #666;
-            font-size: 16px;
-            margin-bottom: 25px;
+            margin-top: 0;
+            margin-bottom: 30px;
+            color: #a89782;
         }
 
-        /* Στυλ για το κουμπί */
-        .btn {
-            background-color: #007bff;
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            font-size: 16px;
-            font-weight: bold;
-            border-radius: 8px;
+        /* Ο σκελετός της Λύρας */
+        .lyre-container {
+            position: relative;
+            width: 360px;
+            height: 480px;
+            border: 24px solid #5c3a21;
+            border-bottom: 40px solid #4a2e1b;
+            border-top: 18px solid #4a2e1b;
+            border-radius: 120px 120px 40px 40px;
+            box-shadow: inset 0 0 30px rgba(0,0,0,0.8), 0 15px 35px rgba(0,0,0,0.7);
+            background: rgba(20, 15, 12, 0.6);
+            display: flex;
+            justify-content: space-around;
+            padding: 0 20px;
+            box-sizing: border-box;
+        }
+
+        /* Η γέφυρα στο κάτω μέρος */
+        .lyre-container::after {
+            content: '';
+            position: absolute;
+            bottom: 20px;
+            left: 10px;
+            right: 10px;
+            height: 15px;
+            background: #2b1a0e;
+            border-radius: 4px;
+            box-shadow: 0 4px 5px rgba(0,0,0,0.5);
+        }
+
+        /* Οι Χορδές */
+        .string {
+            position: relative;
+            width: 30px;
+            height: 100%;
             cursor: pointer;
-            transition: background-color 0.2s, transform 0.1s;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            padding-bottom: 50px;
+            box-sizing: border-box;
+            z-index: 2;
         }
 
-        .btn:hover {
-            background-color: #0056b3;
+        /* Το ορατό σύρμα της χορδής */
+        .string::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 20px;
+            width: 2px;
+            background: linear-gradient(to right, #e6c687, #fff7d6, #bfa063);
+            box-shadow: 0 0 4px rgba(230, 198, 135, 0.5);
+            transition: transform 0.1s ease, width 0.1s;
         }
 
-        .btn:active {
-            transform: scale(0.98);
+        /* Παχύτερες χορδές για τις μπάσες νότες */
+        .string[data-note="C4"]::before { width: 3.5px; }
+        .string[data-note="D4"]::before { width: 3.2px; }
+        .string[data-note="E4"]::before { width: 2.9px; }
+        .string[data-note="F4"]::before { width: 2.6px; }
+        .string[data-note="G4"]::before { width: 2.3px; }
+        .string[data-note="A4"]::before { width: 2.0px; }
+        .string[data-note="B4"]::before { width: 1.7px; }
+
+        /* Εφέ όταν η χορδή δονείται (γίνεται κλικ ή πατιέται πλήκτρο) */
+        .string.active::before {
+            animation: vibrate 0.15s linear infinite;
+            background: #ffffff;
+            box-shadow: 0 0 12px #fff7d6;
+        }
+
+        /* Ετικέτες με τις νότες και τα πλήκτρα */
+        .note-label {
+            font-size: 0.85rem;
+            font-weight: bold;
+            color: #cfbc9c;
+            background: #2b1a0e;
+            padding: 4px 6px;
+            border-radius: 4px;
+            border: 1px solid #5c3a21;
+            user-select: none;
+            pointer-events: none;
+            text-align: center;
+            line-height: 1.2;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.4);
+        }
+
+        .key-hint {
+            display: block;
+            font-size: 0.7rem;
+            color: #8a765d;
+            margin-top: 2px;
+        }
+
+        /* Animation δόνησης χορδής */
+        @keyframes vibrate {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-2px); }
+            75% { transform: translateX(2px); }
+            100% { transform: translateX(0); }
         }
     </style>
 </head>
 <body>
 
-    <!-- Δομή της σελίδας -->
-    <div class="card">
-        <h1 id="main-title">Γεια σας!</h1>
-        <p id="description">Αυτή είναι μια στατική σελίδα. Πατήστε το κουμπί για να την κάνετε διαδραστική με JavaScript.</p>
-        <button class="btn" onclick="transformPage()">Ενεργοποίηση</button>
+    <h1>ΕΛΛΗΝΙΚΗ ΛΥΡΑ</h1>
+    <p>Αγγίξτε τις χορδές με το ποντίκι ή πατήστε τα πλήκτρα [1 - 7]</p>
+
+    <!-- Το σώμα της λύρας με τις 7 χορδές (επτάχορδος) -->
+    <div class="lyre-container">
+        <div class="string" data-note="C4" data-key="1"><div class="note-label">Ντο<span class="key-hint">[1]</span></div></div>
+        <div class="string" data-note="D4" data-key="2"><div class="note-label">Ρε<span class="key-hint">[2]</span></div></div>
+        <div class="string" data-note="E4" data-key="3"><div class="note-label">Μι<span class="key-hint">[3]</span></div></div>
+        <div class="string" data-note="F4" data-key="4"><div class="note-label">Φα<span class="key-hint">[4]</span></div></div>
+        <div class="string" data-note="G4" data-key="5"><div class="note-label">Σολ<span class="key-hint">[5]</span></div></div>
+        <div class="string" data-note="A4" data-key="6"><div class="note-label">Λα<span class="key-hint">[6]</span></div></div>
+        <div class="string" data-note="B4" data-key="7"><div class="note-label">Σι<span class="key-hint">[7]</span></div></div>
     </div>
 
-    <!-- Λειτουργικότητα JavaScript -->
     <script>
-        function transformPage() {
-            // 1. Αλλαγή κειμένων
-            document.getElementById("main-title").innerText = "Λειτουργεί Μια Χαρά! 🎉";
-            document.getElementById("description").innerText = "Η JavaScript άλλαξε επιτυχώς το κείμενο και τα χρώματα της σελίδας σε πραγματικό χρόνο.";
+        // Αντιστοίχιση μουσικών νοτών με τις συχνότητές τους (Hz)
+        const frequencies = {
+            "C4": 261.63,
+            "D4": 293.66,
+            "E4": 329.63,
+            "F4": 349.23,
+            "G4": 392.00,
+            "A4": 440.00,
+            "B4": 493.88
+        };
 
-            // 2. Αλλαγή χρώματος φόντου της σελίδας
-            document.body.style.backgroundColor = "#e8f5e9";
+        let audioCtx = null;
 
-            // 3. Αλλαγή χρώματος του τίτλου
-            document.getElementById("main-title").style.color = "#2e7d32";
+        // Συναρτήση δημιουργίας και αναπαραγωγής του ήχου (Σύνθεση Πλάσματος - Synth)
+        function playTone(frequency) {
+            // Αρχιικοποίηση του AudioContext μετά την πρώτη αλληλεπίδραση του χρήστη (απαίτηση των browsers)
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+
+            // Δημιουργία Ταλαντωτή (Oscillator) και Μονάδας Έντασης (Gain Node)
+            const oscillator = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+
+            oscillator.type = 'triangle'; // Ο τύπος 'triangle' δίνει έναν απαλό, ξύλινο ήχο που ταιριάζει σε λύρα
+            oscillator.frequency.value = frequency;
+
+            // Προσομοίωση φυσικού σβησίματος της χορδής (Pluck Decay Effect)
+            const now = audioCtx.currentTime;
+            gainNode.gain.setValueAtTime(0.6, now); // Αρχική ένταση
+            gainNode.gain.exponentialRampToValueAtTime(0.001, now + 1.5); // Σβήσιμο σε 1.5 δευτερόλεπτο
+
+            // Σύνδεση των κόμβων με τα ηχεία
+            oscillator.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+
+            // Εκκίνηση και τερματισμός του ήχου
+            oscillator.start(now);
+            oscillator.stop(now + 1.5);
         }
-    </script>
 
+        // Λειτουργία ενεργοποίησης χορδής (Ήχος + Οπτικό Εφέ)
+        function triggerString(stringEl) {
+            const note = stringEl.getAttribute('data-note');
+            if (frequencies[note]) {
+                playTone(frequencies[note]);
+                
+                // Ενεργοποίηση του animation δόνησης
+                stringEl.classList.add('active');
+                setTimeout(() => {
+                    stringEl.classList.remove('active');
+                }, 300); // Η δόνηση σταματά οπτικά μετά από 300ms
+            }
+        }
+
+        // Event Listeners για Κλικ με το Ποντίκι (Hover ή Click)
+        document.querySelectorAll('.string').forEach(string => {
+            string.addEventListener('mouseenter', (e) => {
+                // Αν το ποντίκι είναι πατημένο καθώς περνάει πάνω από τις χορδές (Glissando / Strumming)
+                if (e.buttons === 1) triggerString(string);
+            });
+            
+            string.addEventListener('mousedown', () => {
+                triggerString(string);
+            });
+        });
+
+        // Event Listener για το Πληκτρολόγιο (Πλήκτρα 1-7)
+        window.addEventListener('keydown', (e) => {
+            const stringEl = document.querySelector(`.string[data-key="${e.key}"]`);
+            if (stringEl) {
+                triggerString(stringEl);
+            }
+        });
+    </script>
 </body>
 </html>
+
 
