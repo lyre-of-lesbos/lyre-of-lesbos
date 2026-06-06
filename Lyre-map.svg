@@ -1,32 +1,26 @@
 <svg xmlns="http://w3.org" viewBox="0 0 800 600" width="100%" height="100%" style="background-color: #fcfaf2;">
   <!-- 1. Υποθετικές Χορδές / Εσωτερικές Συνδέσεις Δικτύου -->
-  <g stroke="#7f8c8d" stroke-width="1.5" opacity="0.6">
-    <line x1="165" y1="184" x2="333" y2="218" />
-    <line x1="122" y1="363" x2="333" y2="218" />
-    <line x1="333" y1="218" x2="770" y2="390" />
-    <line x1="525" y1="250" x2="165" y2="184" />
-  </g>
+  <line x1="165" y1="184" x2="333" y2="218" stroke="#7f8c8d" stroke-width="1.5" opacity="0.6" />
+  <line x1="122" y1="363" x2="333" y2="218" stroke="#7f8c8d" stroke-width="1.5" opacity="0.6" />
+  <line x1="333" y1="218" x2="770" y2="390" stroke="#7f8c8d" stroke-width="1.5" opacity="0.6" />
+  <line x1="525" y1="250" x2="165" y2="184" stroke="#7f8c8d" stroke-width="1.5" opacity="0.6" />
 
   <!-- 2. Κύριοι Γεωδαιτικοί Άξονες (Μουσικοί Λόγοι) -->
-  <g>
-    <!-- Άνω Ζυγός -->
-    <line x1="407" y1="20" x2="770" y2="390" stroke="#2c3e50" stroke-width="4" stroke-linecap="round" />
-    <!-- Δυτικός Βραχίονας -->
-    <line x1="165" y1="184" x2="122" y2="363" stroke="#2980b9" stroke-width="4" stroke-linecap="round" />
-    <line x1="122" y1="363" x2="525" y2="250" stroke="#2980b9" stroke-width="4" stroke-linecap="round" />
-    <!-- Κεντρικός Άξονας -->
-    <line x1="525" y1="250" x2="407" y2="20" stroke="#d35400" stroke-width="3" stroke-linecap="round" stroke-dasharray="4,4" />
-  </g>
+  <!-- Άνω Ζυγός -->
+  <line x1="407" y1="20" x2="770" y2="390" stroke="#2c3e50" stroke-width="4" stroke-linecap="round" />
+  <!-- Δυτικός Βραχίονας -->
+  <line x1="165" y1="184" x2="122" y2="363" stroke="#2980b9" stroke-width="4" stroke-linecap="round" />
+  <line x1="122" y1="363" x2="525" y2="250" stroke="#2980b9" stroke-width="4" stroke-linecap="round" />
+  <!-- Κεντρικός Άξονας -->
+  <line x1="525" y1="250" x2="407" y2="20" stroke="#d35400" stroke-width="3" stroke-linecap="round" stroke-dasharray="4,4" />
 
   <!-- 3. Ενδείξεις Αποστάσεων σε Στάδια -->
-  <g font-family="Arial, sans-serif" font-size="11px" fill="#e67e22" font-weight="500">
-    <text x="110" y="275" transform="rotate(-76, 110, 275)">76 St. (0.14%)</text>
-    <text x="235" y="185" transform="rotate(11, 235, 185)">68 St. (0.00%)</text>
-    <text x="210" y="305" transform="rotate(-34, 210, 305)">97 St. (0.02%)</text>
-    <text x="475" y="130" transform="rotate(-62, 475, 130)">120 St. (0.05%)</text>
-    <text x="330" y="240" transform="rotate(-10, 330, 240)">160 St. (0.11%)</text>
-    <text x="540" y="315" transform="rotate(21, 540, 315)">223 St. (0.79%)</text>
-  </g>
+  <text x="110" y="275" font-family="Arial, sans-serif" font-size="11px" fill="#e67e22" font-weight="bold">76 St. (0.14%)</text>
+  <text x="235" y="185" font-family="Arial, sans-serif" font-size="11px" fill="#e67e22" font-weight="bold">68 St. (0.00%)</text>
+  <text x="210" y="320" font-family="Arial, sans-serif" font-size="11px" fill="#e67e22" font-weight="bold">97 St. (0.02%)</text>
+  <text x="475" y="130" font-family="Arial, sans-serif" font-size="11px" fill="#e67e22" font-weight="bold">120 St. (0.05%)</text>
+  <text x="330" y="240" font-family="Arial, sans-serif" font-size="11px" fill="#e67e22" font-weight="bold">160 St. (0.11%)</text>
+  <text x="540" y="340" font-family="Arial, sans-serif" font-size="11px" fill="#e67e22" font-weight="bold">223 St. (0.79%)</text>
 
   <!-- 4. Κόμβοι / Αρχαιολογικές Θέσεις -->
   <!-- Σταθεροί Κόμβοι -->
@@ -39,22 +33,17 @@
   <circle cx="333" cy="218" r="7" fill="#27ae60" stroke="#ffffff" stroke-width="2.5" />
 
   <!-- 5. Κείμενα / Ονόματα Τοποθεσιών -->
-  <g font-family="Arial, sans-serif" font-size="12px" font-weight="bold" fill="#2c3e50">
-    <text x="165" y="170" text-anchor="middle">Μαντείο (A)</text>
-    <text x="110" y="385" text-anchor="end">Κόμβος Β</text>
-    <text x="333" y="205" text-anchor="middle" fill="#27ae60">Φίλια (C)</text>
-    <text x="535" y="270" text-anchor="start">Μέσσα (D) [Καβαλάρης]</text>
-    <text x="420" y="25" text-anchor="start">Μήθυμνα (E)</text>
-    <text x="770" y="410" text-anchor="middle">Μυτιλήνη (F)</text>
-  </g>
+  <text x="165" y="170" font-family="Arial, sans-serif" font-size="12px" font-weight="bold" fill="#2c3e50" text-anchor="middle">Μαντείο (A)</text>
+  <text x="110" y="385" font-family="Arial, sans-serif" font-size="12px" font-weight="bold" fill="#2c3e50" text-anchor="end">Κόμβος Β</text>
+  <text x="333" y="205" font-family="Arial, sans-serif" font-size="12px" font-weight="bold" fill="#27ae60" text-anchor="middle">Φίλια (C)</text>
+  <text x="535" y="270" font-family="Arial, sans-serif" font-size="12px" font-weight="bold" fill="#2c3e50" text-anchor="start">Μέσσα (D) [Καβαλάρης]</text>
+  <text x="420" y="25" font-family="Arial, sans-serif" font-size="12px" font-weight="bold" fill="#2c3e50" text-anchor="start">Μήθυμνα (E)</text>
+  <text x="770" y="410" font-family="Arial, sans-serif" font-size="12px" font-weight="bold" fill="#2c3e50" text-anchor="middle">Μυτιλήνη (F)</text>
 
   <!-- Επεξηγηματικό Υπόμνημα -->
-  <g transform="translate(40, 540)" font-family="Arial, sans-serif" font-size="12px" fill="#2c3e50">
-    <circle cx="0" cy="-4" r="6" fill="#c0392b" stroke="#ffffff" stroke-width="1.5" />
-    <text x="15" y="0">Σταθεροί Γεωγραφικοί Κόμβοι</text>
-    
-    <circle cx="220" cy="-4" r="6" fill="#27ae60" stroke="#ffffff" stroke-width="1.5" />
-    <text x="235" y="0">Μαθηματικά Βελτιστοποιημένος Κόμβος</text>
-  </g>
+  <circle cx="40" cy="540" r="6" fill="#c0392b" stroke="#ffffff" stroke-width="1.5" />
+  <text x="55" y="544" font-family="Arial, sans-serif" font-size="12px" fill="#2c3e50">Σταθεροί Γεωγραφικοί Κόμβοι</text>
+  
+  <circle cx="260" cy="540" r="6" fill="#27ae60" stroke="#ffffff" stroke-width="1.5" />
+  <text x="275" y="544" font-family="Arial, sans-serif" font-size="12px" fill="#2c3e50">Μαθηματικά Βελτιστοποιημένος Κόμβος</text>
 </svg>
-
