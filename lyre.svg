@@ -1,16 +1,33 @@
 <svg xmlns="http://w3.org" viewBox="0 0 800 600" width="100%" height="100%" style="background-color: #fcfaf2;">
+  <!-- 1. Υποθετικές Χορδές Λύρας -->
   <line x1="165" y1="184" x2="333" y2="218" stroke="#7f8c8d" stroke-width="1.5" opacity="0.5" />
   <line x1="122" y1="363" x2="333" y2="218" stroke="#7f8c8d" stroke-width="1.5" opacity="0.5" />
   <line x1="333" y1="218" x2="770" y2="390" stroke="#7f8c8d" stroke-width="1.5" opacity="0.5" />
   <line x1="525" y1="250" x2="165" y2="184" stroke="#7f8c8d" stroke-width="1.5" opacity="0.5" />
+
+  <!-- 2. Κύριοι Γεωδαιτικοί Άξονες -->
+  <!-- Άνω Ζυγός (Μήθυμνα -> Μυτιλήνη) -->
   <line x1="407" y1="20" x2="770" y2="390" stroke="#2c3e50" stroke-width="4" stroke-linecap="round" />
+  
+  <!-- Δυτικός Βραχίονας (Μαντείο -> Κόμβος Β -> Μέσσα) -->
   <line x1="165" y1="184" x2="122" y2="363" stroke="#2980b9" stroke-width="4" stroke-linecap="round" />
   <line x1="122" y1="363" x2="525" y2="250" stroke="#2980b9" stroke-width="4" stroke-linecap="round" />
+  
+  <!-- Κεντρικός Άξονας / Καβαλάρης (Μέσσα -> Μήθυμνα) -->
   <line x1="525" y1="250" x2="407" y2="20" stroke="#d35400" stroke-width="3" stroke-linecap="round" stroke-dasharray="4,4" />
+
+  <!-- 3. Γεωγραφικοί Κόμβοι (Σημεία) -->
+  <!-- Σταθερά Σημεία (Κόκκινο) -->
   <circle cx="165" cy="184" r="8" fill="#c0392b" stroke="#ffffff" stroke-width="2.5" />
   <circle cx="122" cy="363" r="8" fill="#c0392b" stroke="#ffffff" stroke-width="2.5" />
   <circle cx="525" cy="250" r="8" fill="#c0392b" stroke="#ffffff" stroke-width="2.5" />
   <circle cx="407" cy="20" r="8" fill="#c0392b" stroke="#ffffff" stroke-width="2.5" />
   <circle cx="770" cy="390" r="8" fill="#c0392b" stroke="#ffffff" stroke-width="2.5" />
+  
+  <!-- Βελτιστοποιημένος Κόμβος C Φίλιας (Πράσινο) -->
   <circle cx="333" cy="218" r="8" fill="#27ae60" stroke="#ffffff" stroke-width="2.5" />
+
+  <!-- 4. Μικρό Υπόμνημα -->
+  <circle cx="40" cy="560" r="6" fill="#c0392b" stroke="#ffffff" stroke-width="1.5" />
+  <circle cx="200" cy="560" r="6" fill="#27ae60" stroke="#ffffff" stroke-width="1.5" />
 </svg>
