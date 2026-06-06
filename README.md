@@ -230,7 +230,8 @@ _
 
 ## Το τρίγωνο 14-14-36
 
-      <img width="1113" height="763" alt="image" src="https://github.com/user-attachments/assets/12f30e82-7ec9-474f-a3c3-77801a0c7fc4" />
+<img width="638" height="556" alt="image" src="https://github.com/user-attachments/assets/a4927564-59b8-4e21-b4dd-8f2062ae8aa1" />
+
 
 
 ## 🎨 Η Γοητεία του Project
