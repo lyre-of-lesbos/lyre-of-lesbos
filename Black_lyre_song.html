@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ακουστική Εκτέλεση - Επιτάφιος Σεikίλου</title>
+    <title>Αρχαία Μελωδία Λύρας</title>
     <style>
         body {
             margin: 0;
@@ -32,12 +32,6 @@
             color: #bba15c;
             font-size: 1.5rem;
             letter-spacing: 1px;
-        }
-        h2 {
-            margin: 0 0 25px 0;
-            color: #7a7368;
-            font-size: 0.85rem;
-            text-transform: uppercase;
         }
         p {
             color: #9e968b;
@@ -90,15 +84,15 @@
 <body>
 
     <div class="container">
-        <h1>🏺 Αρχαϊκή Ακουστική Εκτέλεση</h1>
-        <h2>Ο Επιτάφιος του Σεικίλου (Karplus-Strong)</h2>
+        <h1>🏺 Αρχαϊκή Μουσική Εκτέλεση</h1>
+        <h2>Ο Επιτάφιος του Σεικίλου (6 Χορδές)</h2>
         
         <div class="lyrics">
             «Ὅσον ζῇς φαίνου, μηδὲν ὅλως σὺ λυποῦ·<br>
             πρὸς ὀλίγον ἐστὶ τὸ ζῆν, τὸ τέλος ὁ χρόνος ἀπαιτεῖ.»
         </div>
 
-        <p>Ακούστε τη μελωδία να εκτελείται από τη μαθηματική προσομοίωση της Λύρας της Λέσβου. Κάθε νότα παράγεται από τον φυσικό παλμό λευκού θορύβου μέσα σε delay buffer.</p>
+        <p>Η αυθεντική αρχαία μελωδία, εκτελεσμένη με αναλογική σύνθεση έγχορδου ήχου, βασισμένη αποκλειστικά στο μοντέλο «Σκοτεινό Βουνό» (177.5μ).</p>
         
         <button id="playBtn" class="btn-play" onclick="togglePlayback()">▶ ΑΝΑΠΑΡΑΓΩΓΗ ΤΡΑΓΟΥΔΙΟΥ</button>
         
@@ -106,7 +100,7 @@
     </div>
 
     <script>
-        // Οι 6 αυθεντικές γεωδαιτικές συχνότητες της 3ης Λύρας
+        // Οι 6 αυθεντικές γεωδαιτικές συχνότητες
         const lyre = {
             'C3': 126.7,
             'E3': 164.7,
@@ -116,7 +110,7 @@
             'As4': 458.3
         };
 
-        // Παρτιτούρα (Νότα και Διάρκεια)
+        // Η παρτιτούρα του Σεικίλου
         const songScore = [
             { note: 'A3', time: 600 }, { note: 'As4', time: 600 }, { note: 'As4', time: 600 },
             { note: 'As4', time: 600 }, { note: 'B3', time: 300 }, { note: 'As3', time: 300 },
@@ -143,7 +137,7 @@
         }
 
         function start() {
-            // ΔΙΟΡΘΩΣΗ: Αρχικοποίηση και άμεσο ξεκλείδωμα του AudioContext με το κλικ του χρήστη
+            // Δημιουργία και άμεσο άνοιγμα του Audio Context με το κλικ
             if (!audioCtx) {
                 audioCtx = new (window.AudioContext || window.webkitAudioContext)();
             }
@@ -184,7 +178,7 @@
             const step = songScore[currentStep];
             const freq = lyre[step.note];
 
-            playKarplusNote(freq);
+            playPluckedString(freq);
 
             document.getElementById('now-playing').innerText = `Χορδή: ${step.note} (${freq} Hz)`;
 
@@ -192,39 +186,39 @@
             timeoutId = setTimeout(playNextNote, step.time);
         }
 
-        function playKarplusNote(frequency) {
-            const sampleRate = audioCtx.sampleRate;
-            const duration = 1.5; 
-            const totalSamples = sampleRate * duration;
-            const N = Math.round(sampleRate / frequency);
+        // Εγγυημένη αναλογική σύνθεση έγχορδου ήχου (Pluck Synth)
+        function playPluckedString(frequency) {
+            const now = audioCtx.currentTime;
             
-            const audioBuffer = audioCtx.createBuffer(1, totalSamples, sampleRate);
-            const channelData = audioBuffer.getChannelData(0);
+            const osc = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+            const filter = audioCtx.createBiquadFilter();
 
-            // Παραγωγή Λευκού Θορύβου
-            for (let i = 0; i < N; i++) {
-                channelData[i] = Math.random() * 2 - 1;
-            }
+            // Square wave για να έχει το απαραίτητο «σώμα» η χορδή
+            osc.type = 'square';
+            osc.frequency.setValueAtTime(frequency, now);
 
-            // Βρόχος Karplus-Strong
-            const dampingFactor = 0.995; 
-            for (let i = N; i < totalSamples; i++) {
-                channelData[i] = dampingFactor * 0.5 * (channelData[i - N] + channelData[i - N - 1]);
-            }
+            // Φίλτρο χαμηλών συχνοτήτων που κλείνει ακαριαία (από τα 3000Hz στα 200Hz σε 0.1 δευτερόλεπτα)
+            // Αυτό μετατρέπει το ηλεκτρονικό «μπιπ» σε φυσικό «ντουκ» έγχορδου
+            filter.type = 'lowpass';
+            filter.frequency.setValueAtTime(3000, now);
+            filter.frequency.exponentialRampToValueAtTime(200, now + 0.12);
 
-            const bufferSource = audioCtx.createBufferSource();
-            bufferSource.buffer = audioBuffer;
-            
-            const bodyResonator = audioCtx.createBiquadFilter();
-            bodyResonator.type = 'lowpass';
-            bodyResonator.frequency.setValueAtTime(2000, audioCtx.currentTime);
+            // Έλεγχος έντασης (Απότομο άναμμα και σταδιακό σβήσιμο της χορδής)
+            gainNode.gain.setValueAtTime(0, now);
+            gainNode.gain.linearRampToValueAtTime(0.2, now + 0.005);
+            gainNode.gain.exponentialRampToValueAtTime(0.001, now + 1.2);
 
-            bufferSource.connect(bodyResonator);
-            bodyResonator.connect(audioCtx.destination);
-            
-            bufferSource.start();
+            // Συνδεσμολογία
+            osc.connect(filter);
+            filter.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+
+            osc.start(now);
+            osc.stop(now + 1.2);
         }
     </script>
 </body>
 </html>
+
 
