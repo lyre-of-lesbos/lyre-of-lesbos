@@ -3,222 +3,205 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Αιολική Άρπα - Λύρα της Λέσβου</title>
+    <title>Φυσικός Ήχος Αρχαίας Λύρας</title>
     <style>
         body {
             margin: 0;
             padding: 0;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #0a0a0c;
+            background-color: #0c0b0a;
             color: #e0e0e0;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             min-height: 100vh;
-            overflow: hidden;
         }
         .container {
             text-align: center;
-            background-color: #111114;
+            background-color: #171513;
             padding: 40px;
             border-radius: 16px;
-            border: 1px solid #3a3528;
+            border: 2px solid #bba15c;
             box-shadow: 0 10px 40px rgba(0,0,0,0.8);
-            max-width: 450px;
+            max-width: 500px;
             width: 90%;
-            z-index: 2;
         }
         h1 {
             margin: 0 0 5px 0;
             color: #bba15c;
             font-size: 1.6rem;
-            letter-spacing: 2px;
+            letter-spacing: 1px;
         }
         h2 {
             margin: 0 0 25px 0;
-            color: #666;
+            color: #8c857b;
             font-size: 0.9rem;
-            font-weight: normal;
             text-transform: uppercase;
-            letter-spacing: 1px;
         }
         p {
-            color: #8a8a93;
+            color: #a09990;
             font-size: 0.9rem;
             line-height: 1.6;
             margin-bottom: 30px;
         }
-        .btn-ambient {
-            background: linear-gradient(135deg, #bba15c, #967f43);
-            color: #0a0a0c;
-            border: none;
-            padding: 16px 40px;
-            font-size: 1rem;
-            font-weight: bold;
-            border-radius: 30px;
+        /* Σχεδιασμός Χορδών Λύρας */
+        .lyre-strings-container {
+            display: flex;
+            justify-content: center;
+            gap: 22px;
+            background-color: #110f0d;
+            padding: 30px;
+            border-radius: 8px;
+            border: 1px solid #2e2922;
+            margin-bottom: 25px;
+            height: 200px;
+        }
+        .string-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100%;
             cursor: pointer;
-            box-shadow: 0 4px 20px rgba(187, 161, 92, 0.3);
-            transition: transform 0.2s, box-shadow 0.2s;
-            letter-spacing: 1px;
         }
-        .btn-ambient:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 25px rgba(187, 161, 92, 0.5);
+        .string-line {
+            width: 3px;
+            height: 140px;
+            background: linear-gradient(to bottom, #d1b87d, #bba15c, #d1b87d);
+            box-shadow: 0 0 4px rgba(187,161,92,0.5);
+            transition: transform 0.1s ease, background-color 0.1s;
         }
-        .btn-stop {
-            background: #222;
-            color: #bd3a3a;
-            border: 1px solid #bd3a3a;
-            box-shadow: none;
+        .string-wrapper:hover .string-line {
+            background: #ffdf00;
+            box-shadow: 0 0 8px #ffdf00;
+            transform: scaleX(1.5);
         }
-        #status {
-            margin-top: 25px;
+        .string-label {
+            margin-top: 10px;
+            font-size: 0.8rem;
+            color: #8c857b;
+            font-weight: bold;
+        }
+        #sound-btn {
+            background: #bba15c;
+            color: #121212;
+            border: none;
+            padding: 12px 30px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            border-radius: 20px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+        #info-box {
             font-size: 0.85rem;
-            color: #bba15c;
+            color: #ffdf00;
             font-style: italic;
             height: 20px;
-            letter-spacing: 0.5px;
         }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <h1>🌬️ ΑΙΟΛΙΚΟΣ ΑΝΕΜΟΣ</h1>
-        <h2>Ήχοι Περιβάλλοντος & Αντήχησης</h2>
-        <p>Αφήστε τις 6 γεωδαιτικές συχνότητες του Σκοτεινού Βουνού να συνδυαστούν ελεύθερα. Ο κώδικας δημιουργεί ένα ατέρμονο ηχητικό χαλί (ambient pad) με εφέ αντήχησης, ιδανικό για χαλάρωση.</p>
+        <h1>🏺 Πιστός Ήχος Αρχαίας Λύρας</h1>
+        <h2>Μοντέλο: Σκοτεινό Βουνό (177.5μ)</h2>
+        <p>Κάντε κλικ στο κουμπί για ενεργοποίηση και στη συνέχεια <b>αγγίξτε ή κάντε κλικ στις χορδές</b> για να τις γρατσουνίσετε. Ο κώδικας παράγει τον φυσικό, μεταλλικό και ξύλινο ήχο ενός πραγματικού έγχορδου οργάνου.</p>
         
-        <button id="actionBtn" class="btn-ambient" onclick="toggleAmbient()">ΑΚΟΥΣΤΕ ΤΟΝ ΑΝΕΜΟ</button>
+        <button id="sound-btn" onclick="initAudio()">🎵 Ενεργοποίηση Ήχου</button>
+
+        <div class="lyre-strings-container">
+            <div class="string-wrapper" onmouseenter="pluckString(126.7, 'Υπάτη (C3)')" onclick="pluckString(126.7, 'Υπάτη (C3)')">
+                <div class="string-line" style="width: 5px;"></div><div class="string-label">C3</div>
+            </div>
+            <div class="string-wrapper" onmouseenter="pluckString(164.7, 'Μέσσα→Μαντείο (E3)')" onclick="pluckString(164.7, 'Μέσσα→Μαντείο (E3)')">
+                <div class="string-line" style="width: 4.5px;"></div><div class="string-label">E3</div>
+            </div>
+            <div class="string-wrapper" onmouseenter="pluckString(220.0, 'Βάση (A3)')" onclick="pluckString(220.0, 'Βάση (A3)')">
+                <div class="string-line" style="width: 3.5px;"></div><div class="string-label">A3</div>
+            </div>
+            <div class="string-wrapper" onmouseenter="pluckString(225.4, 'Ερεσός→Φίλια (As3)')" onclick="pluckString(225.4, 'Ερεσός→Φίλια (As3)')">
+                <div class="string-line" style="width: 3px;"></div><div class="string-label">As3</div>
+            </div>
+            <div class="string-wrapper" onmouseenter="pluckString(305.6, 'Μαντείο→Φίλια (B3)')" onclick="pluckString(305.6, 'Μαντείο→Φίλια (B3)')">
+                <div class="string-line" style="width: 2.5px;"></div><div class="string-label">B3</div>
+            </div>
+            <div class="string-wrapper" onmouseenter="pluckString(458.3, 'Νήτη (As4)')" onclick="pluckString(458.3, 'Νήτη (As4)')">
+                <div class="string-line" style="width: 1.5px;"></div><div class="string-label">As4</div>
+            </div>
+        </div>
         
-        <div id="status">Ήχος απενεργοποιημένος</div>
+        <div id="info-box">Περιμένει ενεργοποίηση...</div>
     </div>
 
     <script>
-        // Οι 6 συχνότητες της 3ης Λύρας
-        const lyreFrequencies = [126.7, 164.7, 220.0, 225.4, 305.6, 458.3];
-        
         let audioCtx = null;
-        let isPlaying = false;
-        let delayNode = null;
-        let feedbackNode = null;
-        let masterGain = null;
-        let activeOscillators = [];
 
-        function toggleAmbient() {
-            if (!isPlaying) {
-                startAmbient();
-            } else {
-                stopAmbient();
-            }
-        }
-
-        function startAmbient() {
+        function initAudio() {
             if (!audioCtx) {
                 audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                document.getElementById('sound-btn').style.backgroundColor = '#444';
+                document.getElementById('sound-btn').style.color = '#fff';
+                document.getElementById('sound-btn').innerText = '✓ Ήχος Έτοιμος';
+                document.getElementById('info-box').innerText = 'Περάστε το ποντίκι πάνω από τις χορδές!';
             }
-            if (audioCtx.state === 'suspended') {
-                audioCtx.resume();
-            }
-
-            isPlaying = true;
-            
-            // 1. Δημιουργία Master Gain για ομαλό έλεγχο έντασης
-            masterGain = audioCtx.createGain();
-            masterGain.gain.setValueAtTime(0, audioCtx.currentTime);
-            masterGain.gain.linearRampToValueAtTime(0.6, audioCtx.currentTime + 2.0); // Ομαλό fade-in
-
-            // 2. Δημιουργία Εφέ Καθυστέρησης (Delay / Echo) για «βάθος» και «ατμόσφαιρα»
-            delayNode = audioCtx.createDelay();
-            delayNode.delayTime.value = 0.6; // 600ms καθυστέρηση
-
-            feedbackNode = audioCtx.createGain();
-            feedbackNode.gain.value = 0.5; // Πόσο θα κρατάει η ηχώ
-
-            // Σύνδεση του Delay (Feedback Loop)
-            delayNode.connect(feedbackNode);
-            feedbackNode.connect(delayNode);
-
-            // 3. Σύνδεση των κόμβων
-            masterGain.connect(audioCtx.destination);
-            masterGain.connect(delayNode);
-            delayNode.connect(audioCtx.destination);
-
-            // Αλλαγή εμφάνισης κουμπιού
-            const btn = document.getElementById('actionBtn');
-            btn.innerText = 'ΔΙΑΚΟΠΗ ΗΧΟΥ';
-            btn.classList.add('btn-stop');
-            document.getElementById('status').innerText = 'Ο άνεμος περνά μέσα από τις χορδές...';
-
-            // Ξεκινά η παραγωγή των ατμοσφαιρικών κυμάτων
-            triggerWindWave();
         }
 
-        function stopAmbient() {
-            isPlaying = false;
-            
-            if (masterGain) {
-                // Ομαλό σβήσιμο του ήχου (Fade-out) για να μην κλείσει απότομα
-                masterGain.gain.setValueAtTime(masterGain.gain.value, audioCtx.currentTime);
-                masterGain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 1.5);
-            }
+        function pluckString(baseFreq, name) {
+            if (!audioCtx) return;
+            if (audioCtx.state === 'suspended') audioCtx.resume();
 
-            setTimeout(() => {
-                activeOscillators.forEach(osc => { try { osc.stop(); } catch(e) {} });
-                activeOscillators = [];
+            document.getElementById('info-box').innerText = `Χορδή: ${name} - ${baseFreq} Hz`;
+
+            const now = audioCtx.currentTime;
+            
+            // 1. Δημιουργία Master Gain για το σβήσιμο της χορδής (Enveloper)
+            const masterGain = audioCtx.createGain();
+            masterGain.gain.setValueAtTime(0, now);
+            // Απότομη επίθεση (Sharp Attack) σε 2 χιλιοστά του δευτερολέπτου (ο ήχος του νυχιού/πλήκτρου)
+            masterGain.gain.linearRampToValueAtTime(0.3, now + 0.002);
+            // Φυσικό σβήσιμο (Decay) της χορδής που διαρκεί 1.8 δευτερόλεπτα
+            masterGain.gain.exponentialRampToValueAtTime(0.001, now + 1.8);
+
+            // 2. Δημιουργία Φίλτρου (Lowpass) - Οι πραγματικές χορδές χάνουν τις ψηλές συχνότητες καθώς σβήνουν
+            const filter = audioCtx.createBiquadFilter();
+            filter.type = 'lowpass';
+            filter.frequency.setValueAtTime(4000, now); // Στην αρχή αφήνει τις μεταλλικές ψηλές συχνότητες να περάσουν
+            filter.frequency.exponentialRampToValueAtTime(300, now + 0.4); // Γρήγορα «κλείνει» για να μείνει ο γλυκός, ξύλινος ήχος
+
+            // 3. Σύνθεση Αρμονικών (Additive Synthesis)
+            // Μια πραγματική χορδή δεν βγάζει 1 συχνότητα, αλλά και τις ανώτερες αρμονικές της
+            const harmonics = [
+                { type: 'sawtooth', fMultiplier: 1, volume: 0.5 },  // Θεμελιώδης συχνότητα (πριονωτό για σώμα)
+                { type: 'triangle', fMultiplier: 2, volume: 0.3 },  // 1η Αρμονική (διπλάσια συχνότητα)
+                { type: 'triangle', fMultiplier: 3, volume: 0.15 }, // 2η Αρμονική
+                { type: 'sine',     fMultiplier: 4, volume: 0.05 }  // 3η Αρμονική (αιθέρια)
+            ];
+
+            harmonics.forEach(h => {
+                const osc = audioCtx.createOscillator();
+                const oscGain = audioCtx.createGain();
+
+                osc.type = h.type;
+                osc.frequency.setValueAtTime(baseFreq * h.fMultiplier, now);
                 
-                const btn = document.getElementById('actionBtn');
-                btn.innerText = 'ΑΚΟΥΣΤΕ ΤΟΝ ΑΝΕΜΟ';
-                btn.classList.remove('btn-stop');
-                document.getElementById('status').innerText = 'Ήχος απενεργοποιημένος';
-            }, 1500);
-        }
+                oscGain.gain.setValueAtTime(h.volume, now);
 
-        function triggerWindWave() {
-            if (!isPlaying) return;
+                osc.connect(oscGain);
+                oscGain.connect(filter);
+                
+                osc.start(now);
+                osc.stop(now + 1.8);
+            });
 
-            // Επιλέγει μια τυχαία συχνότητα από τις 6 της λύρας
-            const randomIndex = Math.floor(Math.random() * lyreFrequencies.length);
-            const freq = lyreFrequencies[randomIndex];
-
-            // Δημιουργία ενός πολύ απαλού ηχητικού κύματος
-            const osc = audioCtx.createOscillator();
-            const oscGain = audioCtx.createGain();
-
-            // Sine wave (Ημίτονο) για απόλυτα καθαρό και απαλό ήχο, χωρίς αιχμές
-            osc.type = 'sine';
-            osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
-
-            // Πολύ αργό και ομαλό άναμμα και σβήσιμο της νότας (σαν φύσημα ανέμου)
-            const attackTime = 1.5 + Math.random() * 1.5; // 1.5 έως 3 δευτερόλεπτα να δυναμώσει
-            const releaseTime = 2.0 + Math.random() * 2.0; // 2 έως 4 δευτερόλεπτα να σβήσει
-            const totalDuration = attackTime + releaseTime;
-
-            oscGain.gain.setValueAtTime(0, audioCtx.currentTime);
-            oscGain.gain.linearRampToValueAtTime(0.08, audioCtx.currentTime + attackTime);
-            oscGain.gain.setValueAtTime(0.08, audioCtx.currentTime + attackTime);
-            oscGain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + totalDuration);
-
-            osc.connect(oscGain);
-            oscGain.connect(masterGain);
-
-            osc.start();
-            osc.stop(audioCtx.currentTime + totalDuration);
-
-            activeOscillators.push(osc);
-
-            // Καθαρισμός μνήμης για τους σταματημένους ταλαντωτές
-            setTimeout(() => {
-                activeOscillators = activeOscillators.filter(item => item !== osc);
-            }, totalDuration * 1000);
-
-            // Προγραμματισμός του επόμενου «κύματος ανέμου» σε τυχαίο χρόνο (κάθε 1 με 2.5 δευτερόλεπτα)
-            const nextWaveDelay = 1000 + Math.random() * 1500;
-            setTimeout(triggerWindWave, nextWaveDelay);
+            // 4. Τελική σύνδεση στο ηχείο
+            filter.connect(masterGain);
+            masterGain.connect(audioCtx.destination);
         }
     </script>
 </body>
 </html>
+
 
 
 
