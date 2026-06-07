@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Game of Thrones - 3η Λύρα της Λέσβου</title>
+    <title>The Imperial March - 3η Λύρα της Λέσβου</title>
     <style>
         body {
             margin: 0;
@@ -77,9 +77,9 @@
 <body>
 
     <div class="container">
-        <h1>⚔️ Game of Thrones Theme</h1>
+        <h1>🌌 The Imperial March (Star Wars)</h1>
         <h2>Εκτελεσμένο από την 3η Λύρα της Λέσβου</h2>
-        <p>Η παρτιτούρα έχει προσαρμοστεί στις 6 αποκλειστικές χορδές του γεωδαιτικού μοντέλου «Σκοτεινό Βουνό» (177.5μ) [1].</p>
+        <p>Το εμβατήριο προσαρμοσμένο στις 6 χορδές του μοντέλου «Σκοτεινό Βουνό». Η έλλειψη των κλασικών νοτών δημιουργεί μια μοναδική, αρχαϊκή δυσαρμονία.</p>
         
         <button id="playBtn" class="btn-play" onclick="togglePlayback()">▶ ΑΝΑΠΑΡΑΓΩΓΗ ΚΟΜΜΑΤΙΟΥ</button>
         
@@ -87,31 +87,25 @@
     </div>
 
     <script>
-        // Οι συχνότητες της 3ης Λύρας [1]
+        // Οι 6 συχνότητες της 3ης Λύρας
         const lyre = {
-            'C3': 126.7, // Κόμβος C -> Μυτιλήνη [1]
-            'E3': 164.7, // Μέσσα -> Μαντείο [1]
-            'A3': 220.0, // Μέσσα -> Μήθυμνα (Βάση) [1]
-            'As3': 225.4, // Ερεσός -> Φίλια [1]
-            'B3': 305.6, // Μαντείο -> Φίλια [1]
-            'As4': 458.3  // Μαντείο -> Ερεσός [1]
+            'C3': 126.7,  // Κόμβος C -> Μυτιλήνη (Υπάτη)
+            'E3': 164.7,  // Μέσσα -> Μαντείο
+            'A3': 220.0,  // Μέσσα -> Μήθυμνα (Βάση / Λα3)
+            'As3': 225.4, // Ερεσός -> Φίλια (Λα#3)
+            'B3': 305.6,  // Μαντείο -> Φίλια (Σι3)
+            'As4': 458.3  // Μαντείο -> Ερεσός (Νήτη)
         };
 
-        // Η χαρακτηριστική μελωδία του Game of Thrones προσαρμοσμένη στη Λύρα
+        // Η παρτιτούρα του Imperial March προσαρμοσμένη στις χορδές
         const score = [
-            { note: 'A3', time: 500 }, { note: 'E3', time: 500 }, { note: 'C3', time: 250 }, { note: 'E3', time: 250 },
-            { note: 'A3', time: 500 }, { note: 'E3', time: 500 }, { note: 'C3', time: 250 }, { note: 'E3', time: 250 },
+            { note: 'A3', time: 500 }, { note: 'A3', time: 500 }, { note: 'A3', time: 500 },
+            { note: 'F',  time: 350, customFreq: 126.7 }, { note: 'C3', time: 150 }, { note: 'A3', time: 500 },
+            { note: 'F',  time: 350, customFreq: 126.7 }, { note: 'C3', time: 150 }, { note: 'A3', time: 1000 },
             
-            // Κύριο Θέμα
-            { note: 'A3', time: 750 }, { note: 'E3', time: 750 }, { note: 'C3', time: 375 }, { note: 'E3', time: 375 },
-            { note: 'A3', time: 750 }, { note: 'E3', time: 750 }, { note: 'C3', time: 375 }, { note: 'E3', time: 375 },
-            
-            // Μετάβαση στις ψηλές χορδές (χρωματική ένταση της λύρας) [1]
-            { note: 'As3', time: 750 }, { note: 'E3', time: 750 }, { note: 'C3', time: 375 }, { note: 'E3', time: 375 },
-            { note: 'As3', time: 750 }, { note: 'E3', time: 750 }, { note: 'C3', time: 375 }, { note: 'E3', time: 375 },
-            
-            // Κλείσιμο με τη Νήτη (υψηλός τόνος) [1]
-            { note: 'B3', time: 500 }, { note: 'As4', time: 500 }, { note: 'A3', time: 1000 }
+            { note: 'E3', time: 500 }, { note: 'E3', time: 500 }, { note: 'E3', time: 500 },
+            { note: 'As4', time: 350 }, { note: 'C3', time: 150 }, { note: 'E3', time: 500 },
+            { note: 'F',  time: 350, customFreq: 126.7 }, { note: 'C3', time: 150 }, { note: 'A3', time: 1000 }
         ];
 
         let audioCtx = null;
@@ -166,12 +160,10 @@
             }
 
             const step = score[currentStep];
-            const freq = lyre[step.note];
+            let freq = step.customFreq ? step.customFreq : lyre[step.note];
 
-            // Ήχος
             playNode(freq);
 
-            // UI
             document.getElementById('now-playing').innerText = `Νότα: ${step.note} (${freq} Hz)`;
 
             currentStep++;
@@ -182,20 +174,20 @@
             const osc = audioCtx.createOscillator();
             const gain = audioCtx.createGain();
             
-            // Τριγωνικό κύμα για αυθεντικό ήχο ξύλινης χορδής
             osc.type = 'triangle';
             osc.frequency.setValueAtTime(frequency, audioCtx.currentTime);
             
             gain.gain.setValueAtTime(0.25, audioCtx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 1.0);
+            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 1.2);
             
             osc.connect(gain);
             gain.connect(audioCtx.destination);
             
             osc.start();
-            osc.stop(audioCtx.currentTime + 1.0);
+            osc.stop(audioCtx.currentTime + 1.2);
         }
     </script>
 </body>
 </html>
+
 
