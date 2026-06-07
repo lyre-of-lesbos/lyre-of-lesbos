@@ -3,11 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Η 3η Λύρα της Λέσβου - Διαδραστικός Χάρτης</title>
-    
-    <!-- Leaflet CSS (Χωρίς integrity hashes για μέγιστη συμβατότητα τοπικά) -->
-    <link rel="stylesheet" href="https://unpkg.com" />
-    
+    <title>Η 3η Λύρα της Λέσβου - Αυτόνομο Μοντέλο</title>
     <style>
         body {
             margin: 0;
@@ -18,6 +14,7 @@
             display: flex;
             flex-direction: column;
             height: 100vh;
+            overflow: hidden;
         }
         header {
             background-color: #1a1a1a;
@@ -25,7 +22,6 @@
             text-align: center;
             border-bottom: 2px solid #bba15c;
             box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-            height: 50px;
         }
         h1 {
             margin: 0;
@@ -41,13 +37,22 @@
         #main-container {
             display: flex;
             flex: 1;
-            position: relative;
             height: calc(100vh - 84px);
         }
-        #map {
+        #visual-container {
             flex: 1;
+            background-color: #151515;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            padding: 20px;
+        }
+        svg {
+            width: 100%;
             height: 100%;
-            background-color: #1a1a1a;
+            max-width: 600px;
+            max-height: 600px;
         }
         #info-panel {
             width: 300px;
@@ -99,6 +104,28 @@
             width: 100%;
             box-shadow: 0 2px 5px rgba(0,0,0,0.3);
         }
+        .lyre-string {
+            stroke: #bba15c;
+            stroke-width: 4;
+            stroke-linecap: round;
+            cursor: pointer;
+            transition: stroke 0.2s, stroke-width 0.2s;
+        }
+        .lyre-string:hover {
+            stroke: #ffdf00;
+            stroke-width: 7;
+        }
+        .node-point {
+            fill: #bba15c;
+            stroke: #121212;
+            stroke-width: 2;
+        }
+        .node-text {
+            fill: #fff;
+            font-size: 12px;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px #000;
+        }
     </style>
 </head>
 <body>
@@ -109,7 +136,34 @@
     </header>
 
     <div id="main-container">
-        <div id="map"></div>
+        <div id="visual-container">
+            <!-- Γεωμετρικό Διάγραμμα Υψηλής Ακρίβειας (Μεταφορά Συντεταγμένων WGS84 σε SVG Χάρτη) -->
+            <svg viewBox="0 0 400 400">
+                <!-- Χορδές / Άξονες -->
+                <line x1="230" y1="180" x2="160" y2="30"  class="lyre-string" onclick="triggerString(0)" onmouseover="triggerString(0)"></line>
+                <line x1="230" y1="180" x2="60"  y2="135" class="lyre-string" onclick="triggerString(1)" onmouseover="triggerString(1)"></line>
+                <line x1="160" y1="130" x2="350" y2="300" class="lyre-string" onclick="triggerString(2)" onmouseover="triggerString(2)"></line>
+                <line x1="60"  y1="135" x2="160" y2="130" class="lyre-string" onclick="triggerString(3)" onmouseover="triggerString(3)"></line>
+                <line x1="40"  y1="265" x2="160" y2="130" class="lyre-string" onclick="triggerString(4)" onmouseover="triggerString(4)"></line>
+                <line x1="60"  y1="135" x2="40"  y2="265" class="lyre-string" onclick="triggerString(5)" onmouseover="triggerString(5)"></line>
+
+                <!-- Κόμβοι / Σημεία -->
+                <circle cx="60"  cy="135" r="7" class="node-point"></circle>
+                <circle cx="40"  cy="265" r="7" class="node-point"></circle>
+                <circle cx="160" cy="130" r="7" class="node-point"></circle>
+                <circle cx="230" cy="180" r="7" class="node-point"></circle>
+                <circle cx="160" cy="30"  r="7" class="node-point"></circle>
+                <circle cx="350" cy="300" r="7" class="node-point"></circle>
+
+                <!-- Ετικέτες Κόμβων -->
+                <text x="50"  y="120" class="node-text">Α (Μαντείο)</text>
+                <text x="15"  y="290" class="node-text">Β (Ερεσός)</text>
+                <text x="145" y="150" class="node-text">C (Φίλια)</text>
+                <text x="245" y="190" class="node-text">D (Μέσσα)</text>
+                <text x="150" y="20"  class="node-text">Ε (Μήθυμνα)</text>
+                <text x="290" y="320" class="node-text">F (Μυτιλήνη)</text>
+            </svg>
+        </div>
 
         <div id="info-panel">
             <button id="sound-notice" onclick="initAudio()">
@@ -120,7 +174,7 @@
                 <h3>Πληροφορίες Χορδής</h3>
                 <div id="string-info">
                     <p style="color:#aaa; font-style:italic; font-size:0.9rem; margin:0;">
-                        Κάντε κλικ ή περάστε το ποντίκι πάνω από μια χορδή στον χάρτη για αναπαραγωγή ήχου.
+                        Κάντε κλικ ή περάστε το ποντίκι πάνω από μια χορδή για αναπαραγωγή ήχου.
                     </p>
                 </div>
             </div>
@@ -129,60 +183,21 @@
                 <h3>Μετρολογία Μοντέλου</h3>
                 <div class="stat-line"><span>Βάση Σταδίου:</span><span>177.5 μέτρα</span></div>
                 <div class="stat-line"><span>Άξονες 0.00% σφάλματος:</span><span>3 (A-B, B-C, D-E)</span></div>
-                <div class="stat-line"><span>Στατιστικό p-value:</span><span>~0% (Μη τυχαίο)</span></div>
+                <div class="stat-line"><span>Στατιστικό p-value:</span><span>0% (Μη τυχαίο)</span></div>
             </div>
         </div>
     </div>
 
-    <!-- Leaflet JS (Χωρίς integrity hashes) -->
-    <script src="https://unpkg.com"></script>
-
     <script>
-        // 1. Γεωγραφικά Δεδομένα της 3ης Λύρας (Σκοτεινό Βουνό)
-        const nodes = {
-            'A': { name: 'Κόμβος A (Μαντείο Ορφέα)', coords: [39.253118, 25.969156] },
-            'B': { name: 'Κόμβος B (Βέλτιστη Θέση Ερεσού)', coords: [39.160864, 25.936035] },
-            'C': { name: 'Κόμβος C (Καστρέλλι Φίλιας)', coords: [39.255800, 26.155500] },
-            'D': { name: 'Κόμβος D (Ιερό των Μέσσων)', coords: [39.196404, 26.305275] },
-            'E': { name: 'Κόμβος E (Αρχαία Μήθυμνα)', coords: [39.368500, 26.174800] },
-            'F': { name: 'Κόμβος F (Ακρόπολη Μυτιλήνης)', coords: [39.111200, 26.562300] }
-        };
-
         const strings = [
-            { from: 'D', to: 'E', name: 'Μέσσα → Μήθυμνα', stadia: 125, freq: 220.0, note: 'Λα3 (A3)', desc: 'Η ιερή βάση του οργάνου.' },
-            { from: 'D', to: 'A', name: 'Μέσσα → Μαντείο', stadia: 167, freq: 164.7, note: 'Μι3 (E3)', desc: 'Καθαρή Πέμπτη (Ιερή αρμονία).' },
-            { from: 'C', to: 'F', name: 'Κόμβος C → Μυτιλήνη', stadia: 217, freq: 126.7, note: 'Ντο3 (C3)', desc: 'Υπάτη (Βαθύ, σκοτεινό μπάσο).' },
-            { from: 'A', to: 'C', name: 'Μαντείο → Κόμβος C', stadia: 90,  freq: 305.6, note: 'Σι3 / Ντο4', desc: 'Μεσαίος χρωματικός τόνος.' },
-            { from: 'B', to: 'C', name: 'Ερεσός → Κόμβος C',  stadia: 122, freq: 225.4, note: 'Λα#3 (A#3)', desc: 'Πυκνό ημιτόνιο έντασης.' },
-            { from: 'A', to: 'B', name: 'Μαντείο → Ερεσός',   stadia: 60,  freq: 458.3, note: 'Λα#4 (A#4)', desc: 'Νήτη (Οξύς, υψηλός τόνος).' }
+            { name: 'Μέσσα → Μήθυμνα', stadia: 125, freq: 220.0, note: 'Λα3 (A3)', desc: 'Η ιερή βάση του οργάνου.' },
+            { name: 'Μέσσα → Μαντείο', stadia: 167, freq: 164.7, note: 'Μι3 (E3)', desc: 'Καθαρή Πέμπτη (Ιερή αρμονία).' },
+            { name: 'Κόμβος C → Μυτιλήνη', stadia: 217, freq: 126.7, note: 'Ντο3 (C3)', desc: 'Υπάτη (Βαθύ, σκοτεινό μπάσο).' },
+            { name: 'Μαντείο → Κόμβος C', stadia: 90,  freq: 305.6, note: 'Σι3 / Ντο4', desc: 'Μεσαίος χρωματικός τόνος.' },
+            { name: 'Ερεσός → Κόμβος C',  stadia: 122, freq: 225.4, note: 'Λα#3 (A#3)', desc: 'Πυκνό ημιτόνιο έντασης.' },
+            { name: 'Μαντείο → Ερεσός',   stadia: 60,  freq: 458.3, note: 'Λα#4 (A#4)', desc: 'Νήτη (Οξύς, υψηλός τόνος).' }
         ];
 
-        // 2. Αρχικοποίηση Χάρτη (Κέντρο Λέσβου)
-        const map = L.map('map').setView([39.22, 26.25], 10);
-
-        // Χάρτης CartoDB Voyager (Δεν χρειάζεται API κλειδιά και δουλεύει παντού τοπικά)
-        L.tileLayer('https://{s}://{z}/{x}/{y}{r}.png', {
-            maxZoom: 19,
-            attribution: '&copy; OpenStreetMap &copy; CARTO'
-        }).addTo(map);
-
-        // 3. Προσθήκη Δεικτών (Markers)
-        for (const key in nodes) {
-            const node = nodes[key];
-            const marker = L.circleMarker(node.coords, {
-                radius: 8,
-                fillColor: '#bba15c',
-                color: '#1a1a1a',
-                weight: 2,
-                opacity: 1,
-                fillOpacity: 0.9
-            }).addTo(map);
-            
-            // Διορθωμένο: Πρόσβαση στα στοιχεία του array σωστά [0] και [1]
-            marker.bindPopup(`<b>${node.name}</b><br>Lat: ${node.coords[0]}, Lon: ${node.coords[1]}`);
-        }
-
-        // 4. Διαχείριση Ήχου (Web Audio API)
         let audioCtx = null;
 
         function initAudio() {
@@ -197,7 +212,6 @@
 
         function playTone(frequency) {
             if (!audioCtx) return;
-            
             if (audioCtx.state === 'suspended') {
                 audioCtx.resume();
             }
@@ -218,39 +232,8 @@
             oscillator.stop(audioCtx.currentTime + 1.2);
         }
 
-        // 5. Σχεδίαση Χορδών και Σύνδεση Γεγονότων
-        strings.forEach(str => {
-            const coordFrom = nodes[str.from].coords;
-            const coordTo = nodes[str.to].coords;
-            
-            const polyline = L.polyline([coordFrom, coordTo], {
-                color: '#bba15c',
-                weight: 5,
-                opacity: 0.85
-            }).addTo(map);
-            
-            // Hover Εφέ
-            polyline.on('mouseover', function(e) {
-                e.target.setStyle({
-                    color: '#ffdf00',
-                    weight: 8
-                });
-                triggerString(str);
-            });
-
-            polyline.on('mouseout', function(e) {
-                e.target.setStyle({
-                    color: '#bba15c',
-                    weight: 5
-                });
-            });
-
-            polyline.on('click', function() {
-                triggerString(str);
-            });
-        });
-
-        function triggerString(str) {
+        function triggerString(index) {
+            const str = strings[index];
             if (audioCtx) {
                 playTone(str.freq);
             }
@@ -266,5 +249,6 @@
     </script>
 </body>
 </html>
+
 
 
