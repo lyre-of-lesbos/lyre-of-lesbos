@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Φυσικός Ήχος Αρχαίας Λύρας</title>
+    <title>Φυσική Μοντελοποίηση Λύρας (Karplus-Strong)</title>
     <style>
         body {
             margin: 0;
             padding: 0;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #0c0b0a;
+            background-color: #0b0a0a;
             color: #e0e0e0;
             display: flex;
             flex-direction: column;
@@ -19,7 +19,7 @@
         }
         .container {
             text-align: center;
-            background-color: #171513;
+            background-color: #141312;
             padding: 40px;
             border-radius: 16px;
             border: 2px solid #bba15c;
@@ -30,32 +30,32 @@
         h1 {
             margin: 0 0 5px 0;
             color: #bba15c;
-            font-size: 1.6rem;
+            font-size: 1.5rem;
             letter-spacing: 1px;
         }
         h2 {
             margin: 0 0 25px 0;
-            color: #8c857b;
-            font-size: 0.9rem;
+            color: #7a7368;
+            font-size: 0.85rem;
             text-transform: uppercase;
+            letter-spacing: 1px;
         }
         p {
-            color: #a09990;
+            color: #9e968b;
             font-size: 0.9rem;
             line-height: 1.6;
             margin-bottom: 30px;
         }
-        /* Σχεδιασμός Χορδών Λύρας */
         .lyre-strings-container {
             display: flex;
             justify-content: center;
             gap: 22px;
-            background-color: #110f0d;
+            background-color: #0d0c0b;
             padding: 30px;
             border-radius: 8px;
-            border: 1px solid #2e2922;
+            border: 1px solid #26221c;
             margin-bottom: 25px;
-            height: 200px;
+            height: 180px;
         }
         .string-wrapper {
             display: flex;
@@ -65,21 +65,21 @@
             cursor: pointer;
         }
         .string-line {
-            width: 3px;
-            height: 140px;
-            background: linear-gradient(to bottom, #d1b87d, #bba15c, #d1b87d);
-            box-shadow: 0 0 4px rgba(187,161,92,0.5);
-            transition: transform 0.1s ease, background-color 0.1s;
+            width: 2px;
+            height: 130px;
+            background: linear-gradient(to bottom, #c2ab72, #bba15c, #c2ab72);
+            box-shadow: 0 0 3px rgba(187,161,92,0.4);
+            transition: transform 0.08s ease;
         }
         .string-wrapper:hover .string-line {
             background: #ffdf00;
             box-shadow: 0 0 8px #ffdf00;
-            transform: scaleX(1.5);
+            transform: scaleX(1.8) rotate(0.5deg);
         }
         .string-label {
             margin-top: 10px;
             font-size: 0.8rem;
-            color: #8c857b;
+            color: #7a7368;
             font-weight: bold;
         }
         #sound-btn {
@@ -92,10 +92,11 @@
             border-radius: 20px;
             cursor: pointer;
             margin-bottom: 20px;
+            box-shadow: 0 4px 10px rgba(187,161,92,0.2);
         }
         #info-box {
             font-size: 0.85rem;
-            color: #ffdf00;
+            color: #bba15c;
             font-style: italic;
             height: 20px;
         }
@@ -104,34 +105,34 @@
 <body>
 
     <div class="container">
-        <h1>🏺 Πιστός Ήχος Αρχαίας Λύρας</h1>
-        <h2>Μοντέλο: Σκοτεινό Βουνό (177.5μ)</h2>
-        <p>Κάντε κλικ στο κουμπί για ενεργοποίηση και στη συνέχεια <b>αγγίξτε ή κάντε κλικ στις χορδές</b> για να τις γρατσουνίσετε. Ο κώδικας παράγει τον φυσικό, μεταλλικό και ξύλινο ήχο ενός πραγματικού έγχορδου οργάνου.</p>
+        <h1>🎸 Ακουστική Μοντελοποίηση Χορδής</h1>
+        <h2>Αλγόριθμος Karplus-Strong (Μοντέλο 177.5μ)</h2>
+        <p>Πατήστε το κουμπί και **περάστε το ποντίκι (ή κάντε κλικ)** πάνω από τις χορδές. Ο ήχος παράγεται από μαθηματική προσομοίωση φυσικής δόνησης, χωρίς ηλεκτρονικές γεννήτριες.</p>
         
-        <button id="sound-btn" onclick="initAudio()">🎵 Ενεργοποίηση Ήχου</button>
+        <button id="sound-btn" onclick="initAudio()">⚡ Ενεργοποίηση Φυσικού Ήχου</button>
 
         <div class="lyre-strings-container">
-            <div class="string-wrapper" onmouseenter="pluckString(126.7, 'Υπάτη (C3)')" onclick="pluckString(126.7, 'Υπάτη (C3)')">
-                <div class="string-line" style="width: 5px;"></div><div class="string-label">C3</div>
+            <div class="string-wrapper" onmouseenter="pluckKarplusString(126.7)" onclick="pluckKarplusString(126.7)">
+                <div class="string-line" style="width: 4px;"></div><div class="string-label">C3</div>
             </div>
-            <div class="string-wrapper" onmouseenter="pluckString(164.7, 'Μέσσα→Μαντείο (E3)')" onclick="pluckString(164.7, 'Μέσσα→Μαντείο (E3)')">
-                <div class="string-line" style="width: 4.5px;"></div><div class="string-label">E3</div>
+            <div class="string-wrapper" onmouseenter="pluckKarplusString(164.7)" onclick="pluckKarplusString(164.7)">
+                <div class="string-line" style="width: 3.5px;"></div><div class="string-label">E3</div>
             </div>
-            <div class="string-wrapper" onmouseenter="pluckString(220.0, 'Βάση (A3)')" onclick="pluckString(220.0, 'Βάση (A3)')">
-                <div class="string-line" style="width: 3.5px;"></div><div class="string-label">A3</div>
+            <div class="string-wrapper" onmouseenter="pluckKarplusString(220.0)" onclick="pluckKarplusString(220.0)">
+                <div class="string-line" style="width: 3px;"></div><div class="string-label">A3</div>
             </div>
-            <div class="string-wrapper" onmouseenter="pluckString(225.4, 'Ερεσός→Φίλια (As3)')" onclick="pluckString(225.4, 'Ερεσός→Φίλια (As3)')">
-                <div class="string-line" style="width: 3px;"></div><div class="string-label">As3</div>
+            <div class="string-wrapper" onmouseenter="pluckKarplusString(225.4)" onclick="pluckKarplusString(225.4)">
+                <div class="string-line" style="width: 2.5px;"></div><div class="string-label">As3</div>
             </div>
-            <div class="string-wrapper" onmouseenter="pluckString(305.6, 'Μαντείο→Φίλια (B3)')" onclick="pluckString(305.6, 'Μαντείο→Φίλια (B3)')">
-                <div class="string-line" style="width: 2.5px;"></div><div class="string-label">B3</div>
+            <div class="string-wrapper" onmouseenter="pluckKarplusString(305.6)" onclick="pluckKarplusString(305.6)">
+                <div class="string-line" style="width: 2px;"></div><div class="string-label">B3</div>
             </div>
-            <div class="string-wrapper" onmouseenter="pluckString(458.3, 'Νήτη (As4)')" onclick="pluckString(458.3, 'Νήτη (As4)')">
-                <div class="string-line" style="width: 1.5px;"></div><div class="string-label">As4</div>
+            <div class="string-wrapper" onmouseenter="pluckKarplusString(458.3)" onclick="pluckKarplusString(458.3)">
+                <div class="string-line" style="width: 1.2px;"></div><div class="string-label">As4</div>
             </div>
         </div>
         
-        <div id="info-box">Περιμένει ενεργοποίηση...</div>
+        <div id="info-box">Απαιτείται ενεργοποίηση...</div>
     </div>
 
     <script>
@@ -140,67 +141,65 @@
         function initAudio() {
             if (!audioCtx) {
                 audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                document.getElementById('sound-btn').style.backgroundColor = '#444';
-                document.getElementById('sound-btn').style.color = '#fff';
-                document.getElementById('sound-btn').innerText = '✓ Ήχος Έτοιμος';
-                document.getElementById('info-box').innerText = 'Περάστε το ποντίκι πάνω από τις χορδές!';
+                document.getElementById('sound-btn').style.backgroundColor = '#333';
+                document.getElementById('sound-btn').style.color = '#aaa';
+                document.getElementById('sound-btn').innerText = '✓ Ακουστική Μοντελοποίηση Ενεργή';
+                document.getElementById('info-box').innerText = 'Γρατσουνίστε τις χορδές!';
             }
         }
 
-        function pluckString(baseFreq, name) {
+        // Υλοποίηση του αλγορίθμου Karplus-Strong απευθείας στα Samples του Audio Buffer
+        function pluckKarplusString(frequency) {
             if (!audioCtx) return;
             if (audioCtx.state === 'suspended') audioCtx.resume();
 
-            document.getElementById('info-box').innerText = `Χορδή: ${name} - ${baseFreq} Hz`;
+            document.getElementById('info-box').innerText = `Συχνότητα Δόνησης: ${frequency} Hz`;
 
-            const now = audioCtx.currentTime;
+            const sampleRate = audioCtx.sampleRate;
+            const duration = 2.0; // Διάρκεια δόνησης σε δευτερόλεπτα
+            const totalSamples = sampleRate * duration;
             
-            // 1. Δημιουργία Master Gain για το σβήσιμο της χορδής (Enveloper)
-            const masterGain = audioCtx.createGain();
-            masterGain.gain.setValueAtTime(0, now);
-            // Απότομη επίθεση (Sharp Attack) σε 2 χιλιοστά του δευτερολέπτου (ο ήχος του νυχιού/πλήκτρου)
-            masterGain.gain.linearRampToValueAtTime(0.3, now + 0.002);
-            // Φυσικό σβήσιμο (Decay) της χορδής που διαρκεί 1.8 δευτερόλεπτα
-            masterGain.gain.exponentialRampToValueAtTime(0.001, now + 1.8);
+            // Το μέγεθος του buffer (N) καθορίζει τη συχνότητα της χορδής (N = SampleRate / Frequency)
+            const N = Math.round(sampleRate / frequency);
+            
+            // Δημιουργία του τελικού audio buffer για αναπαραγωγή
+            const audioBuffer = audioCtx.createBuffer(1, totalSamples, sampleRate);
+            const channelData = audioBuffer.getChannelData(0);
 
-            // 2. Δημιουργία Φίλτρου (Lowpass) - Οι πραγματικές χορδές χάνουν τις ψηλές συχνότητες καθώς σβήνουν
-            const filter = audioCtx.createBiquadFilter();
-            filter.type = 'lowpass';
-            filter.frequency.setValueAtTime(4000, now); // Στην αρχή αφήνει τις μεταλλικές ψηλές συχνότητες να περάσουν
-            filter.frequency.exponentialRampToValueAtTime(300, now + 0.4); // Γρήγορα «κλείνει» για να μείνει ο γλυκός, ξύλινος ήχος
+            // 1. Γέμισμα των πρώτων N δειγμάτων με Λευκό Θόρυβο (Το χτύπημα της χορδής)
+            for (let i = 0; i < N; i++) {
+                channelData[i] = Math.random() * 2 - 1;
+            }
 
-            // 3. Σύνθεση Αρμονικών (Additive Synthesis)
-            // Μια πραγματική χορδή δεν βγάζει 1 συχνότητα, αλλά και τις ανώτερες αρμονικές της
-            const harmonics = [
-                { type: 'sawtooth', fMultiplier: 1, volume: 0.5 },  // Θεμελιώδης συχνότητα (πριονωτό για σώμα)
-                { type: 'triangle', fMultiplier: 2, volume: 0.3 },  // 1η Αρμονική (διπλάσια συχνότητα)
-                { type: 'triangle', fMultiplier: 3, volume: 0.15 }, // 2η Αρμονική
-                { type: 'sine',     fMultiplier: 4, volume: 0.05 }  // 3η Αρμονική (αιθέρια)
-            ];
-
-            harmonics.forEach(h => {
-                const osc = audioCtx.createOscillator();
-                const oscGain = audioCtx.createGain();
-
-                osc.type = h.type;
-                osc.frequency.setValueAtTime(baseFreq * h.fMultiplier, now);
+            // 2. Ο βρόχος Karplus-Strong: Κάθε δείγμα είναι ο μέσος όρος των προηγούμενων, δημιουργώντας απόσβεση
+            // y[n] = 0.996 * (y[n-N] + y[n-N-1]) / 2
+            const dampingFactor = 0.996; // Έλεγχος του πόσο γρήγορα σβήνει η χορδή
+            for (let i = N; i < totalSamples; i++) {
+                const currentNoiseValue = channelData[i - N];
+                const previousNoiseValue = channelData[i - N - 1] || 0;
                 
-                oscGain.gain.setValueAtTime(h.volume, now);
+                // Φιλτράρισμα και επανατροφοδότηση στη χορδή
+                channelData[i] = dampingFactor * 0.5 * (currentNoiseValue + previousNoiseValue);
+            }
 
-                osc.connect(oscGain);
-                oscGain.connect(filter);
-                
-                osc.start(now);
-                osc.stop(now + 1.8);
-            });
+            // 3. Αναπαραγωγή του Buffer
+            const bufferSource = audioCtx.createBufferSource();
+            bufferSource.buffer = audioBuffer;
+            
+            // Προσθήκη απαλού Lowpass φίλτρου για να πάρει τον «ξύλινο» χαρακτήρα του αντηχείου
+            const bodyResonator = audioCtx.createBiquadFilter();
+            bodyResonator.type = 'lowpass';
+            bodyResonator.frequency.setValueAtTime(2500, audioCtx.currentTime);
 
-            // 4. Τελική σύνδεση στο ηχείο
-            filter.connect(masterGain);
-            masterGain.connect(audioCtx.destination);
+            bufferSource.connect(bodyResonator);
+            bodyResonator.connect(audioCtx.destination);
+            
+            bufferSource.start();
         }
     </script>
 </body>
 </html>
+
 
 
 
