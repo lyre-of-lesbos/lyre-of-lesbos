@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Imperial March - 3η Λύρα της Λέσβου</title>
+    <title>Ο Επιτάφιος του Σεικίλου - 3η Λύρα της Λέσβου</title>
     <style>
         body {
             margin: 0;
             padding: 0;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #0b0b0b;
+            background-color: #0c0b0a;
             color: #e0e0e0;
             display: flex;
             flex-direction: column;
@@ -19,7 +19,7 @@
         }
         .container {
             text-align: center;
-            background-color: #141414;
+            background-color: #171513;
             padding: 40px;
             border-radius: 12px;
             border: 2px solid #bba15c;
@@ -35,15 +35,27 @@
         }
         h2 {
             margin: 0 0 20px 0;
-            color: #888;
+            color: #aaa;
             font-size: 1rem;
             font-weight: normal;
+            font-style: italic;
         }
         p {
-            color: #aaa;
+            color: #8c857b;
             font-size: 0.9rem;
-            line-height: 1.5;
+            line-height: 1.6;
             margin-bottom: 25px;
+        }
+        .lyrics {
+            background-color: #211e1a;
+            padding: 15px;
+            border-radius: 6px;
+            border-left: 3px solid #bba15c;
+            margin-bottom: 25px;
+            font-size: 0.95rem;
+            color: #dedede;
+            line-height: 1.5;
+            font-style: italic;
         }
         .btn-play {
             background-color: #bba15c;
@@ -64,12 +76,12 @@
         .btn-stop {
             background-color: #bd3a3a;
             color: #fff;
+            box-shadow: none;
         }
         #now-playing {
             margin-top: 20px;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             color: #ffdf00;
-            font-weight: bold;
             height: 20px;
         }
     </style>
@@ -77,35 +89,43 @@
 <body>
 
     <div class="container">
-        <h1>🌌 The Imperial March (Star Wars)</h1>
-        <h2>Εκτελεσμένο από την 3η Λύρα της Λέσβου</h2>
-        <p>Το εμβατήριο προσαρμοσμένο στις 6 χορδές του μοντέλου «Σκοτεινό Βουνό». Η έλλειψη των κλασικών νοτών δημιουργεί μια μοναδική, αρχαϊκή δυσαρμονία.</p>
+        <h1>🏺 Ο Επιτάφιος του Σεικίλου</h1>
+        <h2>Το αρχαιότερο τραγούδι του κόσμου</h2>
         
-        <button id="playBtn" class="btn-play" onclick="togglePlayback()">▶ ΑΝΑΠΑΡΑΓΩΓΗ ΚΟΜΜΑΤΙΟΥ</button>
+        <div class="lyrics">
+            «Ὅσον ζῇς φαίνου, μηδὲν ὅλως σὺ λυποῦ·<br>
+            πρὸς ὀλίγον ἐστὶ τὸ ζῆν, τὸ τέλος ὁ χρόνος ἀπαιτεῖ.»
+        </div>
+
+        <p>Η αυθεντική αρχαία μελωδία, προσαρμοσμένη με απόλυτη αρμονία στις συχνότητες του μοντέλου «Σκοτεινό Βουνό» (177.5μ). Εδώ η Λύρα ακούγεται φυσική και ισορροπημένη.</p>
         
-        <div id="now-playing">Πατήστε το κουμπί για έναρξη</div>
+        <button id="playBtn" class="btn-play" onclick="togglePlayback()">▶ ΑΝΑΠΑΡΑΓΩΓΗ ΜΕΛΩΔΙΑΣ</button>
+        
+        <div id="now-playing">Πατήστε για έναρξη</div>
     </div>
 
     <script>
-        // Οι 6 συχνότητες της 3ης Λύρας
+        // Οι 6 γεωδαιτικές συχνότητες της 3ης Λύρας
         const lyre = {
             'C3': 126.7,  // Κόμβος C -> Μυτιλήνη (Υπάτη)
-            'E3': 164.7,  // Μέσσα -> Μαντείο
+            'E3': 164.7,  // Μέσσα -> Μαντείο (Καθαρή Πέμπτη)
             'A3': 220.0,  // Μέσσα -> Μήθυμνα (Βάση / Λα3)
-            'As3': 225.4, // Ερεσός -> Φίλια (Λα#3)
-            'B3': 305.6,  // Μαντείο -> Φίλια (Σι3)
+            'As3': 225.4, // Ερεσός -> Φίλια
+            'B3': 305.6,  // Μαντείο -> Φίλια
             'As4': 458.3  // Μαντείο -> Ερεσός (Νήτη)
         };
 
-        // Η παρτιτούρα του Imperial March προσαρμοσμένη στις χορδές
+        // Η αυθεντική αρχαία παρτιτούρα προσαρμοσμένη στις χορδές της Λύρας της Λέσβου
         const score = [
-            { note: 'A3', time: 500 }, { note: 'A3', time: 500 }, { note: 'A3', time: 500 },
-            { note: 'F',  time: 350, customFreq: 126.7 }, { note: 'C3', time: 150 }, { note: 'A3', time: 500 },
-            { note: 'F',  time: 350, customFreq: 126.7 }, { note: 'C3', time: 150 }, { note: 'A3', time: 1000 },
+            { note: 'A3', time: 600 }, { note: 'As4', time: 600 }, { note: 'As4', time: 600 },
+            { note: 'As4', time: 600 }, { note: 'B3', time: 300 }, { note: 'As3', time: 300 },
+            { note: 'B3', time: 600 }, { note: 'As4', time: 600 }, { note: 'B3', time: 600 },
+            { note: 'As3', time: 600 }, { note: 'A3', time: 1200 },
             
-            { note: 'E3', time: 500 }, { note: 'E3', time: 500 }, { note: 'E3', time: 500 },
-            { note: 'As4', time: 350 }, { note: 'C3', time: 150 }, { note: 'E3', time: 500 },
-            { note: 'F',  time: 350, customFreq: 126.7 }, { note: 'C3', time: 150 }, { note: 'A3', time: 1000 }
+            { note: 'B3', time: 600 }, { note: 'As4', time: 600 }, { note: 'B3', time: 600 },
+            { note: 'As3', time: 600 }, { note: 'B3', time: 300 }, { note: 'As3', time: 300 },
+            { note: 'A3', time: 600 }, { note: 'E3', time: 600 }, { note: 'C3', time: 600 },
+            { note: 'E3', time: 600 }, { note: 'A3', time: 1200 }
         ];
 
         let audioCtx = null;
@@ -144,7 +164,7 @@
             clearTimeout(timeoutId);
             
             const btn = document.getElementById('playBtn');
-            btn.innerText = '▶ ΑΝΑΠΑΡΑΓΩΓΗ ΚΟΜΜΑΤΙΟΥ';
+            btn.innerText = '▶ ΑΝΑΠΑΡΑΓΩΓΗ ΜΕΛΩΔΙΑΣ';
             btn.classList.remove('btn-stop');
             
             document.getElementById('now-playing').innerText = 'Η αναπαραγωγή σταμάτησε.';
@@ -155,16 +175,16 @@
 
             if (currentStep >= score.length) {
                 stop();
-                document.getElementById('now-playing').innerText = 'Το κομμάτι ολοκληρώθηκε!';
+                document.getElementById('now-playing').innerText = 'Η αρχαία μελωδία ολοκληρώθηκε!';
                 return;
             }
 
             const step = score[currentStep];
-            let freq = step.customFreq ? step.customFreq : lyre[step.note];
+            const freq = lyre[step.note];
 
             playNode(freq);
 
-            document.getElementById('now-playing').innerText = `Νότα: ${step.note} (${freq} Hz)`;
+            document.getElementById('now-playing').innerText = `Δονείται η χορδή: ${step.note} (${freq} Hz)`;
 
             currentStep++;
             timeoutId = setTimeout(playNext, step.time);
@@ -174,20 +194,22 @@
             const osc = audioCtx.createOscillator();
             const gain = audioCtx.createGain();
             
-            osc.type = 'triangle';
+            // Χρήση sine (ημιτονοειδούς) κύματος για πιο καθαρό, αιθέριο και "αρχαίο" ήχο
+            osc.type = 'sine';
             osc.frequency.setValueAtTime(frequency, audioCtx.currentTime);
             
-            gain.gain.setValueAtTime(0.25, audioCtx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 1.2);
+            gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 1.5);
             
             osc.connect(gain);
             gain.connect(audioCtx.destination);
             
             osc.start();
-            osc.stop(audioCtx.currentTime + 1.2);
+            osc.stop(audioCtx.currentTime + 1.5);
         }
     </script>
 </body>
 </html>
+
 
 
