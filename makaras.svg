@@ -1,47 +1,16 @@
-<svg xmlns="http://w3.org" viewBox="0 0 1000 750" width="100%" height="100%">
-  <!-- Background Style -->
-  <defs>
-    <style>
-      .bg { fill: #fcfbf7; }
-      .border { fill: none; stroke: #4a3c31; stroke-width: 2; opacity: 0.3; }
-      .grid { fill: none; stroke: #d1c7bd; stroke-width: 1; stroke-dasharray: 4,4; opacity: 0.5; }
-      .title { font-family: 'Georgia', serif; font-size: 24px; fill: #2c1e11; font-weight: bold; text-anchor: middle; }
-      .subtitle { font-family: 'Helvetica', sans-serif; font-size: 14px; fill: #6b5b4b; text-anchor: middle; }
-      
-      /* Lyre Structural Lines */
-      .yoke { fill: none; stroke: #8a7355; stroke-width: 3; stroke-dasharray: 6,6; }
-      .bridge { fill: none; stroke: #5c4a37; stroke-width: 5; stroke-linecap: round; }
-      .bass-string { fill: none; stroke: #1d4ed8; stroke-width: 4; stroke-linecap: round; }
-      .core-string { fill: none; stroke: #b91c1c; stroke-width: 3.5; stroke-linecap: round; }
-      .soundbox { fill: none; stroke: #15803d; stroke-width: 3; stroke-linecap: round; }
-      
-      /* Nodes and Text */
-      .node-fixed { fill: #2c1e11; stroke: #ffffff; stroke-width: 2; }
-      .node-target { fill: #ef4444; stroke: #2c1e11; stroke-width: 2.5; }
-      .label-fixed { font-family: 'Georgia', serif; font-size: 14px; fill: #2c1e11; font-weight: bold; }
-      .label-target { font-family: 'Georgia', serif; font-size: 15px; fill: #b91c1c; font-weight: bold; }
-      .measurement { font-family: 'Helvetica', sans-serif; font-size: 12px; fill: #4b5563; font-weight: bold; text-anchor: middle; }
-    </style>
-    
-    <!-- Marker for string terminations -->
-    <marker id="dot" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="4" markerHeight="4">
-      <circle cx="5" cy="5" r="3" fill="#4a3c31"/>
-    </marker>
-  </defs>
-
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 750" width="100%" height="100%">
   <!-- Background Layer -->
-  <rect width="1000" height="750" class="bg" />
-  <rect x="20" y="20" width="960" height="710" class="border" />
+  <rect width="1000" height="750" fill="#fcfbf7" />
+  <rect x="20" y="20" width="960" height="710" fill="none" stroke="#4a3c31" stroke-width="2" opacity="0.3" />
 
   <!-- Coordinate Grid Simulation -->
-  <g class="grid">
+  <g fill="none" stroke="#d1c7bd" stroke-width="1" stroke-dasharray="4,4" opacity="0.5">
     <line x1="100" y1="20" x2="100" y2="730" />
     <line x1="250" y1="20" x2="250" y2="730" />
     <line x1="400" y1="20" x2="400" y2="730" />
     <line x1="550" y1="20" x2="550" y2="730" />
     <line x1="700" y1="20" x2="700" y2="730" />
     <line x1="850" y1="20" x2="850" y2="730" />
-    
     <line x1="20" y1="150" x2="980" y2="150" />
     <line x1="20" y1="300" x2="980" y2="300" />
     <line x1="20" y1="450" x2="980" y2="450" />
@@ -49,104 +18,99 @@
   </g>
 
   <!-- Titles -->
-  <text x="500" y="60" class="title">Η Αρχαιολογική Λύρα των «Μακαρέων Θυγατέρων»</text>
-  <text x="500" y="85" class="subtitle">Γεωμετρική Αποτύπωση 100% Real-Data (Μετρολογική Βάση: Αιολικό Στάδιο 177.5μ)</text>
+  <text x="500" y="60" font-family="Georgia, serif" font-size="24px" fill="#2c1e11" font-weight="bold" text-anchor="middle">Η Αρχαιολογική Λύρα των «Μακαρέων Θυγατέρων»</text>
+  <text x="500" y="85" font-family="Helvetica, sans-serif" font-size="14px" fill="#6b5b4b" text-anchor="middle">Γεωμετρική Αποτύπωση 100% Real-Data (Μετρολογική Βάση: Αιολικό Στάδιο 177.5μ)</text>
 
-  <!-- ==================== LYRE STRINGS & EDGES ==================== -->
+  <!-- Lyre Structural Lines -->
+  <!-- Upper Yoke (Methymna E -> Mytilene F) -->
+  <line x1="450" y1="140" x2="850" y2="650" fill="none" stroke="#8a7355" stroke-width="3" stroke-dasharray="6,6" />
   
-  <!-- 1. Upper Yoke (Methymna E -> Mytilene F) -->
-  <line x1="450" y1="140" x2="850" y2="650" class="yoke" />
+  <!-- Soundbox Triangle (Antissa A -> Eresos B -> Arisbe C -> Antissa A) -->
+  <polygon points="200,220 150,600 500,420" fill="none" stroke="#15803d" stroke-width="3" stroke-linecap="round" />
   
-  <!-- 2. Soundbox Triangle (Antissa A -> Eresos B -> Arisbe C -> Antissa A) -->
-  <polygon points="200,220 150,600 500,420" class="soundbox" />
+  <!-- Bridge / Καβαλάρης (Antissa A -> Arisbe C) -->
+  <line x1="200" y1="220" x2="500" y2="420" fill="none" stroke="#5c4a37" stroke-width="5" stroke-linecap="round" />
   
-  <!-- 3. Bridge / Καβαλάρης (Antissa A -> Arisbe C) -->
-  <line x1="200" y1="220" x2="500" y2="420" class="bridge" />
+  <!-- Bass Line / Υπάτη (Arisbe C -> Mytilene F) -->
+  <line x1="500" y1="420" x2="850" y2="650" fill="none" stroke="#1d4ed8" stroke-width="4" stroke-linecap="round" />
   
-  <!-- 4. Bass Line / Υπάτη (Arisbe C -> Mytilene F) -->
-  <line x1="500" y1="420" x2="850" y2="650" class="bass-string" marker-start="url(#dot)" marker-end="url(#dot)" />
-  
-  <!-- 5. Central Core / Χορδές Ίσσης (Issa D -> Methymna E & Issa D -> Antissa A) -->
-  <line x1="420" y1="280" x2="450" y2="140" class="core-string" marker-start="url(#dot)" marker-end="url(#dot)" />
-  <line x1="420" y1="280" x2="200" y2="220" class="core-string" marker-start="url(#dot)" marker-end="url(#dot)" />
+  <!-- Central Core / Χορδές Ίσσης (Issa D -> Methymna E & Issa D -> Antissa A) -->
+  <line x1="420" y1="280" x2="450" y2="140" fill="none" stroke="#b91c1c" stroke-width="3.5" stroke-linecap="round" />
+  <line x1="420" y1="280" x2="200" y2="220" fill="none" stroke="#b91c1c" stroke-width="3.5" stroke-linecap="round" />
 
-
-  <!-- ==================== DISTANCE LABELS ==================== -->
-  
+  <!-- Distance Labels with Background White Rectangles -->
   <!-- Antissa -> Eresos -->
-  <rect x="135" y="400" width="70" height="20" rx="5" fill="#fcfbf7"/>
-  <text x="170" y="415" class="measurement" fill="#15803d">114 St.</text>
+  <rect x="135" y="400" width="70" height="20" rx="5" fill="#ffffff" stroke="#15803d" stroke-width="0.5" />
+  <text x="170" y="415" font-family="Helvetica, sans-serif" font-size="12px" font-weight="bold" fill="#15803d" text-anchor="middle">114 St.</text>
   
   <!-- Eresos -> Arisbe -->
-  <rect x="290" y="500" width="70" height="20" rx="5" fill="#fcfbf7"/>
-  <text x="325" y="515" class="measurement" fill="#15803d">149 St.</text>
+  <rect x="290" y="500" width="70" height="20" rx="5" fill="#ffffff" stroke="#15803d" stroke-width="0.5" />
+  <text x="325" y="515" font-family="Helvetica, sans-serif" font-size="12px" font-weight="bold" fill="#15803d" text-anchor="middle">149 St.</text>
   
   <!-- Antissa -> Arisbe (Bridge) -->
-  <rect x="330" y="300" width="70" height="20" rx="5" fill="#fcfbf7"/>
-  <text x="365" y="315" class="measurement" fill="#5c4a37">127 St.</text>
+  <rect x="330" y="300" width="70" height="20" rx="5" fill="#ffffff" stroke="#5c4a37" stroke-width="0.5" />
+  <text x="365" y="315" font-family="Helvetica, sans-serif" font-size="12px" font-weight="bold" fill="#5c4a37" text-anchor="middle">127 St.</text>
   
   <!-- Arisbe -> Mytilene (Bass) -->
-  <rect x="650" y="515" width="70" height="20" rx="5" fill="#fcfbf7"/>
-  <text x="685" y="530" class="measurement" fill="#1d4ed8">184 St.</text>
+  <rect x="650" y="515" width="70" height="20" rx="5" fill="#ffffff" stroke="#1d4ed8" stroke-width="0.5" />
+  <text x="685" y="530" font-family="Helvetica, sans-serif" font-size="12px" font-weight="bold" fill="#1d4ed8" text-anchor="middle">184 St.</text>
   
   <!-- Issa -> Methymna -->
-  <rect x="420" y="195" width="65" height="20" rx="5" fill="#fcfbf7"/>
-  <text x="450" y="210" class="measurement" fill="#b91c1c">98 St.</text>
+  <rect x="420" y="195" width="65" height="20" rx="5" fill="#ffffff" stroke="#b91c1c" stroke-width="0.5" />
+  <text x="452" y="210" font-family="Helvetica, sans-serif" font-size="12px" font-weight="bold" fill="#b91c1c" text-anchor="middle">98 St.</text>
   
   <!-- Issa -> Antissa -->
-  <rect x="280" y="235" width="70" height="20" rx="5" fill="#fcfbf7"/>
-  <text x="315" y="250" class="measurement" fill="#b91c1c">105 St.</text>
+  <rect x="280" y="235" width="70" height="20" rx="5" fill="#ffffff" stroke="#b91c1c" stroke-width="0.5" />
+  <text x="315" y="250" font-family="Helvetica, sans-serif" font-size="12px" font-weight="bold" fill="#b91c1c" text-anchor="middle">105 St.</text>
   
   <!-- Structural Text Indicators -->
-  <text x="670" y="375" class="measurement" style="font-style: italic; font-size: 13px; fill: #8a7355;" transform="rotate(52, 670, 375)">ΑΝΩ ΖΥΓΟΣ (YOKE)</text>
-  <text x="690" y="555" class="measurement" style="font-size: 11px; fill: #1d4ed8;">ΥΠΑΤΗ (ΒΑΘΥ ΜΠΑΣΟ - Ρε3)</text>
-  <text x="330" y="190" class="measurement" style="font-size: 11px; fill: #b91c1c;">ΗΜΙΤΟΝΙΟ ΕΝΤΑΣΗΣ (Ντο4)</text>
+  <text x="670" y="375" font-family="Helvetica, sans-serif" font-size="13px" font-style="italic" fill="#8a7355" text-anchor="middle" transform="rotate(52, 670, 375)">ΑΝΩ ΖΥΓΟΣ (YOKE)</text>
+  <text x="690" y="555" font-family="Helvetica, sans-serif" font-size="11px" fill="#1d4ed8;">ΥΠΑΤΗ (ΒΑΘΥ ΜΠΑΣΟ - Ρε3)</text>
+  <text x="330" y="190" font-family="Helvetica, sans-serif" font-size="11px" fill="#b91c1c;">ΗΜΙΤΟΝΙΟ ΕΝΤΑΣΗΣ (Ντο4)</text>
 
-
-  <!-- ==================== NODES LAYER ==================== -->
-  
+  <!-- Nodes Layer -->
   <!-- Κόμβος E: Μήθυμνα -->
-  <circle cx="450" cy="140" r="9" class="node-fixed" />
-  <text x="465" y="135" class="label-fixed">Αρχαία Μήθυμνα (E)</text>
-  <text x="465" y="152" style="font-family:sans-serif; font-size:11px; fill:#6b5b4b;">(Μόλυβος)</text>
+  <circle cx="450" cy="140" r="9" fill="#2c1e11" stroke="#ffffff" stroke-width="2" />
+  <text x="465" y="135" font-family="Georgia, serif" font-size="14px" fill="#2c1e11" font-weight="bold">Αρχαία Μήθυμνα (E)</text>
+  <text x="465" y="152" font-family="sans-serif" font-size="11px" fill="#6b5b4b">(Μόλυβος)</text>
 
   <!-- Κόμβος F: Μυτιλήνη -->
-  <circle cx="850" cy="650" r="9" class="node-fixed" />
-  <text x="865" y="650" class="label-fixed">Ακρόπολη Μυτιλήνης (F)</text>
+  <circle cx="850" cy="650" r="9" fill="#2c1e11" stroke="#ffffff" stroke-width="2" />
+  <text x="865" y="650" font-family="Georgia, serif" font-size="14px" fill="#2c1e11" font-weight="bold">Ακρόπολη Μυτιλήνης (F)</text>
 
   <!-- Κόμβος A: Άντισσα -->
-  <circle cx="200" cy="220" r="9" class="node-fixed" />
-  <text x="65" y="215" class="label-fixed">Αρχαία Άντισσα (A)</text>
-  <text x="85" y="232" style="font-family:sans-serif; font-size:11px; fill:#6b5b4b;">(Οβριόκαστρο)</text>
+  <circle cx="200" cy="220" r="9" fill="#2c1e11" stroke="#ffffff" stroke-width="2" />
+  <text x="45" y="215" font-family="Georgia, serif" font-size="14px" fill="#2c1e11" font-weight="bold">Αρχαία Άντισσα (A)</text>
+  <text x="45" y="232" font-family="sans-serif" font-size="11px" fill="#6b5b4b">(Οβριόκαστρο)</text>
 
   <!-- Κόμβος B: Ερεσός -->
-  <circle cx="150" cy="600" r="9" class="node-fixed" />
-  <text x="50" y="625" class="label-fixed">Αρχαία Ερεσός (B)</text>
+  <circle cx="150" cy="600" r="9" fill="#2c1e11" stroke="#ffffff" stroke-width="2" />
+  <text x="50" y="625" font-family="Georgia, serif" font-size="14px" fill="#2c1e11" font-weight="bold">Αρχαία Ερεσός (B)</text>
 
   <!-- Κόμβος C: Αρίσβη -->
-  <circle cx="500" cy="420" r="9" class="node-fixed" />
-  <text x="515" y="435" class="label-fixed">Αρχαία Αρίσβη (C)</text>
+  <circle cx="500" cy="420" r="9" fill="#2c1e11" stroke="#ffffff" stroke-width="2" />
+  <text x="515" y="435" font-family="Georgia, serif" font-size="14px" fill="#2c1e11" font-weight="bold">Αρχαία Αρίσβη (C)</text>
 
   <!-- Κόμβος D: Ίσσα (TARGET NODE) -->
-  <circle cx="420" cy="280" r="11" class="node-target" />
-  <text x="440" y="285" class="label-target">Αρχαία Ίσσα (D)</text>
-  <text x="440" y="302" style="font-family:sans-serif; font-size:12px; fill:#b91c1c; font-weight:bold;">[Χορδοτόνος / P = 0.005%]</text>
+  <circle cx="420" cy="280" r="11" fill="#ef4444" stroke="#2c1e11" stroke-width="2.5" />
+  <text x="440" y="285" font-family="Georgia, serif" font-size="15px" fill="#b91c1c" font-weight="bold">Αρχαία Ίσσα (D)</text>
+  <text x="440" y="302" font-family="sans-serif" font-size="12px" fill="#b91c1c" font-weight="bold">[Χορδοτόνος / P = 0.005%]</text>
 
   <!-- Legend -->
   <g transform="translate(680, 80)">
     <rect width="270" height="140" fill="#ffffff" stroke="#d1c7bd" stroke-width="1" rx="5" />
-    <text x="15" y="25" style="font-family:sans-serif; font-size:12px; font-weight:bold; fill:#2c1e11;">Υπόμνημα Δικτύου:</text>
+    <text x="15" y="25" font-family="sans-serif" font-size="12px" font-weight="bold" fill="#2c1e11;">Υπόμνημα Δικτύου:</text>
     
-    <line x1="20" y1="45" x2="50" y2="45" class="core-string" />
-    <text x="60" y="49" style="font-family:sans-serif; font-size:11px; fill:#4b5563;">Κεντρικός Πυρήνας (98 / 105 St.)</text>
+    <line x1="20" y1="45" x2="50" y2="45" fill="none" stroke="#b91c1c" stroke-width="3.5" />
+    <text x="60" y="49" font-family="sans-serif" font-size="11px" fill="#4b5563;">Κεντρικός Πυρήνας (98 / 105 St.)</text>
     
-    <line x1="20" y1="70" x2="50" y2="70" class="soundbox" />
-    <text x="60" y="74" style="font-family:sans-serif; font-size:11px; fill:#4b5563;">Τρίγωνο Ηχείου (Σκάφος)</text>
+    <line x1="20" y1="70" x2="50" y2="70" fill="none" stroke="#15803d" stroke-width="3" />
+    <text x="60" y="74" font-family="sans-serif" font-size="11px" fill="#4b5563;">Τρίγωνο Ηχείου (Σκάφος)</text>
     
-    <line x1="20" y1="95" x2="50" y2="95" class="bass-string" />
-    <text x="60" y="99" style="font-family:sans-serif; font-size:11px; fill:#4b5563;">Χορδή Μπάσου (184 St.)</text>
+    <line x1="20" y1="95" x2="50" y2="95" fill="none" stroke="#1d4ed8" stroke-width="4" />
+    <text x="60" y="99" font-family="sans-serif" font-size="11px" fill="#4b5563;">Χορδή Μπάσου (184 St.)</text>
     
-    <circle cx="35" cy="120" r="6" class="node-target" />
-    <text x="60" y="124" style="font-family:sans-serif; font-size:11px; fill:#4b5563;">Πραγματικός Λόφος Ξηροκαστρινής</text>
+    <circle cx="35" cy="120" r="6" fill="#ef4444" stroke="#2c1e11" stroke-width="1.5" />
+    <text x="60" y="124" font-family="sans-serif" font-size="11px" fill="#4b5563;">Πραγματικός Λόφος Ξηροκαστρινής</text>
   </g>
 </svg>
