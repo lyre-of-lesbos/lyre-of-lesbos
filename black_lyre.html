@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Η 3η Λύρα της Λέσβου - Διαδραστικός Χάρτης & Ήχος</title>
     
-    <!-- Leaflet CSS για τον Χάρτη -->
-    <link rel="stylesheet" href="https://unpkg.com" />
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
     
     <style>
         body {
@@ -41,6 +41,7 @@
             display: flex;
             flex: 1;
             position: relative;
+            height: calc(100vh - 80px);
         }
         #map {
             flex: 1;
@@ -68,7 +69,7 @@
         .panel-section h3 {
             margin-top: 0;
             color: #bba15c;
-            border-bottom: 1px solid #44;
+            border-bottom: 1px solid #444;
             padding-bottom: 5px;
             font-size: 1.1rem;
         }
@@ -94,15 +95,12 @@
             font-weight: bold;
             font-size: 0.85rem;
             cursor: pointer;
+            border: none;
+            width: 100%;
         }
-        /* Custom στυλ για τις χορδές στον χάρτη */
         .lyre-string {
             transition: stroke-width 0.2s, stroke 0.2s;
             cursor: pointer;
-        }
-        .lyre-string:hover {
-            stroke: #ffdf00 !important;
-            stroke-width: 6 !important;
         }
     </style>
 </head>
@@ -114,20 +112,18 @@
     </header>
 
     <div id="main-container">
-        <!-- Ο Γεωγραφικός Χάρτης -->
         <div id="map"></div>
 
-        <!-- Πίνακας Πληροφοριών -->
         <div id="info-panel">
-            <div id="sound-notice" onclick="initAudio()">
-                🎵 Ενεργοποίηση Ήχου (Κάντε Κλικ Εδώ)
-            </div>
+            <button id="sound-notice" onclick="initAudio()">
+                🎵 Ενεργοποίηση Ήχου (Κάντε Κλικ)
+            </button>
 
             <div class="panel-section">
                 <h3>Πληροφορίες Χορδής</h3>
                 <div id="string-info">
                     <p style="color:#aaa; font-style:italic; font-size:0.9rem; margin:0;">
-                        Περάστε το ποντίκι ή κάντε κλικ σε μια χορδή της Λύρας για να την ακούσετε.
+                        Κάντε κλικ ή περάστε το ποντίκι πάνω από μια χορδή στον χάρτη για αναπαραγωγή ήχου.
                     </p>
                 </div>
             </div>
@@ -141,8 +137,8 @@
         </div>
     </div>
 
-    <!-- Leaflet JS για τον Χάρτη -->
-    <script src="https://unpkg.com"></script>
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 
     <script>
         // 1. Γεωγραφικά Δεδομένα της 3ης Λύρας (Σκοτεινό Βουνό)
@@ -155,7 +151,6 @@
             'F': { name: 'Κόμβος F (Ακρόπολη Μυτιλήνης)', coords: [39.111200, 26.562300] }
         };
 
-        // Ορισμός των 6 χορδών/αξόνων με τα ακουστικά χαρακτηριστικά τους
         const strings = [
             { from: 'D', to: 'E', name: 'Μέσσα → Μήθυμνα', stadia: 125, freq: 220.0, note: 'Λα3 (A3)', desc: 'Η ιερή βάση του οργάνου.' },
             { from: 'D', to: 'A', name: 'Μέσσα → Μαντείο', stadia: 167, freq: 164.7, note: 'Μι3 (E3)', desc: 'Καθαρή Πέμπτη (Ιερή αρμονία).' },
@@ -165,87 +160,108 @@
             { from: 'A', to: 'B', name: 'Μαντείο → Ερεσός',   stadia: 60,  freq: 458.3, note: 'Λα#4 (A#4)', desc: 'Νήτη (Οξύς, υψηλός τόνος).' }
         ];
 
-        // 2. Αρχιικοποίηση του Χάρτη Leaflet
-        // Εστίαση στο κέντρο της Λέσβου (Καλλονή)
+        // 2. Αρχικοποίηση Χάρτη
         const map = L.map('map').setView([39.22, 26.25], 10);
 
-        // Χρήση Dark Mode χάρτη (Stadia Maps / CartoDB) για μυστικιστικό στυλ
-        L.tileLayer('https://{s}://{z}/{x}/{y}{r}.png', {
-            attribution: '&copy; OpenStreetMap &copy; CARTO'
+        // Standard OpenStreetMap (Δωρεάν και αξιόπιστο)
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; <a href="https://openstreetmap.org">OpenStreetMap</a> συνεισφέροντες'
         }).addTo(map);
 
-        // 3. Προσθήκη των Κόμβων (Markers) στον Χάρτη
+        // 3. Προσθήκη Δεικτών
         for (const key in nodes) {
             const node = nodes[key];
             const marker = L.circleMarker(node.coords, {
                 radius: 8,
                 fillColor: '#bba15c',
-                color: '#fff',
+                color: '#1a1a1a',
                 weight: 2,
                 opacity: 1,
                 fillOpacity: 0.9
             }).addTo(map);
             
-            marker.bindPopup(`<b>${node.name}</b><br>Συντεταγμένες: ${node.coords[0]}, ${node.coords[1]}`);
+            marker.bindPopup(`<b>${node.name}</b><br>Lat: ${node.coords[0]}, Lon: ${node.coords[1]}`);
         }
 
-        // 4. Μηχανισμός Ήχου (Web Audio API)
+        // 4. Διαχείριση Ήχου (Web Audio API)
         let audioCtx = null;
 
         function initAudio() {
             if (!audioCtx) {
                 audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                document.getElementById('sound-notice').style.backgroundColor = '#444';
-                document.getElementById('sound-notice').style.color = '#fff';
-                document.getElementById('sound-notice').innerText = '🎵 Ο Ήχος είναι Ενεργός';
+                const btn = document.getElementById('sound-notice');
+                btn.style.backgroundColor = '#444';
+                btn.style.color = '#fff';
+                btn.innerText = '🎵 Ο Ήχος είναι Ενεργός';
             }
         }
 
         function playTone(frequency) {
-            if (!audioCtx) return; // Αν δεν έχει ενεργοποιηθεί ο ήχος, μην κάνεις τίποτα
+            if (!audioCtx) return;
             
-            // Δημιουργία ταλαντωτή (Oscillating string)
+            // Ξεκλείδωμα του AudioContext αν είναι σε κατάσταση suspend (browser security)
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+
             const oscillator = audioCtx.createOscillator();
             const gainNode = audioCtx.createGain();
             
-            // Χρήση τριγωνικού κύματος για πιο γλυκό, "ξύλινο" ήχο που μοιάζει με αρχαία λύρα
             oscillator.type = 'triangle'; 
             oscillator.frequency.setValueAtTime(frequency, audioCtx.currentTime);
             
-            // Διαμόρφωση έντασης (Fade-out εφέ όπως το γρατσούνισμα χορδής)
-            gainNode.gain.setValueAtTime(0.3, audioCtx.currentTime);
-            gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 1.5);
+            gainNode.gain.setValueAtTime(0.2, audioCtx.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 1.2);
             
             oscillator.connect(gainNode);
             gainNode.connect(audioCtx.destination);
             
             oscillator.start();
-            oscillator.stop(audioCtx.currentTime + 1.5);
+            oscillator.stop(audioCtx.currentTime + 1.2);
         }
 
-        // 5. Σχεδίαση των Χορδών (Polylines) & Σύνδεση με Γεγονότα Ήχου
+        // 5. Σχεδίαση Χορδών και Events
         strings.forEach(str => {
             const coordFrom = nodes[str.from].coords;
             const coordTo = nodes[str.to].coords;
             
-            // Σχεδίαση γραμμής στον χάρτη
             const polyline = L.polyline([coordFrom, coordTo], {
                 color: '#bba15c',
-                weight: 3,
-                opacity: 0.7,
-                className: 'lyre-string'
+                weight: 4,
+                opacity: 0.85
             }).addTo(map);
             
-            // Συναρτήσεις για την ενεργοποίηση της χορδής
-            function triggerString() {
-                initAudio(); // Αυτόματη ενεργοποίηση αν επιτρέπεται
+            // Εφέ Hover μέσω των μεθόδων του Leaflet
+            polyline.on('mouseover', function(e) {
+                const layer = e.target;
+                layer.setStyle({
+                    color: '#ffdf00',
+                    weight: 6
+                });
+                triggerString(str);
+            });
+
+            polyline.on('mouseout', function(e) {
+                const layer = e.target;
+                layer.setStyle({
+                    color: '#bba15c',
+                    weight: 4
+                });
+            });
+
+            polyline.on('click', function() {
+                triggerString(str);
+            });
+        });
+
+        function triggerString(str) {
+            if (audioCtx) {
                 playTone(str.freq);
-                
-                // Ενημέρωση του Πίνακα Πληροφοριών στα δεξιά
-                document.getElementById('string-info').innerHTML = `
-                    <div style="font-weight: bold; color: #bba15c; font-size: 1.2rem; margin-bottom: 5px;">${str.name}</div>
-                    <div class="stat-line"><span>Απόσταση:</span><span>${str.stadia} Στάδια</span></div>
-                    <div class="stat-line"><span>Συχνότητα:</span><span>${str.freq} Hz</span></div>
-                    <div class="stat-line"><span>Μουσική Νότα:</span><span style="color:#ffdf00;">${str.note}</span></div>
-                    <p style="margin-top: 10px; font-size: 0.85rem; color: #ccc; line-height: 1.4;">${str.desc}</p>
-                `;
+            }
+            
+            document.getElementById('string-info').innerHTML = `
+                <div style="font-weight: bold; color: #bba15c; font-size: 1.2rem; margin-bottom: 5px;">${str.name}</div>
+                <div class="stat-line"><span>Απόσταση:</span><span>${str.stadia} Στάδια</span></div>
+                <div class="stat-line"><span>Συχνότητα:</span><span>${str.freq} Hz</span></div>
+
