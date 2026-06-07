@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ακουστική Εκτέλεση - Επιτάφιος Σεικίλου</title>
+    <title>Ακουστική Εκτέλεση - Επιτάφιος Σεikίλου</title>
     <style>
         body {
             margin: 0;
@@ -108,15 +108,15 @@
     <script>
         // Οι 6 αυθεντικές γεωδαιτικές συχνότητες της 3ης Λύρας
         const lyre = {
-            'C3': 126.7,  // Κόμβος C -> Μυτιλήνη (Υπάτη)
-            'E3': 164.7,  // Μέσσα -> Μαντείο
-            'A3': 220.0,  // Μέσσα -> Μήθυμνα (Βάση)
-            'As3': 225.4, // Ερεσός -> Φίλια
-            'B3': 305.6,  // Μαντείο -> Φίλια
-            'As4': 458.3  // Μαντείο -> Ερεσός (Νήτη)
+            'C3': 126.7,
+            'E3': 164.7,
+            'A3': 220.0,
+            'As3': 225.4,
+            'B3': 305.6,
+            'As4': 458.3
         };
 
-        // Η αυθεντική αρχαία παρτιτούρα προσαρμοσμένη στις χορδές μας (Νότα και Διάρκεια)
+        // Παρτιτούρα (Νότα και Διάρκεια)
         const songScore = [
             { note: 'A3', time: 600 }, { note: 'As4', time: 600 }, { note: 'As4', time: 600 },
             { note: 'As4', time: 600 }, { note: 'B3', time: 300 }, { note: 'As3', time: 300 },
@@ -143,6 +143,7 @@
         }
 
         function start() {
+            // ΔΙΟΡΘΩΣΗ: Αρχικοποίηση και άμεσο ξεκλείδωμα του AudioContext με το κλικ του χρήστη
             if (!audioCtx) {
                 audioCtx = new (window.AudioContext || window.webkitAudioContext)();
             }
@@ -183,7 +184,6 @@
             const step = songScore[currentStep];
             const freq = lyre[step.note];
 
-            // Αναπαραγωγή με τον αλγόριθμο Karplus-Strong
             playKarplusNote(freq);
 
             document.getElementById('now-playing').innerText = `Χορδή: ${step.note} (${freq} Hz)`;
@@ -192,7 +192,6 @@
             timeoutId = setTimeout(playNextNote, step.time);
         }
 
-        // Φυσική Μοντελοποίηση Χορδής (Karplus-Strong)
         function playKarplusNote(frequency) {
             const sampleRate = audioCtx.sampleRate;
             const duration = 1.5; 
@@ -202,18 +201,17 @@
             const audioBuffer = audioCtx.createBuffer(1, totalSamples, sampleRate);
             const channelData = audioBuffer.getChannelData(0);
 
-            // 1. Διέγερση Χορδής με Λευκό Θόρυβο (Pluck)
+            // Παραγωγή Λευκού Θορύβου
             for (let i = 0; i < N; i++) {
                 channelData[i] = Math.random() * 2 - 1;
             }
 
-            // 2. Feedback loop για τη φυσική εξασθένηση
+            // Βρόχος Karplus-Strong
             const dampingFactor = 0.995; 
             for (let i = N; i < totalSamples; i++) {
                 channelData[i] = dampingFactor * 0.5 * (channelData[i - N] + channelData[i - N - 1]);
             }
 
-            // 3. Δημιουργία πηγής και φίλτρου αντηχείου
             const bufferSource = audioCtx.createBufferSource();
             bufferSource.buffer = audioBuffer;
             
@@ -229,3 +227,4 @@
     </script>
 </body>
 </html>
+
