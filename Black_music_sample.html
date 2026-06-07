@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Αρχαϊκή Σύνθεση - Η 3η Λύρα της Λέσβου</title>
+    <title>Game of Thrones - 3η Λύρα της Λέσβου</title>
     <style>
         body {
             margin: 0;
             padding: 0;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #0d0d0d;
+            background-color: #0b0b0b;
             color: #e0e0e0;
             display: flex;
             flex-direction: column;
@@ -19,23 +19,29 @@
         }
         .container {
             text-align: center;
-            background-color: #161616;
+            background-color: #141414;
             padding: 40px;
             border-radius: 12px;
             border: 2px solid #bba15c;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.7);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.8);
             max-width: 500px;
             width: 90%;
         }
         h1 {
-            margin: 0 0 10px 0;
+            margin: 0 0 5px 0;
             color: #bba15c;
-            font-size: 1.8rem;
+            font-size: 1.6rem;
             letter-spacing: 1px;
+        }
+        h2 {
+            margin: 0 0 20px 0;
+            color: #888;
+            font-size: 1rem;
+            font-weight: normal;
         }
         p {
             color: #aaa;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             line-height: 1.5;
             margin-bottom: 25px;
         }
@@ -54,43 +60,16 @@
         .btn-play:hover {
             background-color: #ffdf00;
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(255, 223, 0, 0.5);
-        }
-        .btn-play:active {
-            transform: translateY(0);
         }
         .btn-stop {
-            background-color: #333;
-            color: #eee;
-            box-shadow: none;
-            margin-top: 10px;
-            display: none;
-        }
-        .btn-stop:hover {
             background-color: #bd3a3a;
             color: #fff;
-            box-shadow: 0 6px 20px rgba(189, 58, 58, 0.4);
-        }
-        .visualizer {
-            margin-top: 30px;
-            height: 60px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-        .bar {
-            width: 8px;
-            height: 5px;
-            background-color: #bba15c;
-            border-radius: 4px;
-            transition: height 0.15s ease;
         }
         #now-playing {
-            margin-top: 15px;
-            font-size: 0.85rem;
-            color: #777;
-            font-style: italic;
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: #ffdf00;
+            font-weight: bold;
             height: 20px;
         }
     </style>
@@ -98,56 +77,41 @@
 <body>
 
     <div class="container">
-        <h1>🎼 Αρχαϊκή Μουσική Σύνθεση</h1>
-        <p>Ακούστε ένα ζωντανό, τελετουργικό κομμάτι βασισμένο αποκλειστικά στις 6 χορδές της 3ης Λύρας της Λέσβου (Μοντέλο: Σκοτεινό Βουνό - 177.5μ).</p>
+        <h1>⚔️ Game of Thrones Theme</h1>
+        <h2>Εκτελεσμένο από την 3η Λύρα της Λέσβου</h2>
+        <p>Η παρτιτούρα έχει προσαρμοστεί στις 6 αποκλειστικές χορδές του γεωδαιτικού μοντέλου «Σκοτεινό Βουνό» (177.5μ) [1].</p>
         
-        <button id="playBtn" class="btn-play" onclick="togglePlayback()">▶ ΕΝΑΡΞΗ ΜΕΛΩΔΙΑΣ</button>
+        <button id="playBtn" class="btn-play" onclick="togglePlayback()">▶ ΑΝΑΠΑΡΑΓΩΓΗ ΚΟΜΜΑΤΙΟΥ</button>
         
-        <div id="now-playing"></div>
-
-        <div class="visualizer">
-            <div class="bar" id="bar1"></div>
-            <div class="bar" id="bar2"></div>
-            <div class="bar" id="bar3"></div>
-            <div class="bar" id="bar4"></div>
-            <div class="bar" id="bar5"></div>
-            <div class="bar" id="bar6"></div>
-        </div>
+        <div id="now-playing">Πατήστε το κουμπί για έναρξη</div>
     </div>
 
     <script>
-        // Οι 6 αυθεντικές συχνότητες της 3ης Λύρας
+        // Οι συχνότητες της 3ης Λύρας [1]
         const lyre = {
-            'F': { freq: 126.7, name: 'Υπάτη (Μυτιλήνη - Ντο3)' },
-            'DA': { freq: 164.7, name: 'Μέσσα→Μαντείο (Μι3)' },
-            'DE': { freq: 220.0, name: 'Μέσσα→Μήθυμνα (Λα3 - Βάση)' },
-            'BC': { freq: 225.4, name: 'Ερεσός→Φίλια (Λα#3)' },
-            'AC': { freq: 305.6, name: 'Μαντείο→Φίλια (Σι3)' },
-            'AB': { freq: 458.3, name: 'Νήτη (Μαντείο→Ερεσός - Λα#4)' }
+            'C3': 126.7, // Κόμβος C -> Μυτιλήνη [1]
+            'E3': 164.7, // Μέσσα -> Μαντείο [1]
+            'A3': 220.0, // Μέσσα -> Μήθυμνα (Βάση) [1]
+            'As3': 225.4, // Ερεσός -> Φίλια [1]
+            'B3': 305.6, // Μαντείο -> Φίλια [1]
+            'As4': 458.3  // Μαντείο -> Ερεσός [1]
         };
 
-        // Η τελετουργική μουσική παρτιτούρα (Νότα και Διάρκεια σε χιλιοστά του δευτερολέπτου)
-        const composition = [
-            { note: 'F',  duration: 800 },  // Βαθύ μπάσο έναρξης
-            { note: 'DE', duration: 400 },  // Απάντηση από τη βάση
-            { note: 'DA', duration: 400 },  // Ιερή πέμπτη
-            { note: 'F',  duration: 800 },
-            { note: 'BC', duration: 400 },  // Εισαγωγή έντασης (ημιτόνιο)
-            { note: 'AC', duration: 400 },
+        // Η χαρακτηριστική μελωδία του Game of Thrones προσαρμοσμένη στη Λύρα
+        const score = [
+            { note: 'A3', time: 500 }, { note: 'E3', time: 500 }, { note: 'C3', time: 250 }, { note: 'E3', time: 250 },
+            { note: 'A3', time: 500 }, { note: 'E3', time: 500 }, { note: 'C3', time: 250 }, { note: 'E3', time: 250 },
             
-            { note: 'DE', duration: 600 },  // Ανάπτυξη μελωδίας
-            { note: 'AC', duration: 300 },
-            { note: 'AB', duration: 300 },  // Η οξεία Νήτη
-            { note: 'AC', duration: 400 },
-            { note: 'BC', duration: 400 },
-            { note: 'DA', duration: 800 },  // Ανάλυση στην πέμπτη
+            // Κύριο Θέμα
+            { note: 'A3', time: 750 }, { note: 'E3', time: 750 }, { note: 'C3', time: 375 }, { note: 'E3', time: 375 },
+            { note: 'A3', time: 750 }, { note: 'E3', time: 750 }, { note: 'C3', time: 375 }, { note: 'E3', time: 375 },
             
-            { note: 'F',  duration: 800 },  // Επανάληψη θέματος με παραλλαγή
-            { note: 'DE', duration: 400 },
-            { note: 'AB', duration: 400 },
-            { note: 'AC', duration: 400 },
-            { note: 'BC', duration: 400 },
-            { note: 'DE', duration: 1200 }  // Τελικό σβήσιμο στη βάση
+            // Μετάβαση στις ψηλές χορδές (χρωματική ένταση της λύρας) [1]
+            { note: 'As3', time: 750 }, { note: 'E3', time: 750 }, { note: 'C3', time: 375 }, { note: 'E3', time: 375 },
+            { note: 'As3', time: 750 }, { note: 'E3', time: 750 }, { note: 'C3', time: 375 }, { note: 'E3', time: 375 },
+            
+            // Κλείσιμο με τη Νήτη (υψηλός τόνος) [1]
+            { note: 'B3', time: 500 }, { note: 'As4', time: 500 }, { note: 'A3', time: 1000 }
         ];
 
         let audioCtx = null;
@@ -157,14 +121,13 @@
 
         function togglePlayback() {
             if (!isPlaying) {
-                startComposition();
+                start();
             } else {
-                stopComposition();
+                stop();
             }
         }
 
-        function startComposition() {
-            // Αρχικοποίηση ήχου
+        function start() {
             if (!audioCtx) {
                 audioCtx = new (window.AudioContext || window.webkitAudioContext)();
             }
@@ -179,86 +142,60 @@
             btn.innerText = '■ ΔΙΑΚΟΠΗ';
             btn.classList.add('btn-stop');
             
-            playNextStep();
+            playNext();
         }
 
-        function stopComposition() {
+        function stop() {
             isPlaying = false;
             clearTimeout(timeoutId);
             
             const btn = document.getElementById('playBtn');
-            btn.innerText = '▶ ΕΝΑΡΞΗ ΜΕΛΩΔΙΑΣ';
+            btn.innerText = '▶ ΑΝΑΠΑΡΑΓΩΓΗ ΚΟΜΜΑΤΙΟΥ';
             btn.classList.remove('btn-stop');
             
-            document.getElementById('now-playing').innerText = 'Η σύνθεση σταμάτησε.';
-            resetVisualizer();
+            document.getElementById('now-playing').innerText = 'Η αναπαραγωγή σταμάτησε.';
         }
 
-        function playNextStep() {
+        function playNext() {
             if (!isPlaying) return;
 
-            // Αν τελειώσει η παρτιτούρα, ξεκίνα πάλι από την αρχή (Λούπα)
-            if (currentStep >= composition.length) {
-                currentStep = 0;
+            if (currentStep >= score.length) {
+                stop();
+                document.getElementById('now-playing').innerText = 'Το κομμάτι ολοκληρώθηκε!';
+                return;
             }
 
-            const step = composition[currentStep];
-            const stringData = lyre[step.note];
+            const step = score[currentStep];
+            const freq = lyre[step.note];
 
-            // Αναπαραγωγή ήχου χορδής
-            playLyreString(stringData.freq);
+            // Ήχος
+            playNode(freq);
 
-            // Ενημέρωση UI
-            document.getElementById('now-playing').innerText = `Δονείται: ${stringData.name}`;
-            animateVisualizer(step.note);
+            // UI
+            document.getElementById('now-playing').innerText = `Νότα: ${step.note} (${freq} Hz)`;
 
             currentStep++;
-            // Προγραμματισμός επόμενης νότας
-            timeoutId = setTimeout(playNextStep, step.duration);
+            timeoutId = setTimeout(playNext, step.time);
         }
 
-        function playLyreString(frequency) {
+        function playNode(frequency) {
             const osc = audioCtx.createOscillator();
-            const gainNode = audioCtx.createGain();
+            const gain = audioCtx.createGain();
             
-            // "Τριγωνικό" κύμα που προσομοιώνει το μαλακό χτύπημα σε ξύλινο αντηχείο αρχαίας λύρας
+            // Τριγωνικό κύμα για αυθεντικό ήχο ξύλινης χορδής
             osc.type = 'triangle';
             osc.frequency.setValueAtTime(frequency, audioCtx.currentTime);
             
-            // Ρύθμιση έντασης με σταδιακό σβήσιμο (decay)
-            gainNode.gain.setValueAtTime(0.25, audioCtx.currentTime);
-            gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 1.4);
+            gain.gain.setValueAtTime(0.25, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 1.0);
             
-            osc.connect(gainNode);
-            gainNode.connect(audioCtx.destination);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
             
             osc.start();
-            osc.stop(audioCtx.currentTime + 1.4);
-        }
-
-        // Εφέ κίνησης για τον visualizer
-        function animateVisualizer(note) {
-            const bars = ['bar1', 'bar2', 'bar3', 'bar4', 'bar5', 'bar6'];
-            bars.forEach(barId => {
-                const randomHeight = Math.floor(Math.random() * 45) + 10;
-                document.getElementById(barId).style.height = randomHeight + 'px';
-                document.getElementById(barId).style.backgroundColor = '#ffdf00';
-            });
-            
-            setTimeout(() => {
-                bars.forEach(barId => {
-                    document.getElementById(barId).style.height = '15px';
-                    document.getElementById(barId).style.backgroundColor = '#bba15c';
-                });
-            }, 200);
-        }
-
-        function resetVisualizer() {
-            for(let i=1; i<=6; i++) {
-                document.getElementById('bar' + i).style.height = '5px';
-                document.getElementById('bar' + i).style.backgroundColor = '#bba15c';
-            }
+            osc.stop(audioCtx.currentTime + 1.0);
         }
     </script>
 </body>
 </html>
+
