@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Αρχαϊκή Σύνθεση - Η 3η Λύρα της Λέσβου</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #0d0d0d;
+            color: #e0e0e0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+        .container {
+            text-align: center;
+            background-color: #161616;
+            padding: 40px;
+            border-radius: 12px;
+            border: 2px solid #bba15c;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.7);
+            max-width: 500px;
+            width: 90%;
+        }
+        h1 {
+            margin: 0 0 10px 0;
+            color: #bba15c;
+            font-size: 1.8rem;
+            letter-spacing: 1px;
+        }
+        p {
+            color: #aaa;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            margin-bottom: 25px;
+        }
+        .btn-play {
+            background-color: #bba15c;
+            color: #0d0d0d;
+            border: none;
+            padding: 15px 35px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 30px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(187, 161, 92, 0.4);
+            transition: all 0.2s ease;
+        }
+        .btn-play:hover {
+            background-color: #ffdf00;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 223, 0, 0.5);
+        }
+        .btn-play:active {
+            transform: translateY(0);
+        }
+        .btn-stop {
+            background-color: #333;
+            color: #eee;
+            box-shadow: none;
+            margin-top: 10px;
+            display: none;
+        }
+        .btn-stop:hover {
+            background-color: #bd3a3a;
+            color: #fff;
+            box-shadow: 0 6px 20px rgba(189, 58, 58, 0.4);
+        }
+        .visualizer {
+            margin-top: 30px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .bar {
+            width: 8px;
+            height: 5px;
+            background-color: #bba15c;
+            border-radius: 4px;
+            transition: height 0.15s ease;
+        }
+        #now-playing {
+            margin-top: 15px;
+            font-size: 0.85rem;
+            color: #777;
+            font-style: italic;
+            height: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>🎼 Αρχαϊκή Μουσική Σύνθεση</h1>
+        <p>Ακούστε ένα ζωντανό, τελετουργικό κομμάτι βασισμένο αποκλειστικά στις 6 χορδές της 3ης Λύρας της Λέσβου (Μοντέλο: Σκοτεινό Βουνό - 177.5μ).</p>
+        
+        <button id="playBtn" class="btn-play" onclick="togglePlayback()">▶ ΕΝΑΡΞΗ ΜΕΛΩΔΙΑΣ</button>
+        
+        <div id="now-playing"></div>
+
+        <div class="visualizer">
+            <div class="bar" id="bar1"></div>
+            <div class="bar" id="bar2"></div>
+            <div class="bar" id="bar3"></div>
+            <div class="bar" id="bar4"></div>
+            <div class="bar" id="bar5"></div>
+            <div class="bar" id="bar6"></div>
+        </div>
+    </div>
+
+    <script>
+        // Οι 6 αυθεντικές συχνότητες της 3ης Λύρας
+        const lyre = {
+            'F': { freq: 126.7, name: 'Υπάτη (Μυτιλήνη - Ντο3)' },
+            'DA': { freq: 164.7, name: 'Μέσσα→Μαντείο (Μι3)' },
+            'DE': { freq: 220.0, name: 'Μέσσα→Μήθυμνα (Λα3 - Βάση)' },
+            'BC': { freq: 225.4, name: 'Ερεσός→Φίλια (Λα#3)' },
+            'AC': { freq: 305.6, name: 'Μαντείο→Φίλια (Σι3)' },
+            'AB': { freq: 458.3, name: 'Νήτη (Μαντείο→Ερεσός - Λα#4)' }
+        };
+
+        // Η τελετουργική μουσική παρτιτούρα (Νότα και Διάρκεια σε χιλιοστά του δευτερολέπτου)
+        const composition = [
+            { note: 'F',  duration: 800 },  // Βαθύ μπάσο έναρξης
+            { note: 'DE', duration: 400 },  // Απάντηση από τη βάση
+            { note: 'DA', duration: 400 },  // Ιερή πέμπτη
+            { note: 'F',  duration: 800 },
+            { note: 'BC', duration: 400 },  // Εισαγωγή έντασης (ημιτόνιο)
+            { note: 'AC', duration: 400 },
+            
+            { note: 'DE', duration: 600 },  // Ανάπτυξη μελωδίας
+            { note: 'AC', duration: 300 },
+            { note: 'AB', duration: 300 },  // Η οξεία Νήτη
+            { note: 'AC', duration: 400 },
+            { note: 'BC', duration: 400 },
+            { note: 'DA', duration: 800 },  // Ανάλυση στην πέμπτη
+            
+            { note: 'F',  duration: 800 },  // Επανάληψη θέματος με παραλλαγή
+            { note: 'DE', duration: 400 },
+            { note: 'AB', duration: 400 },
+            { note: 'AC', duration: 400 },
+            { note: 'BC', duration: 400 },
+            { note: 'DE', duration: 1200 }  // Τελικό σβήσιμο στη βάση
+        ];
+
+        let audioCtx = null;
+        let isPlaying = false;
+        let currentStep = 0;
+        let timeoutId = null;
+
+        function togglePlayback() {
+            if (!isPlaying) {
+                startComposition();
+            } else {
+                stopComposition();
+            }
+        }
+
+        function startComposition() {
+            // Αρχικοποίηση ήχου
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+
+            isPlaying = true;
+            currentStep = 0;
+            
+            const btn = document.getElementById('playBtn');
+            btn.innerText = '■ ΔΙΑΚΟΠΗ';
+            btn.classList.add('btn-stop');
+            
+            playNextStep();
+        }
+
+        function stopComposition() {
+            isPlaying = false;
+            clearTimeout(timeoutId);
+            
+            const btn = document.getElementById('playBtn');
+            btn.innerText = '▶ ΕΝΑΡΞΗ ΜΕΛΩΔΙΑΣ';
+            btn.classList.remove('btn-stop');
+            
+            document.getElementById('now-playing').innerText = 'Η σύνθεση σταμάτησε.';
+            resetVisualizer();
+        }
+
+        function playNextStep() {
+            if (!isPlaying) return;
+
+            // Αν τελειώσει η παρτιτούρα, ξεκίνα πάλι από την αρχή (Λούπα)
+            if (currentStep >= composition.length) {
+                currentStep = 0;
+            }
+
+            const step = composition[currentStep];
+            const stringData = lyre[step.note];
+
+            // Αναπαραγωγή ήχου χορδής
+            playLyreString(stringData.freq);
+
+            // Ενημέρωση UI
+            document.getElementById('now-playing').innerText = `Δονείται: ${stringData.name}`;
+            animateVisualizer(step.note);
+
+            currentStep++;
+            // Προγραμματισμός επόμενης νότας
+            timeoutId = setTimeout(playNextStep, step.duration);
+        }
+
+        function playLyreString(frequency) {
+            const osc = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+            
+            // "Τριγωνικό" κύμα που προσομοιώνει το μαλακό χτύπημα σε ξύλινο αντηχείο αρχαίας λύρας
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(frequency, audioCtx.currentTime);
+            
+            // Ρύθμιση έντασης με σταδιακό σβήσιμο (decay)
+            gainNode.gain.setValueAtTime(0.25, audioCtx.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 1.4);
+            
+            osc.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+            
+            osc.start();
+            osc.stop(audioCtx.currentTime + 1.4);
+        }
+
+        // Εφέ κίνησης για τον visualizer
+        function animateVisualizer(note) {
+            const bars = ['bar1', 'bar2', 'bar3', 'bar4', 'bar5', 'bar6'];
+            bars.forEach(barId => {
+                const randomHeight = Math.floor(Math.random() * 45) + 10;
+                document.getElementById(barId).style.height = randomHeight + 'px';
+                document.getElementById(barId).style.backgroundColor = '#ffdf00';
+            });
+            
+            setTimeout(() => {
+                bars.forEach(barId => {
+                    document.getElementById(barId).style.height = '15px';
+                    document.getElementById(barId).style.backgroundColor = '#bba15c';
+                });
+            }, 200);
+        }
+
+        function resetVisualizer() {
+            for(let i=1; i<=6; i++) {
+                document.getElementById('bar' + i).style.height = '5px';
+                document.getElementById('bar' + i).style.backgroundColor = '#bba15c';
+            }
+        }
+    </script>
+</body>
+</html>
