@@ -3,98 +3,216 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Αρχαϊκή Μελωδία Λύρας - Εγγυημένος Ήχος</title>
+    <title>Αρχαία Λύρα - Επιτάφιος του Σεικίλου</title>
     <style>
         body {
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #0b0a0a;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background-color: #0f0e0d;
             color: #e0e0e0;
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
             min-height: 100vh;
         }
         .container {
             text-align: center;
-            background-color: #141312;
+            background-color: #1a1816;
             padding: 40px;
-            border-radius: 16px;
+            border-radius: 12px;
             border: 2px solid #bba15c;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.8);
-            max-width: 540px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.6);
+            max-width: 450px;
             width: 90%;
         }
         h1 {
-            margin: 0 0 5px 0;
+            margin: 0 0 10px 0;
             color: #bba15c;
-            font-size: 1.5rem;
-            letter-spacing: 1px;
+            font-size: 1.6rem;
         }
         p {
-            color: #9e968b;
-            font-size: 0.9rem;
-            line-height: 1.6;
+            color: #a39e93;
+            font-size: 0.95rem;
+            line-height: 1.5;
             margin-bottom: 25px;
         }
         .lyrics {
-            background-color: #1c1a18;
+            background-color: #24211e;
             padding: 15px;
             border-radius: 6px;
             border-left: 3px solid #bba15c;
             margin-bottom: 25px;
-            font-size: 0.95rem;
-            color: #dedede;
-            line-height: 1.5;
+            font-size: 1rem;
+            color: #fff;
             font-style: italic;
         }
-        /* Ειδικό Frame που παρακάμπτει όλα τα μπλοκαρίσματα ασφαλείας */
-        .video-wrapper {
-            position: relative;
-            padding-bottom: 56.25%; /* 16:9 Αναλογία */
-            height: 0;
-            overflow: hidden;
-            border-radius: 8px;
-            border: 1px solid #333;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-        }
-        .video-wrapper iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
+        .btn-play {
+            background: linear-gradient(135deg, #bba15c, #967f43);
+            color: #0d0d0d;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 30px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(187, 161, 92, 0.3);
+            transition: all 0.2s ease;
             width: 100%;
-            height: 100%;
-            border: 0;
+        }
+        .btn-play:hover {
+            background: #ffdf00;
+            transform: translateY(-2px);
+        }
+        .btn-stop {
+            background: #333;
+            color: #ff4d4d;
+            box-shadow: none;
+        }
+        #status-text {
+            margin-top: 20px;
+            font-size: 0.95rem;
+            color: #ffdf00;
+            font-weight: bold;
+            height: 20px;
         }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <h1>🏺 Αυθεντικός Ήχος Αρχαίας Λύρας</h1>
-        <h2>Ο Επιτάφιος του Σεikίλου</h2>
+        <h1>🏺 Ο Επιτάφιος του Σεικίλου</h1>
+        <p>3η Λύρα της Λέσβου (Μοντέλο: Σκοτεινό Βουνό)</p>
         
         <div class="lyrics">
             «Ὅσον ζῇς φαίνου, μηδὲν ὅλως σὺ λυποῦ·<br>
             πρὸς ὀλίγον ἐστὶ τὸ ζῆν, τὸ τέλος ὁ χρόνος ἀπαιτεῖ.»
         </div>
 
-        <p>Λόγω των περιορισμών ασφαλείας του συστήματος, ο ήχος αναπαράγεται μέσω του επίσημου Player, εξασφαλίζοντας 100% επιτυχία και κορυφαία ακουστική ποιότητα έγχορδου οργάνου.</p>
+        <button id="mainBtn" class="btn-play" onclick="handlePlayButtonClick()">▶ ΕΝΑΡΞΗ ΜΟΥΣΙΚΗΣ</button>
         
-        <div class="video-wrapper">
-            <!-- Ενσωμάτωση του κορυφαίου βίντεο εκτέλεσης του Επιτάφιου με αληθινή λύρα -->
-            <iframe 
-                src="https://youtube.com" 
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                allowfullscreen>
-            </iframe>
-        </div>
+        <div id="status-text">Έτοιμο για αναπαραγωγή</div>
     </div>
 
+    <script>
+        // Οι 6 ακριβείς συχνότητες από τη γεωδαιτική μελέτη
+        const lyreFreqs = {
+            'C3': 126.7,
+            'E3': 164.7,
+            'A3': 220.0,
+            'As3': 225.4,
+            'B3': 305.6,
+            'As4': 458.3
+        };
+
+        // Η αρχαία παρτιτούρα
+        const notesTimeline = [
+            { note: 'A3', duration: 600 }, { note: 'As4', duration: 600 }, { note: 'As4', duration: 600 },
+            { note: 'As4', duration: 600 }, { note: 'B3', duration: 300 }, { note: 'As3', duration: 300 },
+            { note: 'B3', duration: 600 }, { note: 'As4', duration: 600 }, { note: 'B3', duration: 600 },
+            { note: 'As3', duration: 600 }, { note: 'A3', duration: 1200 },
+            
+            { note: 'B3', duration: 600 }, { note: 'As4', duration: 600 }, { note: 'B3', duration: 600 },
+            { note: 'As3', duration: 600 }, { note: 'B3', duration: 300 }, { note: 'As3', duration: 300 },
+            { note: 'A3', duration: 600 }, { note: 'E3', duration: 600 }, { note: 'C3', duration: 600 },
+            { note: 'E3', duration: 600 }, { note: 'A3', duration: 1200 }
+        ];
+
+        let audioContext = null;
+        let isPlaying = false;
+        let noteIndex = 0;
+        let timerId = null;
+
+        function handlePlayButtonClick() {
+            // Αν παίζει ήδη, το σταματάμε
+            if (isPlaying) {
+                stopMusic();
+                return;
+            }
+
+            // Δημιουργία του AudioContext ΜΟΝΟ μετά το κλικ του χρήστη για να το επιτρέψει ο browser
+            if (!audioContext) {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            
+            // Ξεκλειδώνουμε τον ήχο αν ήταν σε κατάσταση αναμονής
+            if (audioContext.state === 'suspended') {
+                audioContext.resume();
+            }
+
+            isPlaying = true;
+            noteIndex = 0;
+            
+            const btn = document.getElementById('mainBtn');
+            btn.innerText = '■ ΔΙΑΚΟΠΗ';
+            btn.classList.add('btn-stop');
+
+            playNext();
+        }
+
+        function stopMusic() {
+            isPlaying = false;
+            clearTimeout(timerId);
+            
+            const btn = document.getElementById('mainBtn');
+            btn.innerText = '▶ ΕΝΑΡΞΗ ΜΟΥΣΙΚΗΣ';
+            btn.classList.remove('btn-stop');
+            
+            document.getElementById('status-text').innerText = 'Η μουσική σταμάτησε.';
+        }
+
+        function playNext() {
+            if (!isPlaying) return;
+
+            // Αν τελειώσει το τραγούδι, σταμάτα
+            if (noteIndex >= notesTimeline.length) {
+                stopMusic();
+                document.getElementById('status-text').innerText = 'Το τραγούδι ολοκληρώθηκε!';
+                return;
+            }
+
+            const currentStep = notesTimeline[noteIndex];
+            const frequency = lyreFreqs[currentStep.note];
+
+            // Παίζουμε τη νότα
+            triggerSound(frequency);
+
+            // Ενημερώνουμε το κείμενο στην οθόνη
+            document.getElementById('status-text').innerText = `Παίζει η χορδή: ${currentStep.note} (${frequency} Hz)`;
+
+            noteIndex++;
+            // Προγραμματισμός για την επόμενη νότα μετά τη διάρκεια της τρέχουσας
+            timerId = setTimeout(playNext, currentStep.duration);
+        }
+
+        function triggerSound(freq) {
+            const now = audioContext.currentTime;
+            
+            // Δημιουργία απλού ταλαντωτή και ελεγκτή έντασης
+            const osc = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+
+            // Sine wave για καθαρό, κρυστάλλινο ήχο που δεν μπερδεύεται
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(freq, now);
+
+            // Έλεγχος έντασης: Απότομο ξεκίνημα (χτύπημα) και ομαλό σβήσιμο (αντήχηση χορδής)
+            gainNode.gain.setValueAtTime(0, now);
+            gainNode.gain.linearRampToValueAtTime(0.3, now + 0.01); // 10ms για να δυναμώσει
+            gainNode.gain.exponentialRampToValueAtTime(0.001, now + 1.0); // 1 δευτερόλεπτο για να σβήσει ομαλά
+
+            // Σύνδεση με τα ηχεία
+            osc.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+
+            // Εκκίνηση και αυτόματο σταμάτημα
+            osc.start(now);
+            osc.stop(now + 1.0);
+        }
+    </script>
 </body>
 </html>
+
 
 
 
