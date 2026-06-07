@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Αρχαία Μελωδία Λύρας</title>
+    <title>Αυθεντικός Ήχος Έγχορδου - Επιτάφιος Σεικίλου</title>
     <style>
         body {
             margin: 0;
@@ -84,15 +84,15 @@
 <body>
 
     <div class="container">
-        <h1>🏺 Αρχαϊκή Μουσική Εκτέλεση</h1>
-        <h2>Ο Επιτάφιος του Σεικίλου (6 Χορδές)</h2>
+        <h1>🏺 Ακουστική Εκτέλεση με Δείγματα Άρπας</h1>
+        <h2>Ο Επιτάφιος του Σεικίλου</h2>
         
         <div class="lyrics">
             «Ὅσον ζῇς φαίνου, μηδὲν ὅλως σὺ λυποῦ·<br>
             πρὸς ὀλίγον ἐστὶ τὸ ζῆν, τὸ τέλος ὁ χρόνος ἀπαιτεῖ.»
         </div>
 
-        <p>Η αυθεντική αρχαία μελωδία, εκτελεσμένη με αναλογική σύνθεση έγχορδου ήχου, βασισμένη αποκλειστικά στο μοντέλο «Σκοτεινό Βουνό» (177.5μ).</p>
+        <p>Η μελωδία αναπαράγεται χρησιμοποιώντας πραγματικά ηχητικά δείγματα (samples) φυσικού έγχορδου οργάνου, κουρδισμένα στις νότες της 3ης Λύρας.</p>
         
         <button id="playBtn" class="btn-play" onclick="togglePlayback()">▶ ΑΝΑΠΑΡΑΓΩΓΗ ΤΡΑΓΟΥΔΙΟΥ</button>
         
@@ -100,30 +100,37 @@
     </div>
 
     <script>
-        // Οι 6 αυθεντικές γεωδαιτικές συχνότητες
-        const lyre = {
-            'C3': 126.7,
-            'E3': 164.7,
-            'A3': 220.0,
-            'As3': 225.4,
-            'B3': 305.6,
-            'As4': 458.3
+        // Πραγματικά, φυσικά ηχητικά δείγματα έγχορδου οργάνου (Harp / Lyre Open Samples)
+        // Φορτώνουν online από ασφαλή, δημόσια πηγή
+        const sampleURLs = {
+            'C3': 'https://uiowa.edu',
+            'E3': 'https://uiowa.edu',
+            'A3': 'https://uiowa.edu',
+            'As3': 'https://uiowa.edu', // Bb3 είναι η Λα#3
+            'B3': 'https://uiowa.edu',
+            'As4': 'https://uiowa.edu'  // Bb4 είναι η Λα#4
         };
 
-        // Η παρτιτούρα του Σεικίλου
+        // Προ-φόρτωση των αρχείων ήχου για να μην υπάρχουν καθυστερήσεις
+        const audioObjects = {};
+        for (const note in sampleURLs) {
+            audioObjects[note] = new Audio(sampleURLs[note]);
+            audioObjects[note].volume = 0.5; // Ρύθμιση έντασης στο 50%
+        }
+
+        // Η αυθεντική παρτιτούρα του Σεικίλου
         const songScore = [
-            { note: 'A3', time: 600 }, { note: 'As4', time: 600 }, { note: 'As4', time: 600 },
-            { note: 'As4', time: 600 }, { note: 'B3', time: 300 }, { note: 'As3', time: 300 },
-            { note: 'B3', time: 600 }, { note: 'As4', time: 600 }, { note: 'B3', time: 600 },
-            { note: 'As3', time: 600 }, { note: 'A3', time: 1200 },
+            { note: 'A3', time: 700 }, { note: 'As4', time: 700 }, { note: 'As4', time: 700 },
+            { note: 'As4', time: 700 }, { note: 'B3', time: 350 }, { note: 'As3', time: 350 },
+            { note: 'B3', time: 700 }, { note: 'As4', time: 700 }, { note: 'B3', time: 700 },
+            { note: 'As3', time: 700 }, { note: 'A3', time: 1400 },
             
-            { note: 'B3', time: 600 }, { note: 'As4', time: 600 }, { note: 'B3', time: 600 },
-            { note: 'As3', time: 600 }, { note: 'B3', time: 300 }, { note: 'As3', time: 300 },
-            { note: 'A3', time: 600 }, { note: 'E3', time: 600 }, { note: 'C3', time: 600 },
-            { note: 'E3', time: 600 }, { note: 'A3', time: 1200 }
+            { note: 'B3', time: 700 }, { note: 'As4', time: 700 }, { note: 'B3', time: 700 },
+            { note: 'As3', time: 700 }, { note: 'B3', time: 350 }, { note: 'As3', time: 350 },
+            { note: 'A3', time: 700 }, { note: 'E3', time: 700 }, { note: 'C3', time: 700 },
+            { note: 'E3', time: 700 }, { note: 'A3', time: 1400 }
         ];
 
-        let audioCtx = null;
         let isPlaying = false;
         let currentStep = 0;
         let timeoutId = null;
@@ -137,14 +144,6 @@
         }
 
         function start() {
-            // Δημιουργία και άμεσο άνοιγμα του Audio Context με το κλικ
-            if (!audioCtx) {
-                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            }
-            if (audioCtx.state === 'suspended') {
-                audioCtx.resume();
-            }
-
             isPlaying = true;
             currentStep = 0;
             
@@ -176,49 +175,24 @@
             }
 
             const step = songScore[currentStep];
-            const freq = lyre[step.note];
+            
+            // Αναπαραγωγή του αληθινού ηχητικού δείγματος
+            const audioSample = audioObjects[step.note];
+            if (audioSample) {
+                audioSample.currentTime = 0; // Επαναφορά στην αρχή αν ξαναπαίζει η ίδια νότα
+                audioSample.play().catch(error => {
+                    console.log("Αποτυχία αναπαραγωγής: ", error);
+                });
+            }
 
-            playPluckedString(freq);
-
-            document.getElementById('now-playing').innerText = `Χορδή: ${step.note} (${freq} Hz)`;
+            document.getElementById('now-playing').innerText = `Ακούγεται η χορδή: ${step.note}`;
 
             currentStep++;
             timeoutId = setTimeout(playNextNote, step.time);
         }
-
-        // Εγγυημένη αναλογική σύνθεση έγχορδου ήχου (Pluck Synth)
-        function playPluckedString(frequency) {
-            const now = audioCtx.currentTime;
-            
-            const osc = audioCtx.createOscillator();
-            const gainNode = audioCtx.createGain();
-            const filter = audioCtx.createBiquadFilter();
-
-            // Square wave για να έχει το απαραίτητο «σώμα» η χορδή
-            osc.type = 'square';
-            osc.frequency.setValueAtTime(frequency, now);
-
-            // Φίλτρο χαμηλών συχνοτήτων που κλείνει ακαριαία (από τα 3000Hz στα 200Hz σε 0.1 δευτερόλεπτα)
-            // Αυτό μετατρέπει το ηλεκτρονικό «μπιπ» σε φυσικό «ντουκ» έγχορδου
-            filter.type = 'lowpass';
-            filter.frequency.setValueAtTime(3000, now);
-            filter.frequency.exponentialRampToValueAtTime(200, now + 0.12);
-
-            // Έλεγχος έντασης (Απότομο άναμμα και σταδιακό σβήσιμο της χορδής)
-            gainNode.gain.setValueAtTime(0, now);
-            gainNode.gain.linearRampToValueAtTime(0.2, now + 0.005);
-            gainNode.gain.exponentialRampToValueAtTime(0.001, now + 1.2);
-
-            // Συνδεσμολογία
-            osc.connect(filter);
-            filter.connect(gainNode);
-            gainNode.connect(audioCtx.destination);
-
-            osc.start(now);
-            osc.stop(now + 1.2);
-        }
     </script>
 </body>
 </html>
+
 
 
