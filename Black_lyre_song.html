@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ακουστική Εκτέλεση - Επιτάφιος Σεικίλου</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #0b0a0a;
+            color: #e0e0e0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+        .container {
+            text-align: center;
+            background-color: #141312;
+            padding: 40px;
+            border-radius: 16px;
+            border: 2px solid #bba15c;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+            max-width: 500px;
+            width: 90%;
+        }
+        h1 {
+            margin: 0 0 5px 0;
+            color: #bba15c;
+            font-size: 1.5rem;
+            letter-spacing: 1px;
+        }
+        h2 {
+            margin: 0 0 25px 0;
+            color: #7a7368;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+        }
+        p {
+            color: #9e968b;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+        .lyrics {
+            background-color: #1c1a18;
+            padding: 15px;
+            border-radius: 6px;
+            border-left: 3px solid #bba15c;
+            margin-bottom: 25px;
+            font-size: 0.95rem;
+            color: #dedede;
+            line-height: 1.5;
+            font-style: italic;
+        }
+        .btn-play {
+            background: linear-gradient(135deg, #bba15c, #967f43);
+            color: #121212;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 30px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(187, 161, 92, 0.3);
+            transition: all 0.2s ease;
+        }
+        .btn-play:hover {
+            background: #ffdf00;
+            transform: translateY(-2px);
+        }
+        .btn-stop {
+            background: #222;
+            color: #bd3a3a;
+            border: 1px solid #bd3a3a;
+            box-shadow: none;
+        }
+        #now-playing {
+            margin-top: 25px;
+            font-size: 0.95rem;
+            color: #ffdf00;
+            font-weight: bold;
+            height: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>🏺 Αρχαϊκή Ακουστική Εκτέλεση</h1>
+        <h2>Ο Επιτάφιος του Σεικίλου (Karplus-Strong)</h2>
+        
+        <div class="lyrics">
+            «Ὅσον ζῇς φαίνου, μηδὲν ὅλως σὺ λυποῦ·<br>
+            πρὸς ὀλίγον ἐστὶ τὸ ζῆν, τὸ τέλος ὁ χρόνος ἀπαιτεῖ.»
+        </div>
+
+        <p>Ακούστε τη μελωδία να εκτελείται από τη μαθηματική προσομοίωση της Λύρας της Λέσβου. Κάθε νότα παράγεται από τον φυσικό παλμό λευκού θορύβου μέσα σε delay buffer.</p>
+        
+        <button id="playBtn" class="btn-play" onclick="togglePlayback()">▶ ΑΝΑΠΑΡΑΓΩΓΗ ΤΡΑΓΟΥΔΙΟΥ</button>
+        
+        <div id="now-playing">Πατήστε το κουμπί για έναρξη</div>
+    </div>
+
+    <script>
+        // Οι 6 αυθεντικές γεωδαιτικές συχνότητες της 3ης Λύρας
+        const lyre = {
+            'C3': 126.7,  // Κόμβος C -> Μυτιλήνη (Υπάτη)
+            'E3': 164.7,  // Μέσσα -> Μαντείο
+            'A3': 220.0,  // Μέσσα -> Μήθυμνα (Βάση)
+            'As3': 225.4, // Ερεσός -> Φίλια
+            'B3': 305.6,  // Μαντείο -> Φίλια
+            'As4': 458.3  // Μαντείο -> Ερεσός (Νήτη)
+        };
+
+        // Η αυθεντική αρχαία παρτιτούρα προσαρμοσμένη στις χορδές μας (Νότα και Διάρκεια)
+        const songScore = [
+            { note: 'A3', time: 600 }, { note: 'As4', time: 600 }, { note: 'As4', time: 600 },
+            { note: 'As4', time: 600 }, { note: 'B3', time: 300 }, { note: 'As3', time: 300 },
+            { note: 'B3', time: 600 }, { note: 'As4', time: 600 }, { note: 'B3', time: 600 },
+            { note: 'As3', time: 600 }, { note: 'A3', time: 1200 },
+            
+            { note: 'B3', time: 600 }, { note: 'As4', time: 600 }, { note: 'B3', time: 600 },
+            { note: 'As3', time: 600 }, { note: 'B3', time: 300 }, { note: 'As3', time: 300 },
+            { note: 'A3', time: 600 }, { note: 'E3', time: 600 }, { note: 'C3', time: 600 },
+            { note: 'E3', time: 600 }, { note: 'A3', time: 1200 }
+        ];
+
+        let audioCtx = null;
+        let isPlaying = false;
+        let currentStep = 0;
+        let timeoutId = null;
+
+        function togglePlayback() {
+            if (!isPlaying) {
+                start();
+            } else {
+                stop();
+            }
+        }
+
+        function start() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+
+            isPlaying = true;
+            currentStep = 0;
+            
+            const btn = document.getElementById('playBtn');
+            btn.innerText = '■ ΔΙΑΚΟΠΗ';
+            btn.classList.add('btn-stop');
+            
+            playNextNote();
+        }
+
+        function stop() {
+            isPlaying = false;
+            clearTimeout(timeoutId);
+            
+            const btn = document.getElementById('playBtn');
+            btn.innerText = '▶ ΑΝΑΠΑΡΑΓΩΓΗ ΤΡΑΓΟΥΔΙΟΥ';
+            btn.classList.remove('btn-stop');
+            
+            document.getElementById('now-playing').innerText = 'Η αναπαραγωγή σταμάτησε.';
+        }
+
+        function playNextNote() {
+            if (!isPlaying) return;
+
+            if (currentStep >= songScore.length) {
+                stop();
+                document.getElementById('now-playing').innerText = 'Το τραγούδι ολοκληρώθηκε!';
+                return;
+            }
+
+            const step = songScore[currentStep];
+            const freq = lyre[step.note];
+
+            // Αναπαραγωγή με τον αλγόριθμο Karplus-Strong
+            playKarplusNote(freq);
+
+            document.getElementById('now-playing').innerText = `Χορδή: ${step.note} (${freq} Hz)`;
+
+            currentStep++;
+            timeoutId = setTimeout(playNextNote, step.time);
+        }
+
+        // Φυσική Μοντελοποίηση Χορδής (Karplus-Strong)
+        function playKarplusNote(frequency) {
+            const sampleRate = audioCtx.sampleRate;
+            const duration = 1.5; 
+            const totalSamples = sampleRate * duration;
+            const N = Math.round(sampleRate / frequency);
+            
+            const audioBuffer = audioCtx.createBuffer(1, totalSamples, sampleRate);
+            const channelData = audioBuffer.getChannelData(0);
+
+            // 1. Διέγερση Χορδής με Λευκό Θόρυβο (Pluck)
+            for (let i = 0; i < N; i++) {
+                channelData[i] = Math.random() * 2 - 1;
+            }
+
+            // 2. Feedback loop για τη φυσική εξασθένηση
+            const dampingFactor = 0.995; 
+            for (let i = N; i < totalSamples; i++) {
+                channelData[i] = dampingFactor * 0.5 * (channelData[i - N] + channelData[i - N - 1]);
+            }
+
+            // 3. Δημιουργία πηγής και φίλτρου αντηχείου
+            const bufferSource = audioCtx.createBufferSource();
+            bufferSource.buffer = audioBuffer;
+            
+            const bodyResonator = audioCtx.createBiquadFilter();
+            bodyResonator.type = 'lowpass';
+            bodyResonator.frequency.setValueAtTime(2000, audioCtx.currentTime);
+
+            bufferSource.connect(bodyResonator);
+            bodyResonator.connect(audioCtx.destination);
+            
+            bufferSource.start();
+        }
+    </script>
+</body>
+</html>
