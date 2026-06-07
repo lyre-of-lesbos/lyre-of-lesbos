@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Η 3η Λύρα της Λέσβου - Διαδραστικός Χάρτης & Ήχος</title>
+    <title>Η 3η Λύρα της Λέσβου - Διαδραστικός Χάρτης</title>
     
-    <!-- Leaflet CSS -->
-    <link rel="stylesheet" href="https://unpkg.com" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <!-- Leaflet CSS (Χωρίς integrity hashes για μέγιστη συμβατότητα τοπικά) -->
+    <link rel="stylesheet" href="https://unpkg.com" />
     
     <style>
         body {
@@ -25,31 +25,32 @@
             text-align: center;
             border-bottom: 2px solid #bba15c;
             box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            height: 50px;
         }
         h1 {
             margin: 0;
-            font-size: 1.6rem;
+            font-size: 1.4rem;
             color: #bba15c;
             letter-spacing: 1px;
         }
         p.subtitle {
-            margin: 5px 0 0 0;
-            font-size: 0.9rem;
+            margin: 3px 0 0 0;
+            font-size: 0.85rem;
             color: #aaa;
         }
         #main-container {
             display: flex;
             flex: 1;
             position: relative;
-            height: calc(100vh - 80px);
+            height: calc(100vh - 84px);
         }
         #map {
             flex: 1;
             height: 100%;
-            z-index: 1;
+            background-color: #1a1a1a;
         }
         #info-panel {
-            width: 320px;
+            width: 300px;
             background-color: #1a1a1a;
             border-left: 2px solid #bba15c;
             padding: 20px;
@@ -58,7 +59,6 @@
             flex-direction: column;
             gap: 15px;
             overflow-y: auto;
-            z-index: 2;
         }
         .panel-section {
             background-color: #242424;
@@ -89,18 +89,15 @@
         #sound-notice {
             background-color: #bba15c;
             color: #121212;
-            padding: 10px;
+            padding: 12px;
             border-radius: 4px;
             text-align: center;
             font-weight: bold;
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             cursor: pointer;
             border: none;
             width: 100%;
-        }
-        .lyre-string {
-            transition: stroke-width 0.2s, stroke 0.2s;
-            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
         }
     </style>
 </head>
@@ -137,8 +134,8 @@
         </div>
     </div>
 
-    <!-- Leaflet JS -->
-    <script src="https://unpkg.com" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <!-- Leaflet JS (Χωρίς integrity hashes) -->
+    <script src="https://unpkg.com"></script>
 
     <script>
         // 1. Γεωγραφικά Δεδομένα της 3ης Λύρας (Σκοτεινό Βουνό)
@@ -160,16 +157,16 @@
             { from: 'A', to: 'B', name: 'Μαντείο → Ερεσός',   stadia: 60,  freq: 458.3, note: 'Λα#4 (A#4)', desc: 'Νήτη (Οξύς, υψηλός τόνος).' }
         ];
 
-        // 2. Αρχικοποίηση Χάρτη
+        // 2. Αρχικοποίηση Χάρτη (Κέντρο Λέσβου)
         const map = L.map('map').setView([39.22, 26.25], 10);
 
-        // Standard OpenStreetMap (Δωρεάν και αξιόπιστο)
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        // Χάρτης CartoDB Voyager (Δεν χρειάζεται API κλειδιά και δουλεύει παντού τοπικά)
+        L.tileLayer('https://{s}://{z}/{x}/{y}{r}.png', {
             maxZoom: 19,
-            attribution: '&copy; <a href="https://openstreetmap.org">OpenStreetMap</a> συνεισφέροντες'
+            attribution: '&copy; OpenStreetMap &copy; CARTO'
         }).addTo(map);
 
-        // 3. Προσθήκη Δεικτών
+        // 3. Προσθήκη Δεικτών (Markers)
         for (const key in nodes) {
             const node = nodes[key];
             const marker = L.circleMarker(node.coords, {
@@ -181,6 +178,7 @@
                 fillOpacity: 0.9
             }).addTo(map);
             
+            // Διορθωμένο: Πρόσβαση στα στοιχεία του array σωστά [0] και [1]
             marker.bindPopup(`<b>${node.name}</b><br>Lat: ${node.coords[0]}, Lon: ${node.coords[1]}`);
         }
 
@@ -200,7 +198,6 @@
         function playTone(frequency) {
             if (!audioCtx) return;
             
-            // Ξεκλείδωμα του AudioContext αν είναι σε κατάσταση suspend (browser security)
             if (audioCtx.state === 'suspended') {
                 audioCtx.resume();
             }
@@ -221,32 +218,30 @@
             oscillator.stop(audioCtx.currentTime + 1.2);
         }
 
-        // 5. Σχεδίαση Χορδών και Events
+        // 5. Σχεδίαση Χορδών και Σύνδεση Γεγονότων
         strings.forEach(str => {
             const coordFrom = nodes[str.from].coords;
             const coordTo = nodes[str.to].coords;
             
             const polyline = L.polyline([coordFrom, coordTo], {
                 color: '#bba15c',
-                weight: 4,
+                weight: 5,
                 opacity: 0.85
             }).addTo(map);
             
-            // Εφέ Hover μέσω των μεθόδων του Leaflet
+            // Hover Εφέ
             polyline.on('mouseover', function(e) {
-                const layer = e.target;
-                layer.setStyle({
+                e.target.setStyle({
                     color: '#ffdf00',
-                    weight: 6
+                    weight: 8
                 });
                 triggerString(str);
             });
 
             polyline.on('mouseout', function(e) {
-                const layer = e.target;
-                layer.setStyle({
+                e.target.setStyle({
                     color: '#bba15c',
-                    weight: 4
+                    weight: 5
                 });
             });
 
@@ -264,4 +259,12 @@
                 <div style="font-weight: bold; color: #bba15c; font-size: 1.2rem; margin-bottom: 5px;">${str.name}</div>
                 <div class="stat-line"><span>Απόσταση:</span><span>${str.stadia} Στάδια</span></div>
                 <div class="stat-line"><span>Συχνότητα:</span><span>${str.freq} Hz</span></div>
+                <div class="stat-line"><span>Μουσική Νότα:</span><span style="color:#ffdf00;">${str.note}</span></div>
+                <p style="margin-top: 10px; font-size: 0.85rem; color: #ccc; line-height: 1.4;">${str.desc}</p>
+            `;
+        }
+    </script>
+</body>
+</html>
+
 
