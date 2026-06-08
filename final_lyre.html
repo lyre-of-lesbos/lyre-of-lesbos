@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Pythagorean Lyre of Lesbos</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>The Pythagorean Lyre of Lesbos</h1>
+    <div class="subtitle">Αυθεντικό Γεωδαιτικό Κούρδισμα Ξηράς με βάση την Αρχαία Ίσσα</div>
+
+    <div class="container">
+        <div class="lyre-card">
+            <button id="audio-status" class="audio-engine-status" onclick="initializeAudio()">
+                🔴 ΕΝΕΡΓΟΠΟΙΗΣΗ ΗΧΟΥ (ΚΛΙΚ ΕΔΩ ΠΡΩΤΑ)
+            </button>
+            <div class="lyre-container">
+                <div class="lyre-frame-left"></div>
+                <div class="lyre-frame-right"></div>
+                <div class="lyre-yoke"></div>
+                <div class="bridge-base"></div>
+                <div class="strings-wrapper" id="strings-container"></div>
+            </div>
+            <div class="controls">
+                <button class="btn" onclick="playChords()">Συγχορδία</button>
+                <button class="btn" onclick="playArpeggio()">Σάρωση Κλίμακας</button>
+            </div>
+        </div>
+        <div class="info-card">
+            <h2>Γεωμετρικά & Ακουστικά Δεδομένα Χορδών</h2>
+            <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 15px;">
+                Η συχνότητα υπολογίζεται ως αντιστρόφως ανάλογη της γεωδαιτικής απόστασης από την Αρχαία Ίσσα.
+            </p>
+            <table class="metrics-table">
+                <thead>
+                    <tr>
+                        <th>Χορδή</th>
+                        <th>Τοποθεσία</th>
+                        <th>Απόσταση</th>
+                        <th>Πυθ. Λόγος</th>
+                        <th>Συχνότητα</th>
+                    </tr>
+                </thead>
+                <tbody id="metrics-body"></tbody>
+            </table>
+        </div>
+    </div>
+    <div class="footer">
+        Μοντέλο Μαθηματικής & Ιστορικής Ξηράς • Κέντρο: Αρχαία Ίσσα (39.197663°, 26.143290°)
+    </div>
+
+    <script>
+        const BASE_FREQ = 220.0; 
+        const lyreData = [
+            { id: 'C', location: 'Βέλτιστη Αρίσβη', dist: 14.43, ratio: '4 : 3', name: 'Μέση', hz: 0 },
+            { id: 'A', location: 'Μαντείο Ορφέα', dist: 16.22, ratio: '32 : 27', name: 'Λιχανός', hz: 0 },
+            { id: 'E', location: 'Αρχαία Μήθυμνα', dist: 19.19, ratio: '1 : 1', name: 'Υπάτη (Ref)', hz: 0 },
+            { id: 'B', location: 'Αρχαία Ερεσός', dist: 19.31, ratio: '1 : 1', name: 'Παρυπάτη', hz: 0 },
+            { id: 'F', location: 'Ακρόπολη Μυτιλήνης', dist: 37.39, ratio: '2 : 1', name: 'Νήτη', hz: 0 }
+        ];
+        lyreData.sort((a, b) => a.dist - b.dist);
+        const maxDist = lyreData[lyreData.length - 1].dist; 
+        lyreData.forEach(item => { item.hz = BASE_FREQ * (maxDist / item.dist); });
+
+        let audioCtx = null;
+        function initializeAudio() {
+            if (audioCtx && audioCtx.state !== 'suspended') return;
+            try {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                if (audioCtx.state === 'suspended') audioCtx.resume();
+                const statusBtn = document.getElementById('audio-status');
+                statusBtn.innerText = "✓ Μηχανή Ήχου: Ενεργή";
+                statusBtn.className = "audio-engine-status ready";
+                statusBtn.disabled = true;
+                pluckString(440);
+            } catch(e) { console.error("Audio Context failed:", e); }
+        }
+        function pluckString(frequency) {
+            if (!audioCtx) return;
+            const osc = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+            osc.type = 'sine'; 
+            osc.frequency.setValueAtTime(frequency, audioCtx.currentTime);
+            gainNode.gain.setValueAtTime(0.3, audioCtx.currentTime);
+            gainNode.gain.linearRampToValueAtTime(0.0, audioCtx.currentTime + 1.0);
+            osc.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 1.0);
+        }
+        function renderLyre() {
+            const container = document.getElementById('strings-container');
+            const metricsBody = document.getElementById('metrics-body');
+            container.innerHTML = ''; metricsBody.innerHTML = '';
+            lyreData.forEach((string, index) => {
+                const strEl = document.createElement('div');
+                strEl.className = 'string-element';
+                strEl.id = `string-${string.id}`;
+                const calculatedThickness = 1.5 + (index * 0.8);
+                strEl.innerHTML = `<div class="string-line" style="width: ${calculatedThickness}px;"></div>`;
+                const trigger = () => {
+                    if (!audioCtx) initializeAudio();
+                    strEl.classList.add('active'); pluckString(string.hz);
+                    setTimeout(() => strEl.classList.remove('active'), 200);
+                };
+                strEl.addEventListener('mousedown', trigger);
+                strEl.addEventListener('touchstart', (e) => { e.preventDefault(); trigger(); });
+                container.appendChild(strEl);
+                const row = document.createElement('tr');
+                row.innerHTML = `<td><strong style="color:var(--accent-gold)">${string.id}</strong></td><td>${string.location} <span class="note-tag">${string.name}</span></td><td>${string.dist.toFixed(2)} km</td><td><span style="font-family:monospace;">${string.ratio}</span></td><td><strong>${string.hz.toFixed(1)} Hz</strong></td>`;
+                metricsBody.appendChild(row);
+            });
+        }
+        function playChords() {
+            if (!audioCtx) initializeAudio();
+            lyreData.forEach((string, idx) => {
+                setTimeout(() => {
+                    const el = document.getElementById(`string-${string.id}`);
+                    if(el) { el.classList.add('active'); pluckString(string.hz); setTimeout(() => el.classList.remove('active'), 200); }
+                }, idx * 50);
+            });
+        }
+        function playArpeggio() {
+            if (!audioCtx) initializeAudio();
+            lyreData.forEach((string, idx) => {
+                setTimeout(() => {
+                    const el = document.getElementById(`string-${string.id}`);
+                    if(el) { el.classList.add('active'); pluckString(string.hz); setTimeout(() => el.classList.remove('active'), 200); }
+                }, idx * 250);
+            });
+        }
+        window.onload = renderLyre;
+    </script>
+</body>
+</html>
+
