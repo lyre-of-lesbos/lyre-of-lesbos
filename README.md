@@ -887,6 +887,7 @@ $$\frac{19.2 \text{ km}}{14.0 \text{ km}} = \mathbf{1.37}$$
 
 <img width="1416" height="761" alt="image" src="https://github.com/user-attachments/assets/cb14782c-14f0-42ba-a6b9-70b9497e705b" />
 
+<img width="1467" height="742" alt="image" src="https://github.com/user-attachments/assets/037d474f-d1b1-43c0-9a0e-ac70605b4236" />
 
 
 ------------------------------
